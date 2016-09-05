@@ -1,0 +1,16 @@
++ argument
+	true
+	false
+	strength
+
++ argument_applied
+	argument_from
+	argument_to
+	true - int
+	false - int
+	strength
+
++ premise
+	argument_id
+	body - text
+	next_premise
