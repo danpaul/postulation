@@ -2,6 +2,7 @@ var assert = require('assert');
 var async = require('async');
 var config = require('../config');
 
+
 // init schema and knex
 var knex = require('knex')(config.knex);
 require('./lib/schema')({knex: knex}, function(err){
