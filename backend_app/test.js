@@ -2,20 +2,19 @@ var assert = require('assert');
 var async = require('async');
 var config = require('../config');
 
-
 // init schema and knex
 var knex = require('knex')(config.knex);
 require('./lib/schema')({knex: knex}, function(err){
 	if( err ){ throw(err); }
 });
 
+var Models = require('./models');
+var models = new Models({knex: knex});
+
 var Controllers = require('./controllers');
-var controllers = new Controllers({knex: knex});
+var controllers = new Controllers({models: models});
 
 var user = null;
-var user2 = null;
-var argument = null;
-var argument2 = null;
 
 async.series([
 	// create users
@@ -23,27 +22,27 @@ async.series([
 		controllers.user.create({}, function(err, response){
 			if( err ){ return callback(err); }
 			assert(response.status === 'success');
+			assert(response.data.user);
 			user = response.data.user;
 			callback();
 		});
 	},
+	// create path
 	function(callback){
-		controllers.user.create({}, function(err, response){
+		controllers.path.create({nodes: ['one', 'two', 'three'], user: user.id},
+							    function(err, response){
 			if( err ){ return callback(err); }
-			assert(response.status === 'success');
-			user2 = response.data.user;
-			callback();
+
 		});
-	},
-	// create argument
-	function(callback){
-		controllers.argument.create({	premises: ['one', 'two', 'three'],
-										user: user.id },
-									function(err, response){
-			assert(response.status === 'success');
-			argument = response.data.argument;
-			callback();
-		});
+
+
+		// controllers.argument.create({	premises: ['one', 'two', 'three'],
+		// 								user: user.id },
+		// 							function(err, response){
+		// 	assert(response.status === 'success');
+		// 	argument = response.data.argument;
+		// 	callback();
+		// });
 	},
 	// get argument
 	function(callback){

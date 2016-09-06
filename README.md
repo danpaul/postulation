@@ -41,3 +41,9 @@ NODE_ENV=production node index.js
 ## To Test
 
 `NODE_ENV=development nodemon ./backend_app/test.js`
+
+## Notes
+
+Controllers should return user friendly/safe response object and handle any errors that occur in the models or controllers. Controllers should handle all validation and sanitization.
+
+Models should return raw errors to controllers.

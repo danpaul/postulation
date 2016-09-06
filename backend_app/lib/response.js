@@ -1,9 +1,18 @@
 const ERRORS = {
+	missingOptions: 'Function called with missing data',
 	unknown: 'An unknown error occurred',
 	userVoted: 'User has already voted'
 };
 
-module.exports = function(responseIn){
+/**
+ * If there is  an error, pass in an `errorCode` params. Define error code
+ * 	if it's not already defined above.
+ * 	
+ * On success, nothing is required, a data param is optional.
+ *
+ * Callback is optional
+ */
+module.exports = function(responseIn, callback){
 	if( !responseIn ){ responseIn = {}; }
 	var response = {
 		status: 'success',
@@ -18,5 +27,9 @@ module.exports = function(responseIn){
 						     responseIn.errorCode : 'unknown';
 		response.error = ERRORS[response.errorCode];
 	}
-	return response;
+	if( callback ){
+		return callback(null, response);
+	} else {
+		return response;
+	}
 }
