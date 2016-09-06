@@ -1,11 +1,6 @@
 const CONTROLLERS = [
-						// 'argument',
-						// 'argumentApplied',
-						// 'premise',
-						'link',
 						'path',
-						'user',
-						// 'vote'
+						'user'
 					];
 
 var _ = require('underscore');

@@ -15,6 +15,8 @@ var Controllers = require('./controllers');
 var controllers = new Controllers({models: models});
 
 var user = null;
+var path = null;
+var fullPath = null;
 
 async.series([
 	// create users
@@ -32,19 +34,27 @@ async.series([
 		controllers.path.create({nodes: ['one', 'two', 'three'], user: user.id},
 							    function(err, response){
 			if( err ){ return callback(err); }
-			console.log('here');
-
+			assert(response.status === 'success');
+			assert(response.data.path);
+			path = response.data.path;
+			callback();
 		});
-
-
-		// controllers.argument.create({	premises: ['one', 'two', 'three'],
-		// 								user: user.id },
-		// 							function(err, response){
-		// 	assert(response.status === 'success');
-		// 	argument = response.data.argument;
-		// 	callback();
-		// });
 	},
+	// get path
+	function(callback){
+		controllers.path.get({id: path.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path.path.length === 5);
+			fullPath = response.data.path;
+			callback();
+		});
+	},
+	// create path using existing nodes
+	function(){
+// console.log('asdf');
+	},
+	
 	// get argument
 	function(callback){
 		controllers.argument.get({argument: argument.id},

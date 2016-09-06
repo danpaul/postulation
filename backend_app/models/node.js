@@ -32,4 +32,11 @@ module.exports = function(options){
 			return callback(null, nodeIds);
 		})
 	}
+
+	/**
+	 * @param  {array}  options.nodes
+	 */
+	this.getNodes = function(options, callback){
+		k(TABLE).whereIn('id', options.nodes).asCallback(callback);
+	}
 }

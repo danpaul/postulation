@@ -38,4 +38,17 @@ module.exports = function(options){
 		return links;
 	}
 
+	/**
+	 * @param  {int}  options.path
+	 */
+	this.get = function(options, callback){
+		k(TABLE)
+			.where('path', options.path)
+			.orderBy('id', 'asc')
+			.asCallback(function(err, links){
+				if( err ){ return callback(err); }
+				return callback(null, links);
+			});
+	}
+
 }
