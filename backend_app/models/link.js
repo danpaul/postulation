@@ -26,12 +26,27 @@ module.exports = function(options){
 		var links = [];
 		for( var i = 0; i < options.nodes.length - 1; i++ ){
 			var link = {path: options.path};
-			link.from = options.nodes[i];
+
+			if( _.isObject(options.nodes[i]) ){
+				link.from = options.nodes[i]['id'];
+			} else {
+				link.from = options.nodes[i];
+			}
+
 			if( i < (options.nodes.length - 1) ){
-				link.to = options.nodes[i + 1];
+				if( _.isObject(options.nodes[i + 1]) ){
+					link.to = options.nodes[i + 1]['id'];
+				} else {
+					link.to = options.nodes[i + 1];
+				}
 			}
 			if( i === (options.nodes.length - 2) ){
 				link.to_final = true;
+				if( _.isObject(options.nodes[i + 1]) &&
+					options.nodes[i + 1]['type'] === 'link' ){
+
+					link.final_is_link = true;
+				}
 			}
 			links.push(link);
 		}
@@ -50,5 +65,4 @@ module.exports = function(options){
 				return callback(null, links);
 			});
 	}
-
 }

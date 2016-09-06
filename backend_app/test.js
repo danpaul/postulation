@@ -16,7 +16,9 @@ var controllers = new Controllers({models: models});
 
 var user = null;
 var path = null;
+var path2 = null;
 var fullPath = null;
+var fullPath2 = null;
 
 async.series([
 	// create users
@@ -51,10 +53,40 @@ async.series([
 		});
 	},
 	// create path using existing nodes
-	function(){
-// console.log('asdf');
+	function(callback){
+		var node1 = fullPath.path[0];
+		var node2 = fullPath.path[2];
+		controllers.path.create({nodes: [node1, 'foo', node2], user: user.id},
+							    function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path);
+			path2 = response.data.path;
+			callback();
+		});
+	},
+	// get second path
+	function(callback){
+		controllers.path.get({id: path2.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+
+// asdf
+console.log(response.data.path.path);
+
+		});
 	},
 	
+
+
+
+
+
+
+
+
+
+// asdf
 	// get argument
 	function(callback){
 		controllers.argument.get({argument: argument.id},

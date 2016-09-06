@@ -7,7 +7,7 @@ module.exports = function(options){
 
 	/**
 	 * @param  {int}  options.user
-	 * @param  {array}  options.nodes
+	 * @param  {array}  options.nodes - mixed elements
 	 */
 	this.create = function(options, callback){
 		if( !options || !options.user ){
@@ -110,7 +110,7 @@ module.exports = function(options){
 						n.type = 'link';
 						path.push(l);
 					} else {
-						var n = _.clone(nodeMap[link['from']]);
+						var n = _.clone(nodeMap[link['to']]);
 						n.type = 'node';
 						path.push(n);
 					}

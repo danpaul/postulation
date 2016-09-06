@@ -15,10 +15,12 @@ module.exports = function(options){
 				statement: n
 			};
 		});
-
 		var nodeIds = [];
-
 		async.eachSeries(nodes, function(node, callback){
+			if( _.isObject(node.statement ) ){
+				nodeIds.push(node.statement);
+				return callback();
+			}
 			k(TABLE).insert(node).asCallback(function(err, nodeId){
 				if( err ){ return callback(err); }
 				if( !nodeId || !nodeId.length ){
