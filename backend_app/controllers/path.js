@@ -25,15 +25,16 @@ module.exports = function(options){
 			}
 			m.node.create({nodes: options.nodes, user: options.user},
 						  function(err, nodeIds){
+				// link nodes
+				m.link.create({nodes: nodeIds, path: pathId}, function(err){
+					if( err ){
+						console.log(err);
+						return r({errorCode: 'unknown'}, callback);
+					}
+					return r({data: data}, callback);
+				})
 
 			})
 		})
-		// m.user.create({}, function(err, user){
-		// 	if( err ){
-		// 		console.log(err);
-		// 		return callback(null, r({errorCode: 'unknown'}));
-		// 	}
-		// 	return callback(null, r({data: {user: user}}));
-		// });
 	}
 }

@@ -29,7 +29,7 @@ module.exports = function(options){
 			});
 		}, function(err){
 			if( err ){ return callback(err); }
-			return callback(nodeIds);
+			return callback(null, nodeIds);
 		})
 	}
 }

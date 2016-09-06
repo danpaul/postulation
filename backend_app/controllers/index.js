@@ -2,6 +2,7 @@ const CONTROLLERS = [
 						// 'argument',
 						// 'argumentApplied',
 						// 'premise',
+						'link',
 						'path',
 						'user',
 						// 'vote'

@@ -12,6 +12,7 @@ const SCHEMA = {
     },
     link: function(table){
         table.increments();
+        table.integer('from').default(0).index();
         table.integer('to').default(0).index();
         table.integer('path').default(0).index();
         table.boolean('to_final').default(false).index();

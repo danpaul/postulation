@@ -32,6 +32,7 @@ async.series([
 		controllers.path.create({nodes: ['one', 'two', 'three'], user: user.id},
 							    function(err, response){
 			if( err ){ return callback(err); }
+			console.log('here');
 
 		});
 
