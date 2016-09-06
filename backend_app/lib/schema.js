@@ -3,7 +3,6 @@ var schema = {}
 var _ = require('underscore')
 var async = require('async')
 
-
 const SCHEMA = {
     node: function(table){
         table.increments();

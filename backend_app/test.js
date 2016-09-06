@@ -17,6 +17,7 @@ var controllers = new Controllers({models: models});
 var user = null;
 var path = null;
 var path2 = null;
+var path3 = null;
 var fullPath = null;
 var fullPath2 = null;
 
@@ -70,23 +71,38 @@ async.series([
 		controllers.path.get({id: path2.id}, function(err, response){
 			if( err ){ return callback(err); }
 			assert(response.status === 'success');
-
-// asdf
-console.log(response.data.path.path);
-
+			callback();
 		});
 	},
+	// add path that ends at link
+	function(callback){
+		var link = fullPath.path[1];
+		controllers.path.create({nodes: ['biz', 'bap', link], user: user.id},
+							    function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path);
+			path3 = response.data.path;
+			callback();
+		});
+	},
+
+	function(callback){
+		controllers.path.get({id: path3.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path.path[4]['type'] === 'link');
+			callback();
+		});
+	},
+
+	// create path as a response, w/postive/negative charge
+	function(){
+
+	},
 	
+	// vote for responding path
 
-
-
-
-
-
-
-
-
-// asdf
 	// get argument
 	function(callback){
 		controllers.argument.get({argument: argument.id},

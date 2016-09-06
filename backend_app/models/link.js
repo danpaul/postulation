@@ -9,9 +9,9 @@ module.exports = function(options){
 	 * @param  {options.path}
 	 */
 	this.create = function(options, callback){
-		var paths = this.linkPaths(options);
-		if( !paths ){ return callback(new Error('Missing options')); }
-		k(TABLE).insert(paths).asCallback(callback);
+		var links = this.linkPaths(options);
+		if( !links ){ return callback(new Error('Missing options')); }
+		k(TABLE).insert(links).asCallback(callback);
 	}
 
 	/**
@@ -64,5 +64,14 @@ module.exports = function(options){
 				if( err ){ return callback(err); }
 				return callback(null, links);
 			});
+	}
+
+	/**
+	 * @param  {array}  options.links  array of link ids
+	 */
+	this.getLinks = function(options, callback){
+		k.select('*').from('link')
+			.whereIn('id', options.links)
+		  	.asCallback(callback);
 	}
 }

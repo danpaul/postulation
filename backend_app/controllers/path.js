@@ -23,9 +23,9 @@ module.exports = function(options){
 				return r({data: data}, callback);
 			}
 			m.node.create({nodes: options.nodes, user: options.user},
-						  function(err, nodeIds){
+						  function(err, nodes){
 				// link nodes
-				m.link.create({nodes: nodeIds, path: pathId}, function(err){
+				m.link.create({nodes: nodes, path: pathId}, function(err){
 					if( err ){
 						console.log(err);
 						return r({errorCode: 'unknown'}, callback);
@@ -72,10 +72,7 @@ module.exports = function(options){
 				function(cb){
 					// get nodes
 					m.node.getNodes({nodes: nodeIds}, function(err, nodesIn){
-						if( err ){
-							console.log(err);
-							return cb(err)
-						}
+						if( err ){ return cb(err); }
 						nodesIn.forEach(function(n){
 							nodeMap[n.id] = n;
 						});
@@ -83,13 +80,18 @@ module.exports = function(options){
 					});
 				}, function(cb){
 					// get links
-					if( !linkIds ){ return cb(); }
-					// TODO: retrieve links
-					// TODO: add to link map
-					cb();
+					if( !linkIds.length ){ return cb(); }
+					m.link.getLinks({links: linkIds}, function(err, linksIn){
+						if( err ){ return cb(err); }
+						linksIn.forEach(function(l){
+							linkMap[l.id] = l;
+						});
+						cb();
+					});
 				}
 			], function(err){
 				if( err ){
+					console.log(err);
 					return r({errorCode: 'unknown'}, callback);
 				}
 
@@ -107,7 +109,7 @@ module.exports = function(options){
 					path.push(l);
 					if( link.to_final && link.final_is_link ){
 						var l = _.clone(linkMap[link['to']]);
-						n.type = 'link';
+						l.type = 'link';
 						path.push(l);
 					} else {
 						var n = _.clone(nodeMap[link['to']]);
