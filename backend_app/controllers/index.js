@@ -1,4 +1,5 @@
 const CONTROLLERS = [
+						'link',
 						'path',
 						'user'
 					];

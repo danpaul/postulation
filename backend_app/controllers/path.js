@@ -8,11 +8,15 @@ module.exports = function(options){
 	/**
 	 * @param  {int}  options.user
 	 * @param  {array}  options.nodes - mixed elements
+	 * @param  {bool}  options.charge - if path negates a node or link, should be false
+	 *                                	negated element should be last element of path
 	 */
 	this.create = function(options, callback){
 		if( !options || !options.user ){
 			return r({errorCode: 'missingOptions'}, callback);
 		}
+		var charge = null;
+		if( options.hasOwnProperty('charge') ){ charge = options.charge; }
 		m.path.create({user: options.user}, function(err, pathId){
 			if( err ){
 				console.log(err);
@@ -25,7 +29,8 @@ module.exports = function(options){
 			m.node.create({nodes: options.nodes, user: options.user},
 						  function(err, nodes){
 				// link nodes
-				m.link.create({nodes: nodes, path: pathId}, function(err){
+				m.link.create({nodes: nodes, path: pathId, charge: charge},
+							  function(err){
 					if( err ){
 						console.log(err);
 						return r({errorCode: 'unknown'}, callback);

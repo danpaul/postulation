@@ -18,8 +18,10 @@ var user = null;
 var path = null;
 var path2 = null;
 var path3 = null;
+var path4 = null;
 var fullPath = null;
 var fullPath2 = null;
+var fullPath4 = null;
 
 async.series([
 	// create users
@@ -97,101 +99,43 @@ async.series([
 	},
 
 	// create path as a response, w/postive/negative charge
-	function(){
+	function(callback){
+		var node1 = fullPath.path[0];
+		controllers.path.create({nodes: ['zip', 'zap', 'zoom', node1],
+								 user: user.id,
+								 charge: false},
+							    function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			path4 = response.data.path;
+			callback();
+		});
+	},
 
+	function(callback){
+		controllers.path.get({id: path4.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
 	},
-	
-	// vote for responding path
 
-	// get argument
+	// get responses to node1
 	function(callback){
-		controllers.argument.get({argument: argument.id},
-								 function(err, response){
+		var node1 = fullPath.path[0];
+		controllers.link.getResponses({node: node1}, function(err, response){
 			if( err ){ return callback(err); }
 			assert(response.status === 'success');
-			assert(response.data.argument.premises.length === 3);
-			argument = response.data.argument;
-			callback();
-		})
-	},
-	// vote true for argument
-	function(callback){
-		controllers.argument.vote({	argument: argument.id,
-									vote: true,
-									user: user.id	},
-								 function(err, response){
-			if( err ){ return callback(err); }
-			assert(response.status === 'success');
+			assert(response.data.paths[0]['id'] === path4.id );
 			callback();
 		});
 	},
-	function(callback){
-		controllers.argument.get({argument: argument.id},
-								 function(err, response){
-			if( err ){ return callback(err); }
-			assert(response.data.argument.strength === 1.0);
-			callback();
-		});
-	},
-	// vote false for argument
-	function(callback){
-		controllers.argument.vote({	argument: argument.id,
-									vote: false,
-									user: user2.id	},
-								 function(err, response){
-			if( err ){ return callback(err); }
-			assert(response.status === 'success');
-			callback();
-		});
-	},
-	function(callback){
-		controllers.argument.get({argument: argument.id},
-								 function(err, response){
-			if( err ){ return callback(err); }
-			assert(response.data.argument.strength === 0.5);
-			callback();
-		});
-	},
-	// try to vote again
-	function(callback){
-		controllers.argument.vote({	argument: argument.id,
-									vote: false,
-									user: user.id	},
-								 function(err, response){
-			if( err ){ return callback(err); }
-			assert(response.status === 'error');
-			assert(response.errorCode === 'userVoted');
-			callback();
-		});
-	},
-	// apply new argument
-	function(callback){
-		controllers.argument.create({	premises: ['four', 'five'],
-										user: user.id,
-										appliedTo: argument.id	},
-									function(err, response){
-			assert(response.status === 'success');
-			argument2 = response.data.argument;
-			return callback();
-		});
-	},
-	function(callback){
-		controllers.argument.create({	premises: ['six', 'seven'],
-										user: user.id,
-										appliedTo: argument.id	},
-									function(err, response){
-			assert(response.status === 'success');
-			return callback();
-		});
-	},
-	function(callback){
-		controllers.argumentApplied.get({	argument: argument.id	},
-										function(err, response){
-			
-			// assert(response.status === 'success');
-			// return callback();
-		});
-	}
+
+	// function(callback){
+	// 	console.log('here')
+	// },
+
+
 ], function(err){
 	if( err ){ return console.log(err); }
 	console.log('success!!!');

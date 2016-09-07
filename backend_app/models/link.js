@@ -17,6 +17,7 @@ module.exports = function(options){
 	/**
 	 * @param  {array}  options.nodes
 	 * @param  {int}  options.path
+	 * @param  {int}  options.charge - optional, if false will set 
 	 */
 	this.linkPaths = function(options){
 		if( !options || !options.nodes || !options.path ){
@@ -47,6 +48,11 @@ module.exports = function(options){
 
 					link.final_is_link = true;
 				}
+				if( _.isObject(options.nodes[i + 1]) &&
+					options.charge === false ){
+
+					link.charge = false;
+				}
 			}
 			links.push(link);
 		}
@@ -73,5 +79,19 @@ module.exports = function(options){
 		k.select('*').from('link')
 			.whereIn('id', options.links)
 		  	.asCallback(callback);
+	}
+
+	/**
+	 * @param  {object}  options.node
+	 */
+	this.getResponses = function(options, callback){
+		if( options.node ){
+			k.select('*').from('link')
+				.where('to', options.node.id)
+				.andWhere('to_final', true)
+				.andWhere('charge', false)
+				.orderBy('strength', 'desc')
+				.asCallback(callback);
+		}
 	}
 }
