@@ -1,5 +1,6 @@
 const ERRORS = {
 	invalidPath: 'Path id is not valid',
+	invalidType: 'Type provided is not valid',
 	missingOptions: 'Function called with missing data',
 	unknown: 'An unknown error occurred',
 	userVoted: 'User has already voted'

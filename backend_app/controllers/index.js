@@ -1,7 +1,8 @@
 const CONTROLLERS = [
 						'link',
 						'path',
-						'user'
+						'user',
+						'vote'
 					];
 
 var _ = require('underscore');

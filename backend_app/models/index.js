@@ -1,4 +1,4 @@
-const MODELS = ['link', 'node', 'path', 'user'];
+const MODELS = ['link', 'node', 'path', 'user', 'vote'];
 
 var _ = require('underscore');
 

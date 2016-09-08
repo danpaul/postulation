@@ -1,5 +1,6 @@
 var _ = require('underscore');
 const TABLE = 'link';
+const CONTANTS = require('../constants');
 
 module.exports = function(options){
 	var k = options.knex;
@@ -82,16 +83,25 @@ module.exports = function(options){
 	}
 
 	/**
-	 * @param  {object}  options.node
+	 * @param  {object}  options.node  - one of
+	 * @param  {object}  options.link  - one of
+	 * @param  {bool}  options.charge  - defaults to false
 	 */
 	this.getResponses = function(options, callback){
-		if( options.node ){
-			k.select('*').from('link')
-				.where('to', options.node.id)
-				.andWhere('to_final', true)
-				.andWhere('charge', false)
-				.orderBy('strength', 'desc')
-				.asCallback(callback);
+		var charge = options.charge ? true : false;
+		if( options.link ){
+			var id = options.link.id;
+			var finalIsLink = true;
+		} else {
+			var id = options.node.id;
+			var finalIsLink = false;
 		}
+		k.select('*').from(TABLE)
+			.where('to', id)
+			.andWhere('to_final', true)
+			.andWhere('charge', charge)
+			.andWhere('final_is_link', finalIsLink)
+			.orderBy('strength', 'desc')
+			.asCallback(callback);
 	}
 }

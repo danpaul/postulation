@@ -9,9 +9,10 @@ module.exports = function(options){
 	/**
 	 * gets responses to nodes or links
 	 * @param  {object}  options.node
+	 * @param  {bool}  options.charge  optional, defaults to false
 	 */
 	this.getResponses = function(options, callback){
-		if( !options || !options.node ){
+		if( !options || !(options.node || options.link) ){
 			return r({errorCode: 'missingOptions'}, callback);
 		}
 		m.link.getResponses(options, function(err, links){
@@ -24,7 +25,7 @@ module.exports = function(options){
 					id: l.path,
 					strength: l.strength
 				}
-			})
+			});
 			return r({data: {paths: paths}}, callback);
 		});
 	}

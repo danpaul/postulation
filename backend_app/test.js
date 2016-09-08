@@ -14,11 +14,14 @@ var models = new Models({knex: knex});
 var Controllers = require('./controllers');
 var controllers = new Controllers({models: models});
 
+const CONSTANTS = require('./constants');
+
 var user = null;
 var path = null;
 var path2 = null;
 var path3 = null;
 var path4 = null;
+var path5 = null;
 var fullPath = null;
 var fullPath2 = null;
 var fullPath4 = null;
@@ -131,10 +134,56 @@ async.series([
 		});
 	},
 
-	// function(callback){
-	// 	console.log('here')
-	// },
-
+	// create response to link
+	function(callback){
+		var link = fullPath.path[1];
+		controllers.path.create({nodes: ['ding', 'dong', link],
+								 user: user.id,
+								 charge: false},
+							    function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			path5 = response.data.path;
+			callback();
+		});
+	},
+	function(callback){
+		controllers.path.get({id: path5.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
+	},
+	function(callback){
+		var link = fullPath.path[1];
+		controllers.link.getResponses({link: link}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.paths[0]['id'] === path5.id );
+			callback();
+		});
+	},
+	// vote for path
+	function(callback){
+		controllers.vote.add({
+			item: path.id,
+			type: CONSTANTS.types.path,
+			user: user.id,
+			true: true
+		}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
+	},
+	function(callback){
+		controllers.path.get({id: path.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+// console.log(response.data.path);
+			callback();
+		});
+	}
 
 ], function(err){
 	if( err ){ return console.log(err); }

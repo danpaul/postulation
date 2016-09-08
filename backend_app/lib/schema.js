@@ -1,5 +1,3 @@
-var schema = {}
-
 var _ = require('underscore')
 var async = require('async')
 
@@ -8,6 +6,10 @@ const SCHEMA = {
         table.increments();
         table.integer('user').default(0).index();
         table.text('statement');
+        table.integer('true').default(0);
+        table.integer('false').default(0);
+        table.integer('total').default(0).index();
+        table.float('strength').default(0.0).index();
     },
     link: function(table){
         table.increments();
@@ -17,52 +19,27 @@ const SCHEMA = {
         table.boolean('to_final').default(false).index();
         table.boolean('final_is_link').default(false).index();
         table.boolean('charge').default(true).index();
-        table.float('strength').default(0.0).index();
+        table.float('strength').default(0.0).index(); // gets from path
     },
     path: function(table){
         table.increments();
         table.integer('user').default(0).index();
-        table.text('title');        
+        table.integer('true').default(0);
+        table.integer('false').default(0);
+        table.integer('total').default(0).index();
+        table.float('strength').default(0.0).index();
+        table.text('title').default('');
     },
     vote: function(table){
         table.integer('item').default(0).index();
         table.integer('user').default(0).index();
         table.integer('type').default(0).index();
-        table.float('strength').default(0.0);
+        table.boolean('true').default(true);
     },
     user: function(table){
         table.increments();
     }
 }
-
-// const SCHEMA = {
-//     argument: function(table){
-//         table.increments();
-//         table.integer('true').default(0);
-//         table.integer('false').default(0);
-//         table.float('strength').default(0.0).index();
-//         table.integer('user').default(0).index();
-//     },
-//     argument_applied: function(table){
-//         table.increments();
-//         table.integer('argument').default(0).index();
-//         table.integer('applied_to').default(0).index();
-//     },
-//     premise: function(table){
-//         table.increments();
-//         table.integer('argument').index();
-//         table.integer('order');
-//         table.text('body');
-//     },
-//     vote: function(table){
-//         table.integer('user').index();
-//         table.integer('argument').index();
-//         table.boolean('vote');
-//     },
-//     user: function(table){
-//         table.increments();
-//     }
-// }
 
 module.exports = function(options,
                           callbackIn){

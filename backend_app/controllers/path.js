@@ -46,6 +46,11 @@ module.exports = function(options){
 	 * @param  {int}  options.id
 	 */
 	this.get = function(options, callback){
+		this.getLinkData(options, callback)
+
+	}
+
+	this.getLinkData = function(options, callback){
 		// get paths links
 		m.link.get({path: options.id}, function(err, links){
 			if( err ){
