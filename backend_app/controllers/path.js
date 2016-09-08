@@ -46,7 +46,7 @@ module.exports = function(options){
 	 * @param  {int}  options.id
 	 */
 	this.get = function(options, callback){
-		this.getLinkData(options, callback)
+		this.getLinkData(options, callback);
 
 	}
 
