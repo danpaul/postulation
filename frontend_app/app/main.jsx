@@ -2,6 +2,11 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Root = require('./components/root.jsx');
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+
 // var data = require('./data');
 // data.set('site', wpData);
 // var controllers = new (require('./controllers'))
@@ -22,8 +27,10 @@ var BaseComponent = React.createClass({
 	// 		controllers={controllers} 	/>
 	// }
 	render: function() {
-		return <Root
-				router={router} />
+		return <MuiThemeProvider>
+				<Root
+					router={router} />
+			</MuiThemeProvider>
 	}
 });
 

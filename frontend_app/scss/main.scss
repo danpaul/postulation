@@ -1,6 +1,7 @@
 @import "vendor/normalize";
-// @import "vendor/materialize";
+// @import "vendor/flexbox";
+@import "vendor/toast";
 
-h1{
-    // color: red;
+html, body{
+	background: #FFF;
 }
