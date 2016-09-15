@@ -9,20 +9,6 @@ module.exports = function(options){
 	var m = options.models;
 
 	/**
-	 * Gets user vote
-	 * @param  {int}  options.user
-	 * @param  {int}  options.argument
-	 */
-	// this.get = function(options, callback){
-		// k(TABLE)
-		// 	.where('user', '=', options.user)
-		// 	.andWhere('argument', '=', options.argument)
-		// 	.asCallback(callback);
-	// }
-
-
-
-	/**
 	 * Adds user vote
 	 * @param  {int}  options.item  id of item
 	 * @param  {int}  options.type  constant for item type
@@ -35,7 +21,7 @@ module.exports = function(options){
 			!options.item ||
 			!options.type ||
 			!options.user ||
-			!options.true ){
+			typeof(options.true) === 'undefined' ){
 
 			return r({errorCode: 'missingOptions'}, callback);
 		}
@@ -46,13 +32,23 @@ module.exports = function(options){
 			return r({errorCode: 'invalidType'}, callback);
 		}
 
-		// if voting for path, update links and path rankings
-		m.vote.add(options, function(err){
+		// test if user has already voted
+		m.vote.get(options, function(err, votes){
 			if( err ){
 				console.log(err);
 				return r({errorCode: 'unknown'}, callback);
 			}
-			return r({}, callback);
+			if( votes.length ){
+				return r({errorCode: 'userVoted'}, callback);
+			}
+			// if voting for path, update links and path rankings
+			m.vote.add(options, function(err){
+				if( err ){
+					console.log(err);
+					return r({errorCode: 'unknown'}, callback);
+				}
+				return r({}, callback);
+			});
 		});
 	}
 }

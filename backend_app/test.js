@@ -180,11 +180,66 @@ async.series([
 		controllers.path.get({id: path.id}, function(err, response){
 			if( err ){ return callback(err); }
 			assert(response.status === 'success');
-// console.log(response.data.path);
+			assert(response.data.path.path[1].strength === 1);
+			callback();
+		});
+	},
+	// try to vote again
+	function(callback){
+		controllers.vote.add({
+			item: path.id,
+			type: CONSTANTS.types.path,
+			user: user.id,
+			true: true
+		}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.errorCode === 'userVoted');
+			callback();
+		});
+	},
+	// cast negative vote for path
+	function(callback){
+		controllers.vote.add({
+			item: path.id,
+			type: CONSTANTS.types.path,
+			user: (user.id + 1),
+			true: false
+		}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
+	},
+	function(callback){
+		controllers.path.get({id: path.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path.path[1].strength === 0.5);
+			callback();
+		});
+	},
+	// vote for node
+	function(callback){
+		var node = fullPath.path[0];
+		controllers.vote.add({
+			item: node.id,
+			type: CONSTANTS.types.node,
+			user: user.id,
+			true: true
+		}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
+	},
+	function(callback){
+		controllers.path.get({id: path.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path.path[0].strength === 1);
 			callback();
 		});
 	}
-
 ], function(err){
 	if( err ){ return console.log(err); }
 	console.log('success!!!');

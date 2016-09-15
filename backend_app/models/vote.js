@@ -7,6 +7,20 @@ module.exports = function(options){
 	var k = options.knex;
 
 	/**
+	 * Retrieves user vote
+	 * @param  {int}  options.item  id of item
+	 * @param  {int}  options.type  constant for item type
+	 * @param  {int}  options.user
+	 */
+	this.get = function(options, callback){
+		k(TABLE)
+			.where('user', options.user)
+			.andWhere('item', options.item)
+			.andWhere('type', options.type)
+			.asCallback(callback);
+	}
+
+	/**
 	 * Adds user vote
 	 * @param  {int}  options.item  id of item
 	 * @param  {int}  options.type  constant for item type

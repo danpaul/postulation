@@ -1,4 +1,5 @@
 var config = require('./config')
+var path = require('path')
 
 /*******************************************************************************
 
@@ -34,6 +35,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 *******************************************************************************/
 
 require('./backend_app/routes')(app);
+
+app.get('*', function(req, res) {
+	res.sendFile(path.join(__dirname, '/public', 'index.html'));
+});
 
 var server = app.listen(config.port, function () {
     var host = server.address().address
