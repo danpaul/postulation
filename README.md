@@ -21,7 +21,7 @@ The back end uses Node/Express with basic session handling setup.
 
 Frontend development:
 ```
-NODE_ENV=development gulp
+webpack --progress --colors --watch
 ```
 
 Backend development (if you have [nodemon](https://github.com/remy/nodemon) installed):
@@ -43,6 +43,8 @@ NODE_ENV=production node index.js
 `NODE_ENV=development nodemon ./backend_app/test.js`
 
 ## Notes
+
+
 
 Controllers should return user friendly/safe response object and handle any errors that occur in the models or controllers. Controllers should handle all validation and sanitization.
 
