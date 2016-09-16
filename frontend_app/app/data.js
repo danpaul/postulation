@@ -4,25 +4,9 @@ var Immutable = require('immutable');
 
 var callbacks = [];
 
-var initialState = {
-	currentPage: null,
-	contactForm: {	message: '',
-				   	error: '',
-				   	sent: false,
-				   	sending: false	},
-	perPage: 10,
-	page: {},
-	post: {},
-	posts: [],
-	mainMenu: {},
-	loading: true,
-	site: {},
-	urlState: null
-};
-// data that should be cleared when view changes
-var viewData = ['page', 'post', 'posts'];
-var data = Immutable.fromJS(initialState);
+var initialState = {};
 
+var data = Immutable.fromJS(initialState);
 var history = null;
 if( config.recordHistory ){
 	history = Immutable.List().push(Immutable.Map({data: data, time: Date.now()}));;
@@ -83,7 +67,7 @@ var rewindHistory = function(history, callback){
 	}, timeDifference);
 }
 
-document.addEventListener('wpspaRewindHistory', function(e){
+document.addEventListener('dataRewindHistory', function(e){
 	var originalData = data;
 	rewindHistory(history.reverse(), function(){
 		data = originalData;

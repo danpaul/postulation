@@ -16,8 +16,8 @@ module.exports = BaseComponent.createClass({
 	},
 	render: function() {
 		return <div className="container">
-<div class="container">
-  <div class="grid">
+<div className="container">
+  <div className="grid">
         <div style={{outline: 'solid green'}} className="grid__col grid__col--1-of-4">
 foo
         </div>

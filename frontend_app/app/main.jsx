@@ -1,24 +1,22 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Root = require('./components/root.jsx');
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Root from './components/root.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import data from './data';
+import Controllers from './controllers';
+import Router from './router';
 
+injectTapEventPlugin();
 
-// var data = require('./data');
-// data.set('site', wpData);
-// var controllers = new (require('./controllers'))
-// 					  ({data: data, siteUrl: wpData.siteUrl});
-var router = new(require('./router'))();
-// 				({controllers: controllers, data: data});
+var controllers = new Controllers({data: data});
+var router = new Router({controllers: controllers});
 
 var BaseComponent = React.createClass({
 	componentDidMount: function(){
-		// data.subscribe(this.forceUpdate.bind(this));
+		data.subscribe(this.forceUpdate.bind(this));
 		// controllers.url.setParamsFromUrl();
-		// router.navigate();
+		router.navigate();
 	},
 	// render: function() {
 	// 	return <Root

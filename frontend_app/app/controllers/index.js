@@ -1,12 +1,10 @@
 var _ = require('underscore');
 var superagent = require('superagent-cache')();
 
+import Path from './path';
+
 var CONTROLLERS = {
-	contact: require('./contact.js'),
-    menu: require('./menu.js'),
-    page: require('./page.js'),
-    post: require('./post.js'),
-    url: require('./url.js')
+	path: Path
 }
 
 module.exports = function(options){
