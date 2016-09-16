@@ -10,8 +10,8 @@ module.exports = function(options){
 		console.log('home');
 	});
 
-	page('/argument/create', function(){
-		console.log('create argument');
+	page('/path/create', function(){
+		c.path.showCreate();
 	});
 
 	page('*', function(){

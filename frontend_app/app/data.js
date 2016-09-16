@@ -1,12 +1,13 @@
-var _ = require('underscore');
-var config = require('./config');
-var Immutable = require('immutable');
+const _ = require('underscore');
+const config = require('./config');
+const Immutable = require('immutable');
 
-var callbacks = [];
-
-var initialState = {};
+const initialState = {
+	view: 'home'
+};
 
 var data = Immutable.fromJS(initialState);
+var callbacks = [];
 var history = null;
 if( config.recordHistory ){
 	history = Immutable.List().push(Immutable.Map({data: data, time: Date.now()}));;

@@ -18,16 +18,12 @@ var BaseComponent = React.createClass({
 		// controllers.url.setParamsFromUrl();
 		router.navigate();
 	},
-	// render: function() {
-	// 	return <Root
-	// 		router={router}
-	// 		data={data.getRoot()}
-	// 		controllers={controllers} 	/>
-	// }
 	render: function() {
 		return <MuiThemeProvider>
 				<Root
-					router={router} />
+					router={router}
+					data={data.getRoot()}
+					controllers={controllers} />
 			</MuiThemeProvider>
 	}
 });
