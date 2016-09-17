@@ -5,6 +5,7 @@ import CreatePathTitle from  './createPathTitle.jsx';
 import Paper from 'material-ui/Paper';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const style = {
     width: 400,
@@ -18,6 +19,9 @@ const contentWrapStype = {
 module.exports = BaseComponent.createClass({
     addNode: function(){
         this.props.controllers.createPath.addNode();
+    },
+    createPath: function(){
+        console.log('creating');
     },
 	render: function() {
         var self = this;
@@ -37,11 +41,19 @@ module.exports = BaseComponent.createClass({
                 <div style={contentWrapStype}>
                     <CreatePathTitle
                         controllers={this.props.controllers}
+                        error={this.props.path.get('titleError')}
                         title={this.props.path.get('title')}
                     />
                     {nodes}
                     <a onClick={this.addNode}>
                         <FlatButton label="Add Node" primary={true} />
+                    </a>
+                    <a onClick={this.createPath}>
+                        <RaisedButton
+                            label="Create"
+                            secondary={true}
+                            disabled={!this.props.path.get('valid')}
+                            style={{float: 'right'}} />
                     </a>
                 </div>
             </Paper>

@@ -13,7 +13,9 @@ console.log(e.target.value);
                 style={style}
                 fullWidth={true}
                 floatingLabelText="Path Title"
+                onBlur={this.props.controllers.createPath.validateForm}
                 value={this.props.title}
+                errorText={this.props.error}
                 onChange={this.props.controllers.createPath.onTitleChange}
             />;
 	}

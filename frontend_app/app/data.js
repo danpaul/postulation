@@ -6,6 +6,8 @@ const initialState = {
 	view: 'home',
 	createPath: {
 		title: '',
+		titleError: '',
+		valid: false,
 		nodes: []
 	}
 };

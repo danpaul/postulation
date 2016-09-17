@@ -14,9 +14,11 @@ module.exports = BaseComponent.createClass({
 		return <div>
 			<Paper zDepth={1} style={style}>
             	<TextField
+            		onBlur={this.props.controllers.createPath.validateForm}
             		value={this.props.node.get('statement')}
             		multiLine={true}
             		fullWidth={true}
+            		errorText={this.props.node.get('error')}
             		onChange={this.handleTextChange} />
             </Paper>
 		</div>;
