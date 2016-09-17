@@ -15,7 +15,6 @@ var router = new Router({controllers: controllers});
 var BaseComponent = React.createClass({
 	componentDidMount: function(){
 		data.subscribe(this.forceUpdate.bind(this));
-		// controllers.url.setParamsFromUrl();
 		router.navigate();
 	},
 	render: function() {

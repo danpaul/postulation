@@ -1,11 +1,12 @@
-var _ = require('underscore');
-var superagent = require('superagent-cache')();
-
 import Path from './path';
+import CreatePath from './createPath';
 
-var CONTROLLERS = {
-	path: Path
-}
+const _ = require('underscore');
+const superagent = require('superagent-cache')();
+const CONTROLLERS = {
+	path: Path,
+	createPath: CreatePath
+};
 
 module.exports = function(options){
 	var self = this;

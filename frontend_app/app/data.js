@@ -3,14 +3,19 @@ const config = require('./config');
 const Immutable = require('immutable');
 
 const initialState = {
-	view: 'home'
+	view: 'home',
+	createPath: {
+		title: '',
+		nodes: []
+	}
 };
 
 var data = Immutable.fromJS(initialState);
 var callbacks = [];
 var history = null;
 if( config.recordHistory ){
-	history = Immutable.List().push(Immutable.Map({data: data, time: Date.now()}));;
+	history = Immutable.List()
+					   .push(Immutable.Map({data: data, time: Date.now()}));
 }
 
 var mod = {
@@ -39,6 +44,9 @@ var mod = {
 		} else {
 			return data.get(key);
 		}
+	},
+	push(key, item){
+		mod.set(key, mod.get(key).push(item));
 	},
 	subscribe: function(callback){ callbacks.push(callback); },
 	_notifyListeners: function(){ _.each(callbacks, function(c){ c(); }); },

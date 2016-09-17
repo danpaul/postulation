@@ -13,6 +13,8 @@ module.exports = BaseComponent.createClass({
             <div className="container">
                 <div className="grid">
                     <CreatePath
+                        controllers={this.props.controllers}
+                        path={this.props.data.get('createPath')}
                         visible={this.props.data.get('view') === 'createPath'}
                     />
                 </div>

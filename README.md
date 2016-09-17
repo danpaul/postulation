@@ -19,18 +19,14 @@ The back end uses Node/Express with basic session handling setup.
 
 ## To Run
 
-Frontend development:
+### Frontend development:
 ```
 webpack --progress --colors --watch
 ```
 
-Backend development (if you have [nodemon](https://github.com/remy/nodemon) installed):
+### Backend development (if you have [nodemon](https://github.com/remy/nodemon) installed):
 ```
 NODE_ENV=development nodemon index.js
-```
-Without Nodemon:
-```
-NODE_ENV=development node index.js
 ```
 
 Production:
