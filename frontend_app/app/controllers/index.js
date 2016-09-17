@@ -9,6 +9,7 @@ const CONTROLLERS = {
 };
 
 module.exports = function(options){
+console.log(options)
 	var self = this;
 	_.each(CONTROLLERS, function(ControllerClass, controllerName){
 		var c = new ControllerClass({	controllers: self,

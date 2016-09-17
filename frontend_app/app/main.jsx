@@ -1,3 +1,4 @@
+import config from './config';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './components/root.jsx';
@@ -9,7 +10,7 @@ import Router from './router';
 
 injectTapEventPlugin();
 
-var controllers = new Controllers({data: data});
+var controllers = new Controllers({data: data, siteUrl: config.siteUrl});
 var router = new Router({controllers: controllers});
 
 var BaseComponent = React.createClass({

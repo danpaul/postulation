@@ -5,9 +5,6 @@ import TextField from 'material-ui/TextField';
 const style = {marginBottom: 10};
 
 module.exports = BaseComponent.createClass({
-    onChange: function(e){
-console.log(e.target.value);
-    },
 	render: function() {
 		return <TextField
                 style={style}

@@ -3,7 +3,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-const style = {padding: 10, marginBottom: 20};
+const STYLE = {padding: 10, marginBottom: 20};
 
 module.exports = BaseComponent.createClass({
 	handleTextChange: function(e){
@@ -12,7 +12,7 @@ module.exports = BaseComponent.createClass({
 	},
 	render: function() {
 		return <div>
-			<Paper zDepth={1} style={style}>
+			<Paper zDepth={1} style={STYLE}>
             	<TextField
             		onBlur={this.props.controllers.createPath.validateForm}
             		value={this.props.node.get('statement')}

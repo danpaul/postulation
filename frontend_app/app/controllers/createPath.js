@@ -10,6 +10,7 @@ module.exports = function(options){
     var c = options.controllers;
     var d = options.data;
     var superagent = options.superagent;
+    var siteUrl = options.siteUrl;
 
     /**
      * Updates new path's title, receives event from title input
@@ -39,6 +40,25 @@ module.exports = function(options){
     	})
     	d.set(['createPath', 'valid'], valid);
     }
+    this.handleCreateClick = function(e){
+    	this.validateForm();
+    	if( !d.get(['createPath', 'valid']) ){ return; }
+    	var data = this._cleanFormData();
+
+		superagent
+	  		.post(siteUrl + '/path/create')
+	  		.send(data)
+	  		.end(function (err, response){
+	  			if( err ){
+	  				console.log(err);
+	  			}
+console.log('response', response.body)
+	  		}
+		);
+
+
+
+    }
     /**
      * Updates a newly created node's statement
      * @param  {int}  options.index
@@ -50,6 +70,14 @@ module.exports = function(options){
     }
     this.addNode = function(e){
     	d.push(['createPath', 'nodes'], this._getBaseNode());
+    }
+    this._cleanFormData = function(){
+    	var formData = d.get(['createPath']).toJS();
+    	var cleanData = {title: formData.title};
+    	cleanData.nodes = formData.nodes.map(function(n){
+    		return {statement: n.statement}
+    	});
+    	return cleanData;
     }
     this._getBaseNode = function(){
     	return Immutable.fromJS({statement: '', error: ''});

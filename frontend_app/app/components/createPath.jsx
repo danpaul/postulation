@@ -7,24 +7,22 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const style = {
+const STYLE = {
     width: 400,
     margin: 20,
 };
 
-const contentWrapStype = {
+const STYLE_CONTENT_WRAP = {
     padding: 20
 }
 
 module.exports = BaseComponent.createClass({
-    addNode: function(){
-        this.props.controllers.createPath.addNode();
-    },
     createPath: function(){
-        console.log('creating');
+        console.log('foo creating');
     },
 	render: function() {
         var self = this;
+        var c = this.props.controllers;
         if( !this.props.visible ){ return null; }
         var nodes = this.props.path.get('nodes').map(function(node, index){
             return <CreatePathNode
@@ -34,27 +32,27 @@ module.exports = BaseComponent.createClass({
                         index={index} />
         });
 		return <div>
-            <Paper style={style} zDepth={2} >
+            <Paper style={STYLE} zDepth={2} >
                 <Toolbar name={"foo"}>
                     <ToolbarTitle text="New Path" />
                 </Toolbar>
-                <div style={contentWrapStype}>
+                <div style={STYLE_CONTENT_WRAP}>
                     <CreatePathTitle
-                        controllers={this.props.controllers}
+                        controllers={c}
                         error={this.props.path.get('titleError')}
                         title={this.props.path.get('title')}
                     />
                     {nodes}
-                    <a onClick={this.addNode}>
-                        <FlatButton label="Add Node" primary={true} />
-                    </a>
-                    <a onClick={this.createPath}>
-                        <RaisedButton
-                            label="Create"
-                            secondary={true}
-                            disabled={!this.props.path.get('valid')}
-                            style={{float: 'right'}} />
-                    </a>
+                    <FlatButton
+                        onClick={c.createPath.addNode.bind(c.createPath)}
+                        label="Add Node"
+                        primary={true} />
+                    <RaisedButton
+                        onClick={c.createPath.handleCreateClick.bind(c.createPath)}
+                        label="Create"
+                        secondary={true}
+                        disabled={!this.props.path.get('valid')}
+                        style={{float: 'right'}} />
                 </div>
             </Paper>
 		</div>;
