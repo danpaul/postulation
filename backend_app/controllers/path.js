@@ -108,12 +108,6 @@ module.exports = function(options){
 
 				for( var i = 0; i < links.length; i++ ){
 					var link = links[i];
-
-
-// asdf
-console.log('link', link)
-
-
 					if( i == 0 ){
 						var n = _.clone(nodeMap[link['from']]);
 						n.type = 'node';

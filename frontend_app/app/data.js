@@ -9,7 +9,8 @@ const initialState = {
 		titleError: '',
 		valid: false,
 		nodes: []
-	}
+	},
+	path: {}
 };
 
 var data = Immutable.fromJS(initialState);

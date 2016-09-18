@@ -21841,13 +21841,17 @@
 
 	var _appBar2 = _interopRequireDefault(_appBar);
 
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
 	var _createPath = __webpack_require__(241);
 
 	var _createPath2 = _interopRequireDefault(_createPath);
 
-	var _baseComponent = __webpack_require__(180);
+	var _path = __webpack_require__(434);
 
-	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+	var _path2 = _interopRequireDefault(_path);
 
 	var _react = __webpack_require__(7);
 
@@ -21856,18 +21860,24 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = _baseComponent2.default.createClass({
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(_appBar2.default, null),
-	      _react2.default.createElement(_createPath2.default, {
-	        controllers: this.props.controllers,
-	        path: this.props.data.get('createPath'),
-	        visible: this.props.data.get('view') === 'createPath'
-	      })
-	    );
-	  }
+	    render: function render() {
+	        var view = this.props.data.get('view');
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_appBar2.default, null),
+	            _react2.default.createElement(_createPath2.default, {
+	                controllers: this.props.controllers,
+	                path: this.props.data.get('createPath'),
+	                visible: view === 'createPath'
+	            }),
+	            _react2.default.createElement(_path2.default, {
+	                controllers: this.props.controllers,
+	                path: this.props.data.get('path'),
+	                visible: view === 'path'
+	            })
+	        );
+	    }
 	});
 
 /***/ },
@@ -37462,7 +37472,8 @@
 			titleError: '',
 			valid: false,
 			nodes: []
-		}
+		},
+		path: {}
 	};
 
 	var data = Immutable.fromJS(initialState);
@@ -44133,15 +44144,35 @@
 
 	module.exports = function (options) {
 
-	    var c = options.controllers;
-	    var d = options.data;
-	    var superagent = options.superagent;
+		var c = options.controllers;
+		var d = options.data;
+		var superagent = options.superagent;
+		var siteUrl = options.siteUrl;
 
-	    this.showCreate = function () {
-	        d.set('view', 'createPath');
-	    };
+		this.showCreate = function () {
+			d.set('view', 'createPath');
+		};
 
-	    this.get = function (options) {};
+		/**
+	  * Shows specifc path
+	  * @param  {int}  options.id  path id
+	  */
+		this.show = function (options) {
+			console.log('options', options);
+			superagent.get(siteUrl + '/api/path/get/' + options.id).end(function (err, response) {
+				if (err) {
+					// TODO: add error handling
+					console.log(err);
+					return;
+				}
+				if (response.body.status !== 'success') {
+					console.log(new Error(response.body.error));
+					return;
+				}
+				d.set('path', response.body.data);
+				d.set('view', 'path');
+			});
+		};
 	};
 
 /***/ },
@@ -44201,7 +44232,7 @@
 	    }
 	    var data = this._cleanFormData();
 
-	    superagent.post(siteUrl + '/path/create').send(data).end(function (err, response) {
+	    superagent.post(siteUrl + '/api/path/create').send(data).end(function (err, response) {
 	      if (err) {
 	        console.log(err);
 	      }
@@ -46436,6 +46467,10 @@
 			c.path.showCreate();
 		});
 
+		(0, _page2.default)('/path/get/:id', function (ctx) {
+			c.path.show({ id: ctx.params.id });
+		});
+
 		(0, _page2.default)('*', function () {
 			console.log('Route not found');
 		});
@@ -47478,6 +47513,34 @@
 	  return Object.prototype.toString.call(arr) == '[object Array]';
 	};
 
+
+/***/ },
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var style = { marginBottom: 10 };
+
+	module.exports = _baseComponent2.default.createClass({
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      'Path'
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

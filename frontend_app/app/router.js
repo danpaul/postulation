@@ -14,6 +14,10 @@ module.exports = function(options){
 		c.path.showCreate();
 	});
 
+	page('/path/get/:id', function(ctx){
+		c.path.show({id: ctx.params.id});
+	});
+
 	page('*', function(){
 		console.log('Route not found');
 	});

@@ -9,6 +9,6 @@ module.exports = function(app, options){
 	_.each(ROUTES, function(routeName){
 		var Route = require('./' + routeName);
 		var route = new Route(options);
-		app.use('/' + routeName, route);
+		app.use('/api/' + routeName, route);
 	})
 }

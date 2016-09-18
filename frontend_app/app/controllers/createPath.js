@@ -46,7 +46,7 @@ module.exports = function(options){
     	var data = this._cleanFormData();
 
 		superagent
-	  		.post(siteUrl + '/path/create')
+	  		.post(siteUrl + '/api/path/create')
 	  		.send(data)
 	  		.end(function (err, response){
 	  			if( err ){
