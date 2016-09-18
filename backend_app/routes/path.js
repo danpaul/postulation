@@ -6,6 +6,7 @@ var TEST_USER = 666;
     var self = this;
     var app = require('express')();
     const c = options.controllers;
+    const r = options.response;
 
     app.get('/', function(req, res){
         res.send('test');
@@ -13,24 +14,33 @@ var TEST_USER = 666;
 
     app.post('/create', function(req, res){
 
-console.log(req.body);
-
     	// do validation and sanitization
     	var data = req.body;
     	data.user = TEST_USER;
 
     	c.path.create(data, function(err, response){
     		if( err ){
-    			return console.log(err);
-    			// TODO
-    			// return generic error
+    			console.log(err);
+    			return res.json(r({errorCode: 'unknown'}));
     		}
     		return res.json(response);
-    	})
+    	});
+    });
 
+// http://localhost:3000/path/get/277
+    app.get('/get/:pathId', function(req, res){
+    	var id = req.params.pathId;
+    	c.path.get({id: id}, function(err, response){
+    		if( err ){
+    			console.log(err);
+    			return res.json(r({errorCode: 'unknown'}));
+    		}
+    		return res.json(response);
+    	});
 
-		// res.json({foo: 'bar'});
-        // res.send('test');
+// console.log(req.params.pathId)
+//         res.send('test');
+
     });
 
     return app;

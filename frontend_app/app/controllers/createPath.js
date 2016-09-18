@@ -75,7 +75,8 @@ console.log('response', response.body)
     	var formData = d.get(['createPath']).toJS();
     	var cleanData = {title: formData.title};
     	cleanData.nodes = formData.nodes.map(function(n){
-    		return {statement: n.statement}
+    		// return {statement: n.statement}
+    		return n.statement;
     	});
     	return cleanData;
     }

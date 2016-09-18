@@ -40,8 +40,14 @@ NODE_ENV=production node index.js
 
 ## Notes
 
-
-
 Controllers should return user friendly/safe response object and handle any errors that occur in the models or controllers. Controllers should handle all validation and sanitization.
 
 Models should return raw errors to controllers.
+
+## Todo
+
+* Add authorization to routes
+* Add error handling to routes
+* Add input sanitization and validation to back end
+* Add dynamic config for API url to front end
+* Add prod build for front end
