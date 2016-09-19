@@ -43,7 +43,16 @@ module.exports = function(options){
     this.handleCreateClick = function(e){
     	this.validateForm();
     	if( !d.get(['createPath', 'valid']) ){ return; }
-    	var data = this._cleanFormData();
+    	// var data = this._cleanFormData();
+        var data = this._cleanFormData();
+
+        var detailItem = d.get('detailItem');
+        if( detailItem ){
+            data.nodes.push(detailItem.toJS());
+        }
+        data.charge = d.get('detailItemAffirming');
+
+console.log('data', data);
 
 		superagent
 	  		.post(siteUrl + '/api/path/create')
@@ -52,12 +61,10 @@ module.exports = function(options){
 	  			if( err ){
 	  				console.log(err);
 	  			}
-console.log('response', response.body)
+                console.log('got resposne');
+                console.log(response);
 	  		}
 		);
-
-
-
     }
     /**
      * Updates a newly created node's statement
@@ -75,7 +82,6 @@ console.log('response', response.body)
     	var formData = d.get(['createPath']).toJS();
     	var cleanData = {title: formData.title};
     	cleanData.nodes = formData.nodes.map(function(n){
-    		// return {statement: n.statement}
     		return n.statement;
     	});
     	return cleanData;

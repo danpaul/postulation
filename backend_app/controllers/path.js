@@ -17,11 +17,13 @@ module.exports = function(options){
 		}
 		var charge = null;
 		if( options.hasOwnProperty('charge') ){ charge = options.charge; }
-		m.path.create({user: options.user}, function(err, pathId){
+		m.path.create({user: options.user, title: options.title},
+					  function(err, pathData){
 			if( err ){
 				console.log(err);
 				return r({errorCode: 'unknown'}, callback);
 			}
+			var pathId = pathData[0];
 			var data = {path: {id: pathId}};
 			if( !options.nodes ){
 				return r({data: data}, callback);
@@ -46,7 +48,29 @@ module.exports = function(options){
 	 * @param  {int}  options.id
 	 */
 	this.get = function(options, callback){
-		this.getLinkData(options, callback);
+		var self = this;
+		// get path
+		m.path.get({id: options.id}, function(err, pathData){
+			if( err ){
+				console.log(err);
+				return r({errorCode: 'unknown'}, callback);
+			}
+			if( !pathData || !pathData.length ){
+				return r({errorCode: 'invalidPath'}, callback);
+			}
+			var data = {path: pathData[0]};
+			self.getLinkData(options, function(err, response){
+				if( err ){
+					console.log(err);
+					return r({errorCode: 'unknown'}, callback);
+				}
+				if( response.status !== 'success' ){
+					return callback(null, response);
+				}
+				data.path.path = response.data.path.path;
+				return r({data, data}, callback);
+			});
+		});		
 	}
 
 	this.getLinkData = function(options, callback){

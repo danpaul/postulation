@@ -18,6 +18,9 @@ var TEST_USER = 666;
     	var data = req.body;
     	data.user = TEST_USER;
 
+// asdf
+console.log('data', data);
+
     	c.path.create(data, function(err, response){
     		if( err ){
     			console.log(err);
@@ -27,7 +30,6 @@ var TEST_USER = 666;
     	});
     });
 
-// http://localhost:3000/path/get/277
     app.get('/get/:pathId', function(req, res){
     	var id = req.params.pathId;
     	c.path.get({id: id}, function(err, response){
@@ -37,10 +39,6 @@ var TEST_USER = 666;
     		}
     		return res.json(response);
     	});
-
-// console.log(req.params.pathId)
-//         res.send('test');
-
     });
 
     return app;

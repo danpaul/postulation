@@ -17,13 +17,11 @@ const STYLE_CONTENT_WRAP = {
 }
 
 module.exports = BaseComponent.createClass({
-    createPath: function(){
-        console.log('foo creating');
-    },
 	render: function() {
         var self = this;
         var c = this.props.controllers;
         if( !this.props.visible ){ return null; }
+
         var nodes = this.props.path.get('nodes').map(function(node, index){
             return <CreatePathNode
                         controllers={self.props.controllers}

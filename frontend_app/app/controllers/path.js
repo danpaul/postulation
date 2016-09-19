@@ -14,7 +14,6 @@ module.exports = function(options){
      * @param  {int}  options.id  path id
      */
     this.show = function(options){
-    	console.log('options', options);
 		superagent
 	  		.get(siteUrl + '/api/path/get/' + options.id)
 	  		.end(function (err, response){
@@ -27,9 +26,18 @@ module.exports = function(options){
 	  				console.log(new Error(response.body.error));
 	  				return;
 	  			}
-	  			d.set('path', response.body.data);
+	  			d.set('path', response.body.data.path);
 	  			d.set('view', 'path');
 	  		}
 		);
+    }
+
+    /**
+     * Shows details for a node or link and loads affring/negating items
+     * @param {options.item}  either a node or a link
+     */
+    this.setDetailItem = function(options){
+    	d.set('detailItem', options.item);
+        d.set('detailItemAffirming', false);
     }
 }

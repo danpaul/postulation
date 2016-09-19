@@ -2,7 +2,7 @@ const _ = require('underscore');
 const config = require('./config');
 const Immutable = require('immutable');
 
-const initialState = {
+const INITIAL_STATE = {
 	view: 'home',
 	createPath: {
 		title: '',
@@ -10,10 +10,14 @@ const initialState = {
 		valid: false,
 		nodes: []
 	},
-	path: {}
+	path: {},
+	detailItem: null,
+	detailItemAffirming: null, // null, true (affirming) or false (negating)
+	detailItemAffirmingPaths: [],
+	detailItemNegatingPaths: []
 };
 
-var data = Immutable.fromJS(initialState);
+var data = Immutable.fromJS(INITIAL_STATE);
 var callbacks = [];
 var history = null;
 if( config.recordHistory ){
