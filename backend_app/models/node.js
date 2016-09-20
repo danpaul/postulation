@@ -41,4 +41,10 @@ module.exports = function(options){
 	this.getNodes = function(options, callback){
 		k(TABLE).whereIn('id', options.nodes).asCallback(callback);
 	}
+
+	this.getNode = function(options, callback){
+		k(TABLE)
+			.where('id', options.id)
+		  	.asCallback(callback);
+	}
 }

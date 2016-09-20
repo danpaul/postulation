@@ -74,6 +74,16 @@ module.exports = function(options){
 	}
 
 	/**
+	 * Gets link by id
+	 * @param  {int}  options.id
+	 */
+	this.getLink = function(options, callback){
+		k(TABLE)
+			.where('id', options.id)
+		  	.asCallback(callback);
+	}
+
+	/**
 	 * @param  {array}  options.links  array of link ids
 	 */
 	this.getLinks = function(options, callback){

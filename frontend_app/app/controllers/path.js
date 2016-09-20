@@ -62,7 +62,7 @@ module.exports = function(options){
         var charge = options.affirm ? 'affirm' : 'negate';
         var id = options.item.get('id');
         var url = siteUrl + '/api/link/response/' + type + '/' + charge + '/' + id;
-// console.log(url)
+
         superagent
             .get(url)
             .end(function (err, response){
