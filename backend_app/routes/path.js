@@ -18,9 +18,6 @@ var TEST_USER = 666;
     	var data = req.body;
     	data.user = TEST_USER;
 
-// asdf
-console.log('data', data);
-
     	c.path.create(data, function(err, response){
     		if( err ){
     			console.log(err);

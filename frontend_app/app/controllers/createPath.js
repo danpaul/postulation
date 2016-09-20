@@ -52,8 +52,6 @@ module.exports = function(options){
         }
         data.charge = d.get('detailItemAffirming');
 
-console.log('data', data);
-
 		superagent
 	  		.post(siteUrl + '/api/path/create')
 	  		.send(data)

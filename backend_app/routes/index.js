@@ -1,4 +1,4 @@
-const ROUTES = ['path'];
+const ROUTES = ['link', 'path'];
 const response = require('../lib/response');
 
 var _ = require('underscore');

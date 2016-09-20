@@ -23,6 +23,7 @@ module.exports = function(options){
 	  				return;
 	  			}
 	  			if( response.body.status !== 'success' ){
+                    // TODO: add error handling
 	  				console.log(new Error(response.body.error));
 	  				return;
 	  			}
@@ -37,7 +38,46 @@ module.exports = function(options){
      * @param {options.item}  either a node or a link
      */
     this.setDetailItem = function(options){
+
+// asdf
+// console.log('options', options.item.toJS());
+
     	d.set('detailItem', options.item);
         d.set('detailItemAffirming', false);
+
+        options.affirm = true;
+        this.loadResponsePaths(options);
+
+        // options.affirm = false;
+        // this.loadResponsePaths(options);
     }
+
+
+    /**
+     * @param  {objects}  options.item
+     * @param  {objects}  options.charge
+     */
+    this.loadResponsePaths = function(options){
+        var type = options.item.get('type') === 'node' ? 'node' : 'link';
+        var charge = options.affirm ? 'affirm' : 'negate';
+        var id = options.item.get('id');
+        var url = siteUrl + '/api/link/response/' + type + '/' + charge + '/' + id;
+// console.log(url)
+        superagent
+            .get(url)
+            .end(function (err, response){
+                if( err ){
+                    // TODO: add error handling
+                    console.log(err);
+                    return;
+                }
+                if( response.body.status !== 'success' ){
+                    // TODO: add error handling
+                    console.log(new Error(response.body.error));
+                    return;
+                }
+            });
+    }
+
+    // this.loadAffirmingPaths(option)
 }

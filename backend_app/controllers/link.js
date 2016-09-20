@@ -29,4 +29,14 @@ module.exports = function(options){
 			return r({data: {paths: paths}}, callback);
 		});
 	}
+
+    /**
+     * Gets responses to a path by node or link
+     * @param {int} options.id
+     * @param {string} options.type
+     * @param {boolean} options.charge
+     */
+	this.getResponsesById = function(options, callback){
+
+	}
 }
