@@ -39,17 +39,12 @@ module.exports = function(options){
      */
     this.setDetailItem = function(options){
 
-// asdf
-// console.log('options', options.item.toJS());
-
     	d.set('detailItem', options.item);
         d.set('detailItemAffirming', false);
 
         options.affirm = true;
         this.loadResponsePaths(options);
 
-        // options.affirm = false;
-        // this.loadResponsePaths(options);
     }
 
 
@@ -76,8 +71,11 @@ module.exports = function(options){
                     console.log(new Error(response.body.error));
                     return;
                 }
+                if( options.charge === 'affirm' ){
+                    d.set('detailItemAffirmingPaths', response.body.data.paths);
+                } else {
+                    d.set('detailItemNegatingPaths', response.body.data.paths);
+                }
             });
     }
-
-    // this.loadAffirmingPaths(option)
 }

@@ -70,7 +70,7 @@ module.exports = function(options){
 				}
 	            if( response.status !== 'success' ||
 	                !response.data.paths.length ){
-	                return res.json(response);
+	            	return callback(null, response);
 	            }
 	            self._joinPathData({paths: response.data.paths}, callback);
 			});
@@ -89,7 +89,7 @@ module.exports = function(options){
 				if( resp.status !== 'success' ){
 					return callback(new Error(resp.error));
 				}
-				paths.push(resp.data);
+				paths.push(resp.data.path);
 				callback();
 			});
 		}, function(err){

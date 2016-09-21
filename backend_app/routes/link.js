@@ -1,8 +1,5 @@
 module.exports = function(options){
 
-// asdf
-// var TEST_USER = 666;
-
     var self = this;
     var app = require('express')();
     const c = options.controllers;

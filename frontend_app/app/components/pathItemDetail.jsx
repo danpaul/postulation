@@ -1,5 +1,6 @@
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
+import PathItemDetailResponses from './pathItemDetailResponses.jsx';
 import Paper from 'material-ui/Paper';
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -19,10 +20,16 @@ module.exports = BaseComponent.createClass({
 						path={this.props.createPath} />
 				</Tab>
 				<Tab label="Affirming" >
-					Affirming Paths
+					<PathItemDetailResponses
+						affirming={true}
+						paths={this.props.detailItemAffirmingPaths}
+					/>
 				</Tab>
 				<Tab label="Negating" >
-					Negating Paths
+					<PathItemDetailResponses
+						affirming={false}
+						paths={this.props.detailItemNegatingPaths}
+					/>
 				</Tab>
 			</Tabs>
         </Paper>;
