@@ -1,16 +1,10 @@
 import BaseComponent from '../lib/baseComponent';
-// import PathItemDetailResponsePath from './pathItemDetailResponsePath.jsx;'
 import React from 'react';
+import config from '../config';
 
 const STYLE = {};
 
 module.exports = BaseComponent.createClass({
-	// var nodes = [];
-	// this.props.path.get('paths').forEach(function(i){
-
-	// })
-
-
 	render: function() {
 		var nodes = [];
 		this.props.path.get('path').forEach(function(i){
@@ -18,8 +12,14 @@ module.exports = BaseComponent.createClass({
 				nodes.push(i);
 			}
 		});
+		var pathLink = config.siteUrl + '/path/get/' + this.props.path.get('id');
+
         return <div>
-        	<h4><a>{this.props.path.get('title')}</a></h4>
+        	<h4>
+        		<a href={pathLink}>
+        			{this.props.path.get('title')}
+        		</a>
+        	</h4>
         	{nodes.map(function(n){
         		return <p key={n.get('id')}>{n.get('statement')}</p>
         	})}

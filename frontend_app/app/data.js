@@ -11,10 +11,12 @@ const INITIAL_STATE = {
 		nodes: []
 	},
 	path: {},
+	// detailItem: {}
 	detailItem: null,
 	detailItemAffirming: null, // null, true (affirming) or false (negating)
 	detailItemAffirmingPaths: [],
-	detailItemNegatingPaths: []
+	detailItemNegatingPaths: [],
+	detailItemResponseAffirm: true
 };
 
 var data = Immutable.fromJS(INITIAL_STATE);

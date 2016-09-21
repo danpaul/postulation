@@ -10,9 +10,16 @@ const STYLE = {	textAlign: 'center',
 				marginBottom: 10	};
 
 module.exports = BaseComponent.createClass({
+	handleLinkClick: function(){
+		var d = {item: this.props.link};
+		this.props.controllers.path.setDetailItem(d);
+	},
 	render: function() {
-        return <Paper className="icon-link" style={STYLE} zDepth={1} circle={true} >
-
-        </Paper>;
+        return <Paper
+        		className="icon-link"
+        		style={STYLE}
+        		zDepth={this.props.focused ? 2 : 1}
+        		circle={true}
+        		onClick={this.handleLinkClick} />;
 	}
 });

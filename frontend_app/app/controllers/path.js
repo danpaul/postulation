@@ -39,7 +39,12 @@ module.exports = function(options){
      */
     this.setDetailItem = function(options){
 
+// asdf
+// console.log('options.item', options.item.toJS())
+
     	d.set('detailItem', options.item);
+
+        // asdf
         d.set('detailItemAffirming', false);
 
         options.affirm = true;

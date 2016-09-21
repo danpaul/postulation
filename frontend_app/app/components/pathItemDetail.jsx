@@ -6,11 +6,11 @@ import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 
-const STYLE = {margin: 20, padding: 10, width: 400, float: 'left'};
+const STYLE = {margin: 20, width: 400, float: 'left'};
 
 module.exports = BaseComponent.createClass({
 	render: function() {
-        return <Paper style={STYLE} zDepth={2}>
+        return <Paper style={STYLE} zDepth={1}>
 			<Tabs>
 				<Tab label="Add" >
 					<CreatePath

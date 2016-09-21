@@ -76,6 +76,10 @@ module.exports = function(options){
     this.addNode = function(e){
     	d.push(['createPath', 'nodes'], this._getBaseNode());
     }
+    this.handleAffirmRadioToggle = function(){
+        var v = d.get('detailItemResponseAffirm');
+        d.set(!v);
+    }
     this._cleanFormData = function(){
     	var formData = d.get(['createPath']).toJS();
     	var cleanData = {title: formData.title};
