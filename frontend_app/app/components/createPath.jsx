@@ -17,18 +17,32 @@ const STYLE_CONTENT_WRAP = {
 };
 
 module.exports = BaseComponent.createClass({
-	render: function() {
-        var self = this;
-        var c = this.props.controllers;
-        if( !this.props.visible ){ return null; }
 
-        var nodes = this.props.path.get('nodes').map(function(node, index){
+    getNodes: function(){
+        var self = this;
+        return this.props.path.get('nodes').map(function(node, index){
             return <CreatePathNode
+                        dataLocation={self.props.path.get('dataLocation')}
+                        form={self.props.form}
                         controllers={self.props.controllers}
                         key={index}
                         node={node}
                         index={index} />
         });
+    },
+    addNode: function(){
+        var d = {dataLocation: this.props.path.get('dataLocation')};
+        this.props.controllers.createPath.addNode(d);
+    },
+    createPath: function(){
+        var d = {dataLocation: this.props.path.get('dataLocation')};
+        this.props.controllers.createPath.handleCreateClick(d);
+    },
+	render: function() {
+
+        var self = this;
+        var c = this.props.controllers;
+        if( !this.props.visible ){ return null; }
 
         var affirmRadio = null;
         if( this.props.responseTo ){
@@ -50,23 +64,24 @@ module.exports = BaseComponent.createClass({
 
 		return <div>
             <Paper style={STYLE} zDepth={1} >
-                <Toolbar name={"foo"}>
+                <Toolbar name={"create-path"}>
                     <ToolbarTitle text="New Path" />
                 </Toolbar>
                 {affirmRadio}
                 <div style={STYLE_CONTENT_WRAP}>
                     <CreatePathTitle
                         controllers={c}
+                        dataLocation={this.props.path.get('dataLocation')}
                         error={this.props.path.get('titleError')}
                         title={this.props.path.get('title')}
                     />
-                    {nodes}
+                    {this.getNodes()}
                     <FlatButton
-                        onClick={c.createPath.addNode.bind(c.createPath)}
+                        onClick={this.addNode}
                         label="Add Node"
                         primary={true} />
                     <RaisedButton
-                        onClick={c.createPath.handleCreateClick.bind(c.createPath)}
+                        onClick={this.createPath}
                         label="Create"
                         secondary={true}
                         disabled={!this.props.path.get('valid')}

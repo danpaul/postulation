@@ -34,34 +34,24 @@ module.exports = function(options){
     }
 
     /**
-     * Shows details for a node or link and loads affring/negating items
+     * Shows details for a node or link and loads affirming/negating items
      * @param {options.item}  either a node or a link
      */
     this.setDetailItem = function(options){
-
-// asdf
-// console.log('options.item', options.item.toJS())
-
-    	d.set('detailItem', options.item);
-
-        // asdf
-        d.set('detailItemAffirming', false);
-
-        options.affirm = true;
-        this.loadResponsePaths(options);
-
+    	d.set(['detailItem', 'item'], options.item);
+        this.loadResponsePaths({item: options.item, charge: true});
+        this.loadResponsePaths({item: options.item, charge: false});
     }
 
-
     /**
-     * @param  {objects}  options.item
-     * @param  {objects}  options.charge
+     * @param  {object}  options.item
+     * @param  {boolean}  options.charge
      */
     this.loadResponsePaths = function(options){
         var type = options.item.get('type') === 'node' ? 'node' : 'link';
-        var charge = options.affirm ? 'affirm' : 'negate';
+        var direction = options.charge ? 'affirm' : 'negate';
         var id = options.item.get('id');
-        var url = siteUrl + '/api/link/response/' + type + '/' + charge + '/' + id;
+        var url = siteUrl + '/api/link/response/' + type + '/' + direction + '/' + id;
 
         superagent
             .get(url)
@@ -76,10 +66,10 @@ module.exports = function(options){
                     console.log(new Error(response.body.error));
                     return;
                 }
-                if( options.charge === 'affirm' ){
-                    d.set('detailItemAffirmingPaths', response.body.data.paths);
+                if( options.charge ){
+                    d.set(['detailItem', 'affirming'], response.body.data.paths);
                 } else {
-                    d.set('detailItemNegatingPaths', response.body.data.paths);
+                    d.set(['detailItem', 'negating'], response.body.data.paths);
                 }
             });
     }

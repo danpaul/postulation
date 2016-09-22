@@ -5,15 +5,23 @@ import TextField from 'material-ui/TextField';
 const style = {marginBottom: 10};
 
 module.exports = BaseComponent.createClass({
-	render: function() {
+    onBlur: function(e){
+        var d = {dataLocation: this.props.dataLocation};
+        this.props.controllers.createPath.validateForm(d);
+    },
+    onChange: function(e){
+        var d = {dataLocation: this.props.dataLocation, value: e.target.value};
+        this.props.controllers.createPath.onTitleChange(d);
+    },
+	render: function(){
 		return <TextField
                 style={style}
                 fullWidth={true}
                 floatingLabelText="Path Title"
-                onBlur={this.props.controllers.createPath.validateForm}
+                onBlur={this.onBlur}
                 value={this.props.title}
                 errorText={this.props.error}
-                onChange={this.props.controllers.createPath.onTitleChange}
+                onChange={this.onChange}
             />;
 	}
 });

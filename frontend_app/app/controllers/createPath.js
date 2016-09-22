@@ -14,43 +14,55 @@ module.exports = function(options){
 
     /**
      * Updates new path's title, receives event from title input
-     * @param  {e} input change event
+     * @param  {string}  options.value
+     * @param {Immutable.List}  options.dataLocation
      */
-    this.onTitleChange = function(e){
-    	d.set(['createPath', 'title'], e.target.value);
+    this.onTitleChange = function(options){
+    	d.set(options.dataLocation.push('title'), options.value);
     }
-    this.validateForm = function(e){
-    	var title = d.get(['createPath', 'title']);
+    /**
+     * Handles updating path create form
+     * @param  {options.dataLocation}
+     */
+    this.validateForm = function(options){
+        const dataLocation = options.dataLocation;
+    	const title = d.get(dataLocation.push('title'));
     	var valid = true;
+        const titleError = dataLocation.push('titleError');
     	if( !title || !title.length ){
     		valid = false;
-    		d.set(['createPath', 'titleError'], ERROR_TITLE);
+    		d.set(titleError, ERROR_TITLE);
     	} else {
-    		d.set(['createPath', 'titleError'], '');
+    		d.set(titleError, '');
     	}
-    	const nodes = d.get(['createPath', 'nodes']);
+    	const nodes = d.get(dataLocation.push('nodes'));
     	if( !nodes || !nodes.size ){ valid = false; }
     	nodes.forEach(function(node, i){
+            const nodeErrorLocation = dataLocation.push('nodes')
+                                                  .push(i)
+                                                  .push('error');
     		if( !node || !node.get('statement') ){
     			valid = false;
-    			d.set(['createPath', 'nodes', i, 'error'], ERROR_NODE);
+    			d.set(nodeErrorLocation, ERROR_NODE);
     		} else if( node.get('error') !== '' ){
-    			d.set(['createPath', 'nodes', i, 'error'], '');
+    			d.set(nodeErrorLocation, '');
     		}
     	})
-    	d.set(['createPath', 'valid'], valid);
+    	d.set(dataLocation.push('valid'), valid);
     }
-    this.handleCreateClick = function(e){
-    	this.validateForm();
-    	if( !d.get(['createPath', 'valid']) ){ return; }
-    	// var data = this._cleanFormData();
-        var data = this._cleanFormData();
-
-        var detailItem = d.get('detailItem');
+    /**
+     * Handles submitting form to create new path
+     * @param  {Immutable.List}  options.dataLocation
+     */
+    this.handleCreateClick = function(options){
+    	this.validateForm(options);
+    	if( !d.get(options.dataLocation.push('valid')) ){ return; }
+        var data = this._cleanFormData(options);
+        const detailItem = d.get(['detailItem', 'item']);
         if( detailItem ){
             data.nodes.push(detailItem.toJS());
+            data.charge = d.get(['detailItem', 'responseIsAffirming']);
         }
-        data.charge = d.get('detailItemAffirming');
 
 		superagent
 	  		.post(siteUrl + '/api/path/create')
@@ -59,29 +71,45 @@ module.exports = function(options){
 	  			if( err ){
 	  				console.log(err);
 	  			}
-                console.log('got resposne');
-                console.log(response);
+                if( response.body.status === 'success'){
+                    console.log('success');
+                } else {
+                    console.log('error');
+                }
+                console.log(response.body)
 	  		}
 		);
     }
     /**
      * Updates a newly created node's statement
+     * @param  {Immutable.List}  options.dataLocation
      * @param  {int}  options.index
      * @param  {string}  options.statement
      */
     this.updateNodeStatement = function(options){
-    	d.set(['createPath', 'nodes', options.index, 'statement'],
-    		  options.statement);
+        var l = options.dataLocation
+                    .push('nodes')
+                    .push(options.index)
+                    .push('statement');
+    	d.set(l, options.statement);
     }
-    this.addNode = function(e){
-    	d.push(['createPath', 'nodes'], this._getBaseNode());
+    /**
+     * Adds node to new path form
+     * @param {Immutable.List}  options.dataLocation
+     */
+    this.addNode = function(options){
+    	d.push(options.dataLocation.push('nodes'), this._getBaseNode());
     }
     this.handleAffirmRadioToggle = function(){
         var v = d.get('detailItemResponseAffirm');
         d.set(!v);
     }
-    this._cleanFormData = function(){
-    	var formData = d.get(['createPath']).toJS();
+    /**
+     * Handles formatting new path form data for submission
+     * @param  {Immutable.List}  options.dataLocation
+     */
+    this._cleanFormData = function(options){
+    	const formData = d.get(options.dataLocation).toJS();
     	var cleanData = {title: formData.title};
     	cleanData.nodes = formData.nodes.map(function(n){
     		return n.statement;

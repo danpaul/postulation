@@ -52,22 +52,15 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
         if( !this.props.visible ){ return null; }
-        var pathItemDetail = null;
-        if( this.props.detailItem ){
-            pathItemDetail = <PathItemDetail
-                controllers={this.props.controllers}
-                createPath={this.props.createPath}
-                detailItem={this.props.detailItem}
-                detailItemAffirmingPaths={this.props.detailItemAffirmingPaths}
-                detailItemNegatingPaths={this.props.detailItemNegatingPaths}
-            />
-        }
         return <div>
             <Paper style={STYLE} zDepth={1}>
                 <h3>{this.props.path.get('title')}</h3>
                 {this.getEllements()}
             </Paper>
-            {pathItemDetail}
+            <PathItemDetail
+                controllers={this.props.controllers}
+                detailItem={this.props.detailItem}
+            />
         </div>
 	}
 });

@@ -18,8 +18,6 @@ module.exports = BaseComponent.createClass({
                 controllers={this.props.controllers}
                 createPath={this.props.data.get('createPath')}
                 detailItem={this.props.data.get('detailItem')}
-                detailItemAffirmingPaths={this.props.data.get('detailItemAffirmingPaths')}
-                detailItemNegatingPaths={this.props.data.get('detailItemNegatingPaths')}
                 path={this.props.data.get('path')}
                 visible={view === 'path'}
             />

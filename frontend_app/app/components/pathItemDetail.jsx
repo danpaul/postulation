@@ -5,19 +5,19 @@ import Paper from 'material-ui/Paper';
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
-
 const STYLE = {margin: 20, width: 400, float: 'left'};
 
 module.exports = BaseComponent.createClass({
 	render: function() {
+		if( !this.props.detailItem.get('item') ){ return null; }
         return <Paper style={STYLE} zDepth={1}>
 			<Tabs>
 				<Tab label="Add" >
 					<CreatePath
 						controllers={this.props.controllers}
 						visible={true}
-						responseTo={this.props.detailItem}
-						path={this.props.createPath} />
+						responseTo={this.props.detailItem.get('item')}
+						path={this.props.detailItem.get('responsePath')} />
 				</Tab>
 				<Tab label="Affirming" >
 					<PathItemDetailResponses

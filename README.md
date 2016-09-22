@@ -51,3 +51,4 @@ Models should return raw errors to controllers.
 * Add input sanitization and validation to back end
 * Add dynamic config for API url to front end
 * Add prod build for front end
+* Validate that new paths have atleast two nodes

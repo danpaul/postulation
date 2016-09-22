@@ -5,18 +5,26 @@ const Immutable = require('immutable');
 const INITIAL_STATE = {
 	view: 'home',
 	createPath: {
+		dataLocation: ['createPath'],
 		title: '',
 		titleError: '',
 		valid: false,
 		nodes: []
 	},
 	path: {},
-	// detailItem: {}
-	detailItem: null,
-	detailItemAffirming: null, // null, true (affirming) or false (negating)
-	detailItemAffirmingPaths: [],
-	detailItemNegatingPaths: [],
-	detailItemResponseAffirm: true
+	detailItem: {
+		item: null,
+		affirming: [],
+		negating: [],
+		responseIsAffirming: true,
+		responsePath: {
+			dataLocation: ['detailItem', 'responsePath'],
+			title: '',
+			titleError: '',
+			valid: false,
+			nodes: []
+		}
+	}
 };
 
 var data = Immutable.fromJS(INITIAL_STATE);
@@ -29,6 +37,7 @@ if( config.recordHistory ){
 
 var mod = {
 	set: function(key, value){
+		if( Immutable.List.isList(key) ){ key = key.toJS(); }
 		if( _.isArray(key) ){
 			data = data.setIn(key, mod._coerceValue(value));
 		} else {
@@ -48,6 +57,7 @@ var mod = {
 	},
 	getRoot: function(){ return data; },
 	get: function(key){
+		if( Immutable.List.isList(key) ){ key = key.toJS(); }
 		if( _.isArray(key) ){
 			return data.getIn(key);
 		} else {
