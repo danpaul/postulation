@@ -10,6 +10,7 @@ module.exports = BaseComponent.createClass({
 		this.props.controllers.path.setDetailItem(d);
 	},
 	render: function() {
+		if( this.props.node.get('hidden') ){ return null; }
 		var zDepth = 1;
 		if( this.props.focused ){ zDepth = 2; }
         return <Paper style={STYLE} zDepth={zDepth} onClick={this.handleNodeClick}>

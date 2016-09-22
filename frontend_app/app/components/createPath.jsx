@@ -5,7 +5,6 @@ import CreatePathTitle from  './createPathTitle.jsx';
 import FlatButton from 'material-ui/FlatButton';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const STYLE = {
@@ -38,36 +37,37 @@ module.exports = BaseComponent.createClass({
         var d = {dataLocation: this.props.path.get('dataLocation')};
         this.props.controllers.createPath.handleCreateClick(d);
     },
+    selectAffirm: function(){
+        this.props.controllers.createPath.setResponseAffirm();
+    },
+    selectNegate: function(){
+        this.props.controllers.createPath.setResponseNegate();
+    },
+    getAffirmNegateButtons: function(){
+        if( !this.props.responseTo ){ return null; }
+        return <div>
+            <RaisedButton
+                label="Affirm"
+                secondary={this.props.responseIsAffirming}
+                onClick={this.selectAffirm} />
+            <RaisedButton
+                label="Negate"
+                secondary={!this.props.responseIsAffirming}
+                onClick={this.selectNegate} />
+        </div>
+    },
 	render: function() {
 
         var self = this;
         var c = this.props.controllers;
         if( !this.props.visible ){ return null; }
 
-        var affirmRadio = null;
-        if( this.props.responseTo ){
-            affirmRadio =
-            <RadioButtonGroup
-                onChange={this.controllers}
-                name="affirmRadio"
-                defaultSelected="affirm" >
-                <RadioButton
-                    value="affirm"
-                    label="Affirm"
-                />
-                <RadioButton
-                    value="negate"
-                    label="Negate"
-                />
-            </RadioButtonGroup>
-        }
-
 		return <div>
             <Paper style={STYLE} zDepth={1} >
                 <Toolbar name={"create-path"}>
                     <ToolbarTitle text="New Path" />
                 </Toolbar>
-                {affirmRadio}
+                {this.getAffirmNegateButtons()}
                 <div style={STYLE_CONTENT_WRAP}>
                     <CreatePathTitle
                         controllers={c}

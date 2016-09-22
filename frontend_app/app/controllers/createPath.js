@@ -104,6 +104,12 @@ module.exports = function(options){
         var v = d.get('detailItemResponseAffirm');
         d.set(!v);
     }
+    this.setResponseAffirm = function(){
+        d.set(['detailItem', 'responseIsAffirming'], true);
+    },
+    this.setResponseNegate = function(){
+        d.set(['detailItem', 'responseIsAffirming'], false);
+    },
     /**
      * Handles formatting new path form data for submission
      * @param  {Immutable.List}  options.dataLocation

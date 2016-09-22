@@ -8,7 +8,7 @@ module.exports = BaseComponent.createClass({
 	render: function() {
 		var nodes = [];
 		this.props.path.get('path').forEach(function(i){
-			if( i.get('type') === 'node' ){
+			if( i.get('type') === 'node' && !i.get('hidden') ){
 				nodes.push(i);
 			}
 		});

@@ -14,6 +14,7 @@ module.exports = function(options){
      * @param  {int}  options.id  path id
      */
     this.show = function(options){
+        var self = this;
 		superagent
 	  		.get(siteUrl + '/api/path/get/' + options.id)
 	  		.end(function (err, response){
@@ -27,10 +28,30 @@ module.exports = function(options){
 	  				console.log(new Error(response.body.error));
 	  				return;
 	  			}
+                var path = response.body.data.path;
+                self._parsePath(path);
 	  			d.set('path', response.body.data.path);
 	  			d.set('view', 'path');
 	  		}
 		);
+    }
+
+    this._parsePath = function(path){
+        var isNegatingResponse = false;
+        for( var i = 0; i < path.path.length; i++ ){
+            var item = path.path[i];
+            // check if second to last item and hide it and remaining element
+            if( i === path.path.length - 2 &&
+                item.type === 'link' &&
+                !item.charge  ){
+                item.hidden = true;
+                isNegatingResponse = true;
+            } else {
+                item.hidden = isNegatingResponse;
+            }
+        }
+        path.isNegatingResponse = isNegatingResponse;
+        return path;
     }
 
     /**
@@ -48,6 +69,7 @@ module.exports = function(options){
      * @param  {boolean}  options.charge
      */
     this.loadResponsePaths = function(options){
+        var self = this;
         var type = options.item.get('type') === 'node' ? 'node' : 'link';
         var direction = options.charge ? 'affirm' : 'negate';
         var id = options.item.get('id');
@@ -66,6 +88,9 @@ module.exports = function(options){
                     console.log(new Error(response.body.error));
                     return;
                 }
+                response.body.data.paths.forEach(function(p){
+                    self._parsePath(p);
+                });
                 if( options.charge ){
                     d.set(['detailItem', 'affirming'], response.body.data.paths);
                 } else {

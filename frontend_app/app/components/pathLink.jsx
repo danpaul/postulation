@@ -15,6 +15,7 @@ module.exports = BaseComponent.createClass({
 		this.props.controllers.path.setDetailItem(d);
 	},
 	render: function() {
+		if( this.props.link.get('hidden') ){ return null; }
         return <Paper
         		className="icon-link"
         		style={STYLE}
