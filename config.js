@@ -18,7 +18,9 @@ if( config.environment === 'development' ){
 	        database: 'postulation',
 	        port:  8889
 	    }
-	}
+	};
+
+	config.rootUrl = 'http://localhost:3000';
 
 } else if( config.environment === 'production' ) {
 

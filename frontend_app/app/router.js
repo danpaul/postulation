@@ -7,7 +7,7 @@ module.exports = function(options){
 	page.start();
 
 	page('/', function(){
-		console.log('home');
+		// console.log('home');
 	});
 
 	page('/path/create', function(){
@@ -17,6 +17,10 @@ module.exports = function(options){
 	page('/path/get/:id', function(ctx){
 		c.path.show({id: ctx.params.id});
 	});
+
+	page('/user/register', function(ctx){
+		c.user.showRegister();
+	})
 
 	page('*', function(){
 		console.log('Route not found');

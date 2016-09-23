@@ -2,6 +2,7 @@ import AppBar from './appBar.jsx';
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
 import Path from './path.jsx';
+import User from './user.jsx';
 import React from 'react';
 
 module.exports = BaseComponent.createClass({
@@ -9,6 +10,11 @@ module.exports = BaseComponent.createClass({
         var view = this.props.data.get('view');
 		return <div>
             <AppBar />
+            <User
+                controllers={this.props.controllers}
+                user={this.props.data.get('user')}
+                view={view}
+            />
             <CreatePath
                 controllers={this.props.controllers}
                 path={this.props.data.get('createPath')}

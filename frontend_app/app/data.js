@@ -11,7 +11,6 @@ const INITIAL_STATE = {
 		valid: false,
 		nodes: []
 	},
-	path: {},
 	detailItem: {
 		item: null,
 		affirming: [],
@@ -23,6 +22,20 @@ const INITIAL_STATE = {
 			titleError: '',
 			valid: false,
 			nodes: []
+		}
+	},
+	path: {},
+	user: {
+		id: null,
+		registerFormData: {
+			username: '',
+			usernameError: '',
+			email: '',
+			emailError: '',
+			password: '',
+			passwordError: '',
+			repeatPassword: '',
+			repeatPasswordError: ''
 		}
 	}
 };
