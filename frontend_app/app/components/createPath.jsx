@@ -29,6 +29,17 @@ module.exports = BaseComponent.createClass({
                         index={index} />
         });
     },
+    getResponseNode: function(){
+        if( this.props.responseTo &&
+            this.props.responseIsAffirming &&
+            this.props.responseTo.get('type') === 'node' ){
+
+            return <CreatePathNode
+                isDisabled={true}
+                node={this.props.responseTo}
+            />
+        }
+    },
     addNode: function(){
         var d = {dataLocation: this.props.path.get('dataLocation')};
         this.props.controllers.createPath.addNode(d);
@@ -59,7 +70,6 @@ module.exports = BaseComponent.createClass({
 	render: function() {
 
         var self = this;
-        var c = this.props.controllers;
         if( !this.props.visible ){ return null; }
 
 		return <div>
@@ -70,12 +80,13 @@ module.exports = BaseComponent.createClass({
                 {this.getAffirmNegateButtons()}
                 <div style={STYLE_CONTENT_WRAP}>
                     <CreatePathTitle
-                        controllers={c}
+                        controllers={this.props.controllers}
                         dataLocation={this.props.path.get('dataLocation')}
                         error={this.props.path.get('titleError')}
                         title={this.props.path.get('title')}
                     />
                     {this.getNodes()}
+                    {this.getResponseNode()}
                     <FlatButton
                         onClick={this.addNode}
                         label="Add Node"

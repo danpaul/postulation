@@ -18,8 +18,8 @@ module.exports = BaseComponent.createClass({
         var detailItemId = null;
 
         if( this.props.detailItem ){
-            detailItemType = this.props.detailItem.get('type');
-            detailItemId = this.props.detailItem.get('id');
+            detailItemType = this.props.detailItem.getIn(['item', 'type']);
+            detailItemId = this.props.detailItem.getIn(['item', 'id']);
         }
 
         return this.props.path.get('path').map(function(el, index){

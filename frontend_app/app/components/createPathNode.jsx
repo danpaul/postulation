@@ -19,6 +19,17 @@ module.exports = BaseComponent.createClass({
 		this.props.controllers.createPath.updateNodeStatement(d);
 	},
 	render: function() {
+		if( this.props.isDisabled ){
+			return <div>
+				<Paper zDepth={1} style={STYLE}>
+	            	<TextField
+	            		value={this.props.node.get('statement')}
+	            		multiLine={true}
+	            		fullWidth={true}
+	            		disabled={true} />
+	            </Paper>
+	        </div>
+		}
 		return <div>
 			<Paper zDepth={1} style={STYLE}>
             	<TextField

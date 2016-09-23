@@ -58,11 +58,8 @@ var mod = {
 	getRoot: function(){ return data; },
 	get: function(key){
 		if( Immutable.List.isList(key) ){ key = key.toJS(); }
-		if( _.isArray(key) ){
-			return data.getIn(key);
-		} else {
-			return data.get(key);
-		}
+		if( _.isArray(key) ){ return data.getIn(key);
+		} else { return data.get(key); }
 	},
 	push(key, item){
 		mod.set(key, mod.get(key).push(item));

@@ -10,7 +10,6 @@ const STYLE = {margin: 20, width: 400, float: 'left'};
 module.exports = BaseComponent.createClass({
 	render: function() {
 		if( !this.props.detailItem.get('item') ){ return null; }
-// console.log(this.props)
         return <Paper style={STYLE} zDepth={1}>
 			<Tabs>
 				<Tab label="Add" >
