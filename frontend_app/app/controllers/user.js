@@ -48,9 +48,8 @@ module.exports = function(options){
     /**
      * Shows the new user registration view
      */
-    this.showRegister = function(){
-    	d.set('view', 'register');
-    }
+    this.showRegister = function(){ d.set('view', 'register'); }
+
     /**
      * Validates username and optionally sets error data
      */
@@ -149,6 +148,17 @@ module.exports = function(options){
 		);
 
     }
+
+    /***************************************************************************
+     *
+     * 		Login
+     * 
+     **************************************************************************/
+
+    /**
+     * Shows the new login view
+     */
+    this.showLogin = function(){ d.set('view', 'login'); }
 
     /***************************************************************************
      *

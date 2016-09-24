@@ -21865,13 +21865,13 @@
 
 	module.exports = _baseComponent2.default.createClass({
 	    getUser: function getUser(options) {
-	        if (options.view === 'register') {
+	        if (options.view === 'register' || options.view === 'login') {
 	            return _react2.default.createElement(_user2.default, {
 	                controllers: this.props.controllers,
 	                user: this.props.data.get('user'),
 	                view: options.view
 	            });
-	        } else if (options.view !== 'login') {}
+	        }
 	        return null;
 	    },
 	    getCreatePath: function getCreatePath(options) {
@@ -31828,9 +31828,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _register = __webpack_require__(273);
+	var _userRegister = __webpack_require__(449);
 
-	var _register2 = _interopRequireDefault(_register);
+	var _userRegister2 = _interopRequireDefault(_userRegister);
+
+	var _userLogin = __webpack_require__(450);
+
+	var _userLogin2 = _interopRequireDefault(_userLogin);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31840,8 +31844,18 @@
 		},
 		getRegister: function getRegister() {
 			if (this.props.view === 'register') {
-				return _react2.default.createElement(_register2.default, {
+				return _react2.default.createElement(_userRegister2.default, {
 					formData: this.props.user.get('registerFormData'),
+					controllers: this.props.controllers,
+					user: this.props.user
+				});
+			}
+			return null;
+		},
+		getLogin: function getLogin() {
+			if (this.props.view === 'login') {
+				return _react2.default.createElement(_userLogin2.default, {
+					formData: this.props.user.get('loginFormData'),
 					controllers: this.props.controllers,
 					user: this.props.user
 				});
@@ -31852,134 +31866,14 @@
 			return _react2.default.createElement(
 				'div',
 				null,
-				this.getRegister()
+				this.getRegister(),
+				this.getLogin()
 			);
 		}
 	});
 
 /***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _baseComponent = __webpack_require__(180);
-
-	var _baseComponent2 = _interopRequireDefault(_baseComponent);
-
-	var _react = __webpack_require__(7);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _FlatButton = __webpack_require__(251);
-
-	var _FlatButton2 = _interopRequireDefault(_FlatButton);
-
-	var _Paper = __webpack_require__(224);
-
-	var _Paper2 = _interopRequireDefault(_Paper);
-
-	var _RaisedButton = __webpack_require__(259);
-
-	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-	var _TextField = __webpack_require__(243);
-
-	var _TextField2 = _interopRequireDefault(_TextField);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var STYLE = {
-	    margin: 20
-	};
-
-	module.exports = _baseComponent2.default.createClass({
-
-	    handleSubmit: function handleSubmit() {
-	        this.props.controllers.user.submitRegisterForm();
-	    },
-	    onChangeUsername: function onChangeUsername(e) {
-	        this.updateField('username', e.target.value);
-	    },
-	    onChangeEmail: function onChangeEmail(e) {
-	        this.updateField('email', e.target.value);
-	    },
-	    onChangePassword: function onChangePassword(e) {
-	        this.updateField('password', e.target.value);
-	    },
-	    onChangeConfirmPassword: function onChangeConfirmPassword(e) {
-	        this.updateField('confirmPassword', e.target.value);
-	        this.props.controllers.user.validateRegisterConfirmPassword();
-	        this.props.controllers.user.validateRegisterForm();
-	    },
-	    onBlurUsername: function onBlurUsername(e) {
-	        this.props.controllers.user.validateRegisterUsername();
-	        this.props.controllers.user.validateRegisterForm();
-	    },
-	    onBlurEmail: function onBlurEmail(e) {
-	        this.props.controllers.user.validateRegisterEmail();
-	        this.props.controllers.user.validateRegisterForm();
-	    },
-	    onBlurPassword: function onBlurPassword(e) {
-	        this.props.controllers.user.validateRegisterPassword();
-	        this.props.controllers.user.validateRegisterForm();
-	    },
-	    updateField: function updateField(field, value) {
-	        var d = { field: field, value: value };
-	        this.props.controllers.user.updateRegisterFieldValue(d);
-	    },
-	    render: function render() {
-	        return _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	                _Paper2.default,
-	                { style: STYLE, zDepth: 1 },
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Username',
-	                    value: this.props.formData.get('username'),
-	                    fullWidth: true,
-	                    errorText: this.props.formData.get('usernameError'),
-	                    onChange: this.onChangeUsername,
-	                    onBlur: this.onBlurUsername
-	                }),
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Email',
-	                    value: this.props.formData.get('email'),
-	                    fullWidth: true,
-	                    errorText: this.props.formData.get('emailError'),
-	                    onChange: this.onChangeEmail,
-	                    onBlur: this.onBlurEmail
-	                }),
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Password',
-	                    value: this.props.formData.get('password'),
-	                    fullWidth: true,
-	                    errorText: this.props.formData.get('passwordError'),
-	                    type: 'password',
-	                    onChange: this.onChangePassword,
-	                    onBlur: this.onBlurPassword
-	                }),
-	                _react2.default.createElement(_TextField2.default, {
-	                    floatingLabelText: 'Confirm Password',
-	                    value: this.props.formData.get('confirmPassword'),
-	                    fullWidth: true,
-	                    errorText: this.props.formData.get('confirmPasswordError'),
-	                    type: 'password',
-	                    onChange: this.onChangeConfirmPassword
-	                }),
-	                _react2.default.createElement(_RaisedButton2.default, {
-	                    onClick: this.handleSubmit,
-	                    label: 'Register',
-	                    secondary: true,
-	                    disabled: !this.props.formData.get('formIsValid'),
-	                    style: { float: 'right' } })
-	            )
-	        );
-	    }
-	});
-
-/***/ },
+/* 273 */,
 /* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38770,7 +38664,7 @@
 	var Immutable = __webpack_require__(433);
 
 	var INITIAL_STATE = {
-		view: 'home',
+		view: 'home', // see `components/root.jsx` for possible views
 		createPath: {
 			dataLocation: ['createPath'],
 			title: '',
@@ -38797,7 +38691,6 @@
 			registerFormData: {
 				email: '',
 				emailError: '',
-				error: '',
 				formIsValid: false,
 				password: '',
 				passwordError: '',
@@ -38805,6 +38698,12 @@
 				confirmPasswordError: '',
 				username: '',
 				usernameError: ''
+			},
+			loginFormData: {
+				email: '',
+				emailError: '',
+				password: '',
+				passwordError: ''
 			}
 		}
 	};
@@ -45774,6 +45673,7 @@
 	  this.showRegister = function () {
 	    d.set('view', 'register');
 	  };
+
 	  /**
 	   * Validates username and optionally sets error data
 	   */
@@ -45885,6 +45785,19 @@
 	      }
 	      console.log(response.body);
 	    });
+	  };
+
+	  /***************************************************************************
+	   *
+	   * 		Login
+	   * 
+	   **************************************************************************/
+
+	  /**
+	   * Shows the new login view
+	   */
+	  this.showLogin = function () {
+	    d.set('view', 'login');
 	  };
 
 	  /***************************************************************************
@@ -48117,6 +48030,10 @@
 			c.path.show({ id: ctx.params.id });
 		});
 
+		(0, _page2.default)('/user/login', function (ctx) {
+			c.user.showLogin();
+		});
+
 		(0, _page2.default)('/user/register', function (ctx) {
 			c.user.showRegister();
 		});
@@ -49185,6 +49102,225 @@
 	      d.set('view', 'home');
 	   };
 	};
+
+/***/ },
+/* 449 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _FlatButton = __webpack_require__(251);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _Paper = __webpack_require__(224);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	var _RaisedButton = __webpack_require__(259);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(243);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STYLE = {
+	    margin: 20
+	};
+
+	module.exports = _baseComponent2.default.createClass({
+
+	    handleSubmit: function handleSubmit() {
+	        this.props.controllers.user.submitRegisterForm();
+	    },
+	    onChangeUsername: function onChangeUsername(e) {
+	        this.updateField('username', e.target.value);
+	    },
+	    onChangeEmail: function onChangeEmail(e) {
+	        this.updateField('email', e.target.value);
+	    },
+	    onChangePassword: function onChangePassword(e) {
+	        this.updateField('password', e.target.value);
+	    },
+	    onChangeConfirmPassword: function onChangeConfirmPassword(e) {
+	        this.updateField('confirmPassword', e.target.value);
+	        this.props.controllers.user.validateRegisterConfirmPassword();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurUsername: function onBlurUsername(e) {
+	        this.props.controllers.user.validateRegisterUsername();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurEmail: function onBlurEmail(e) {
+	        this.props.controllers.user.validateRegisterEmail();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurPassword: function onBlurPassword(e) {
+	        this.props.controllers.user.validateRegisterPassword();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    updateField: function updateField(field, value) {
+	        var d = { field: field, value: value };
+	        this.props.controllers.user.updateRegisterFieldValue(d);
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                _Paper2.default,
+	                { style: STYLE, zDepth: 1 },
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Username',
+	                    value: this.props.formData.get('username'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('usernameError'),
+	                    onChange: this.onChangeUsername,
+	                    onBlur: this.onBlurUsername
+	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Email',
+	                    value: this.props.formData.get('email'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('emailError'),
+	                    onChange: this.onChangeEmail,
+	                    onBlur: this.onBlurEmail
+	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Password',
+	                    value: this.props.formData.get('password'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('passwordError'),
+	                    type: 'password',
+	                    onChange: this.onChangePassword,
+	                    onBlur: this.onBlurPassword
+	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Confirm Password',
+	                    value: this.props.formData.get('confirmPassword'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('confirmPasswordError'),
+	                    type: 'password',
+	                    onChange: this.onChangeConfirmPassword
+	                }),
+	                _react2.default.createElement(_RaisedButton2.default, {
+	                    onClick: this.handleSubmit,
+	                    label: 'Register',
+	                    secondary: true,
+	                    disabled: !this.props.formData.get('formIsValid'),
+	                    style: { float: 'right' } })
+	            )
+	        );
+	    }
+	});
+
+/***/ },
+/* 450 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _FlatButton = __webpack_require__(251);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _Paper = __webpack_require__(224);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	var _RaisedButton = __webpack_require__(259);
+
+	var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+	var _TextField = __webpack_require__(243);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STYLE = {
+	    margin: 20
+	};
+
+	module.exports = _baseComponent2.default.createClass({
+
+	    handleSubmit: function handleSubmit() {
+	        this.props.controllers.user.submitRegisterForm();
+	    },
+	    onChangeUsername: function onChangeUsername(e) {
+	        this.updateField('username', e.target.value);
+	    },
+	    onChangeEmail: function onChangeEmail(e) {
+	        this.updateField('email', e.target.value);
+	    },
+	    onChangePassword: function onChangePassword(e) {
+	        this.updateField('password', e.target.value);
+	    },
+	    onChangeConfirmPassword: function onChangeConfirmPassword(e) {
+	        this.updateField('confirmPassword', e.target.value);
+	        this.props.controllers.user.validateRegisterConfirmPassword();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurUsername: function onBlurUsername(e) {
+	        this.props.controllers.user.validateRegisterUsername();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurEmail: function onBlurEmail(e) {
+	        this.props.controllers.user.validateRegisterEmail();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurPassword: function onBlurPassword(e) {
+	        this.props.controllers.user.validateRegisterPassword();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    updateField: function updateField(field, value) {
+	        var d = { field: field, value: value };
+	        this.props.controllers.user.updateRegisterFieldValue(d);
+	    },
+	    render: function render() {
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                _Paper2.default,
+	                { style: STYLE, zDepth: 1 },
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Email',
+	                    value: this.props.formData.get('email'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('emailError'),
+	                    onChange: this.onChangeEmail,
+	                    onBlur: this.onBlurEmail
+	                }),
+	                _react2.default.createElement(_RaisedButton2.default, {
+	                    onClick: this.handleSubmit,
+	                    label: 'Register',
+	                    secondary: true,
+	                    disabled: !this.props.formData.get('formIsValid'),
+	                    style: { float: 'right' } })
+	            )
+	        );
+	    }
+	});
 
 /***/ }
 /******/ ]);

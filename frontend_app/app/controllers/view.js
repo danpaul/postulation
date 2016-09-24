@@ -9,8 +9,6 @@ module.exports = function(options){
     var superagent = options.superagent;
     var siteUrl = options.siteUrl;
 
-    this.showHome = function(){
-    	d.set('view', 'home');
-    }
+    this.showHome = function(){ d.set('view', 'home'); }
 
 }

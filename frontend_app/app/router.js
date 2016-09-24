@@ -18,6 +18,10 @@ module.exports = function(options){
 		c.path.show({id: ctx.params.id});
 	});
 
+	page('/user/login', function(ctx){
+		c.user.showLogin();
+	})
+
 	page('/user/register', function(ctx){
 		c.user.showRegister();
 	})

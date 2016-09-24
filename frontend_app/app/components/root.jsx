@@ -7,14 +7,12 @@ import React from 'react';
 
 module.exports = BaseComponent.createClass({
     getUser: function(options){
-        if( options.view === 'register' ){
+        if( options.view === 'register' || options.view === 'login' ){
             return <User
                 controllers={this.props.controllers}
                 user={this.props.data.get('user')}
                 view={options.view}
             />
-        } else if( options.view !== 'login' ){
-            
         }
         return null;
     },

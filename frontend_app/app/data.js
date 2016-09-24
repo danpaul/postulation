@@ -3,7 +3,7 @@ const config = require('./config');
 const Immutable = require('immutable');
 
 const INITIAL_STATE = {
-	view: 'home',
+	view: 'home', // see `components/root.jsx` for possible views
 	createPath: {
 		dataLocation: ['createPath'],
 		title: '',
@@ -30,7 +30,6 @@ const INITIAL_STATE = {
 		registerFormData: {
 			email: '',
 			emailError: '',
-			error: '',
 			formIsValid: false,
 			password: '',
 			passwordError: '',
@@ -38,6 +37,12 @@ const INITIAL_STATE = {
 			confirmPasswordError: '',
 			username: '',
 			usernameError: '',
+		},
+		loginFormData: {
+			email: '',
+			emailError: '',
+			password: '',
+			passwordError: ''
 		}
 	}
 };

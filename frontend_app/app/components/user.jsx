@@ -1,6 +1,7 @@
 import BaseComponent from '../lib/baseComponent';
 import React from 'react';
-import Register from './register.jsx';
+import Register from './userRegister.jsx';
+import Login from './userLogin.jsx';
 
 module.exports = BaseComponent.createClass({
 	componentDidMount: function(){
@@ -16,9 +17,20 @@ module.exports = BaseComponent.createClass({
 		}
 		return null;
 	},
+	getLogin: function(){
+		if( this.props.view === 'login' ){
+			return <Login
+				formData={this.props.user.get('loginFormData')}
+				controllers={this.props.controllers}
+				user={this.props.user}
+			/>
+		}
+		return null;
+	},
 	render: function() {
 		return <div>
 			{this.getRegister()}
+			{this.getLogin()}
 		</div>
 	}
 });
