@@ -7,12 +7,14 @@ module.exports = BaseComponent.createClass({
 		this.props.controllers.user.init();
 	},
 	getRegister: function(){
-		if( this.props.view !== 'register' ){ return null; }
-		return <Register
-			formData={this.props.user.get('registerFormData')}
-			controllers={this.props.controllers}
-			user={this.props.user}
-		/>
+		if( this.props.view === 'register' ){
+			return <Register
+				formData={this.props.user.get('registerFormData')}
+				controllers={this.props.controllers}
+				user={this.props.user}
+			/>
+		}
+		return null;
 	},
 	render: function() {
 		return <div>

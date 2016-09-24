@@ -51,7 +51,6 @@ module.exports = BaseComponent.createClass({
         });
     },
 	render: function() {
-        if( !this.props.visible ){ return null; }
         return <div>
             <Paper style={STYLE} zDepth={1}>
                 <h3>{this.props.path.get('title')}</h3>

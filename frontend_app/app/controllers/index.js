@@ -1,13 +1,15 @@
 import CreatePath from './createPath';
 import Path from './path';
 import User from './user';
+import View from './view';
 
 const _ = require('underscore');
 const superagent = require('superagent-cache')();
 const CONTROLLERS = {
 	createPath: CreatePath,
 	path: Path,
-	user: User
+	user: User,
+	view: View
 };
 
 module.exports = function(options){

@@ -7,7 +7,7 @@ module.exports = function(options){
 	page.start();
 
 	page('/', function(){
-		// console.log('home');
+		c.view.showHome();
 	});
 
 	page('/path/create', function(){

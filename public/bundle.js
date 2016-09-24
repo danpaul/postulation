@@ -21864,29 +21864,46 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = _baseComponent2.default.createClass({
+	    getUser: function getUser(options) {
+	        if (options.view === 'register') {
+	            return _react2.default.createElement(_user2.default, {
+	                controllers: this.props.controllers,
+	                user: this.props.data.get('user'),
+	                view: options.view
+	            });
+	        } else if (options.view !== 'login') {}
+	        return null;
+	    },
+	    getCreatePath: function getCreatePath(options) {
+	        if (options.view === 'createPath') {
+	            return _react2.default.createElement(_createPath2.default, {
+	                controllers: this.props.controllers,
+	                path: this.props.data.get('createPath')
+	            });
+	        }
+	        return null;
+	    },
+	    getPath: function getPath(options) {
+	        if (options.view === 'path') {
+	            _react2.default.createElement(_path2.default, {
+	                controllers: this.props.controllers,
+	                createPath: this.props.data.get('createPath'),
+	                detailItem: this.props.data.get('detailItem'),
+	                path: this.props.data.get('path')
+	            });
+	        }
+	        return null;
+	    },
+
 	    render: function render() {
 	        var view = this.props.data.get('view');
 	        return _react2.default.createElement(
 	            'div',
 	            null,
 	            _react2.default.createElement(_appBar2.default, null),
-	            _react2.default.createElement(_user2.default, {
-	                controllers: this.props.controllers,
-	                user: this.props.data.get('user'),
-	                view: view
-	            }),
-	            _react2.default.createElement(_createPath2.default, {
-	                controllers: this.props.controllers,
-	                path: this.props.data.get('createPath'),
-	                visible: view === 'createPath'
-	            }),
-	            _react2.default.createElement(_path2.default, {
-	                controllers: this.props.controllers,
-	                createPath: this.props.data.get('createPath'),
-	                detailItem: this.props.data.get('detailItem'),
-	                path: this.props.data.get('path'),
-	                visible: view === 'path'
-	            })
+	            this.getUser({ view: view }),
+	            this.getCreatePath({ view: view }),
+	            this.getPath({ view: view })
 	        );
 	    }
 	});
@@ -27769,12 +27786,7 @@
 	        );
 	    },
 	    render: function render() {
-
 	        var self = this;
-	        if (!this.props.visible) {
-	            return null;
-	        }
-
 	        return _react2.default.createElement(
 	            'div',
 	            null,
@@ -30839,9 +30851,6 @@
 	        });
 	    },
 	    render: function render() {
-	        if (!this.props.visible) {
-	            return null;
-	        }
 	        return _react2.default.createElement(
 	            'div',
 	            null,
@@ -31830,14 +31839,14 @@
 			this.props.controllers.user.init();
 		},
 		getRegister: function getRegister() {
-			if (this.props.view !== 'register') {
-				return null;
+			if (this.props.view === 'register') {
+				return _react2.default.createElement(_register2.default, {
+					formData: this.props.user.get('registerFormData'),
+					controllers: this.props.controllers,
+					user: this.props.user
+				});
 			}
-			return _react2.default.createElement(_register2.default, {
-				formData: this.props.user.get('registerFormData'),
-				controllers: this.props.controllers,
-				user: this.props.user
-			});
+			return null;
 		},
 		render: function render() {
 			return _react2.default.createElement(
@@ -31886,12 +31895,34 @@
 
 	module.exports = _baseComponent2.default.createClass({
 
-	    handleSubmit: function handleSubmit() {},
+	    handleSubmit: function handleSubmit() {
+	        this.props.controllers.user.submitRegisterForm();
+	    },
 	    onChangeUsername: function onChangeUsername(e) {
 	        this.updateField('username', e.target.value);
 	    },
+	    onChangeEmail: function onChangeEmail(e) {
+	        this.updateField('email', e.target.value);
+	    },
+	    onChangePassword: function onChangePassword(e) {
+	        this.updateField('password', e.target.value);
+	    },
+	    onChangeConfirmPassword: function onChangeConfirmPassword(e) {
+	        this.updateField('confirmPassword', e.target.value);
+	        this.props.controllers.user.validateRegisterConfirmPassword();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
 	    onBlurUsername: function onBlurUsername(e) {
 	        this.props.controllers.user.validateRegisterUsername();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurEmail: function onBlurEmail(e) {
+	        this.props.controllers.user.validateRegisterEmail();
+	        this.props.controllers.user.validateRegisterForm();
+	    },
+	    onBlurPassword: function onBlurPassword(e) {
+	        this.props.controllers.user.validateRegisterPassword();
+	        this.props.controllers.user.validateRegisterForm();
 	    },
 	    updateField: function updateField(field, value) {
 	        var d = { field: field, value: value };
@@ -31907,17 +31938,41 @@
 	                _react2.default.createElement(_TextField2.default, {
 	                    floatingLabelText: 'Username',
 	                    value: this.props.formData.get('username'),
-	                    multiLine: true,
 	                    fullWidth: true,
 	                    errorText: this.props.formData.get('usernameError'),
 	                    onChange: this.onChangeUsername,
 	                    onBlur: this.onBlurUsername
 	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Email',
+	                    value: this.props.formData.get('email'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('emailError'),
+	                    onChange: this.onChangeEmail,
+	                    onBlur: this.onBlurEmail
+	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Password',
+	                    value: this.props.formData.get('password'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('passwordError'),
+	                    type: 'password',
+	                    onChange: this.onChangePassword,
+	                    onBlur: this.onBlurPassword
+	                }),
+	                _react2.default.createElement(_TextField2.default, {
+	                    floatingLabelText: 'Confirm Password',
+	                    value: this.props.formData.get('confirmPassword'),
+	                    fullWidth: true,
+	                    errorText: this.props.formData.get('confirmPasswordError'),
+	                    type: 'password',
+	                    onChange: this.onChangeConfirmPassword
+	                }),
 	                _react2.default.createElement(_RaisedButton2.default, {
 	                    onClick: this.handleSubmit,
 	                    label: 'Register',
 	                    secondary: true,
-	                    disabled: true,
+	                    disabled: !this.props.formData.get('formIsValid'),
 	                    style: { float: 'right' } })
 	            )
 	        );
@@ -38740,14 +38795,16 @@
 		user: {
 			id: null,
 			registerFormData: {
-				username: '',
-				usernameError: '',
 				email: '',
 				emailError: '',
+				error: '',
+				formIsValid: false,
 				password: '',
 				passwordError: '',
-				repeatPassword: '',
-				repeatPasswordError: ''
+				confirmPassword: '',
+				confirmPasswordError: '',
+				username: '',
+				usernameError: ''
 			}
 		}
 	};
@@ -45401,6 +45458,10 @@
 
 	var _user2 = _interopRequireDefault(_user);
 
+	var _view = __webpack_require__(448);
+
+	var _view2 = _interopRequireDefault(_view);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var _ = __webpack_require__(432);
@@ -45408,7 +45469,8 @@
 	var CONTROLLERS = {
 		createPath: _createPath2.default,
 		path: _path2.default,
-		user: _user2.default
+		user: _user2.default,
+		view: _view2.default
 	};
 
 	module.exports = function (options) {
@@ -45658,85 +45720,194 @@
 
 	'use strict';
 
-	var Immutable = __webpack_require__(433);
+	var _page = __webpack_require__(445);
 
-	var ERRROR_USERNAME = 'Username must be at least two characters and only contain characters, letters, underscores, dots and dashes';
+	var _page2 = _interopRequireDefault(_page);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Immutable = __webpack_require__(433);
+	var ERROR_EMAIL = 'Email is not valid';
+	var ERROR_USERNAME = 'Username must be at least two characters and only contain characters, letters, underscores, dots and dashes';
+	var ERROR_PASSWORD = 'Password must be at leat eight characters';
+	var ERROR_PASSWORD_CONFIRM = 'Passwords do not match';
 
 	module.exports = function (options) {
 
+	  var self = this;
+
+	  var c = options.controllers;
+	  var d = options.data;
+	  var superagent = options.superagent;
+	  var siteUrl = options.siteUrl;
+
+	  /**
+	   * Initializes user data (called on page load)
+	   */
+	  this.init = function () {
 	    var self = this;
+	    superagent.get(siteUrl + '/api/auth').end(function (err, response) {
+	      if (err) {
+	        // TODO: add error handling
+	        console.log(err);
+	        return;
+	      }
 
-	    var c = options.controllers;
-	    var d = options.data;
-	    var superagent = options.superagent;
-	    var siteUrl = options.siteUrl;
+	      // set user id to null
+	      if (response.body.status === 'failure') {
+	        return d.set(['user', 'id'], null);
+	      }
 
-	    this.init = function () {
-	        var self = this;
-	        superagent.get(siteUrl + '/api/auth').end(function (err, response) {
-	            if (err) {
-	                // TODO: add error handling
-	                console.log(err);
-	                return;
-	            }
+	      // setup user...
+	    });
+	  };
 
-	            // set user id to null
-	            if (response.body.status === 'failure') {
-	                return d.set(['user', 'id'], null);
-	            }
+	  /***************************************************************************
+	   *
+	   * 		Registration
+	   * 
+	   **************************************************************************/
 
-	            // setup user...
-	        });
-	    };
+	  /**
+	   * Shows the new user registration view
+	   */
+	  this.showRegister = function () {
+	    d.set('view', 'register');
+	  };
+	  /**
+	   * Validates username and optionally sets error data
+	   */
+	  this.validateRegisterUsername = function () {
+	    var setData = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
-	    this.showRegister = function () {
-	        d.set('view', 'register');
-	    };
+	    var u = d.get(['user', 'registerFormData', 'username']);
+	    var v = '';
+	    if (!this.usernameIsValid(u)) {
+	      v = ERROR_USERNAME;
+	    }
+	    if (setData) {
+	      d.set(['user', 'registerFormData', 'usernameError'], v);
+	    }
+	    return v === '';
+	  };
+	  /**
+	   * Validates email and optionally sets error data
+	   */
+	  this.validateRegisterEmail = function () {
+	    var setData = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
-	    /**
-	     * Updates register form error
-	     */
-	    this.validateRegisterUsername = function () {
-	        var u = d.get(['user', 'registerFormData', 'username']);
-	        var k = ['user', 'registerFormData', 'usernameError'];
-	        if (!this.usernameIsValid(u)) {
-	            d.set(k, ERRROR_USERNAME);
-	        } else {
-	            d.set(k, '');
-	        }
-	    };
+	    var email = d.get(['user', 'registerFormData', 'email']);
+	    var v = '';
+	    if (!this.emailIsValid(email)) {
+	      v = ERROR_EMAIL;
+	    }
+	    if (setData) {
+	      d.set(['user', 'registerFormData', 'emailError'], v);
+	    }
+	    return v === '';
+	  };
+	  /**
+	   * Validates password and optionally sets error data
+	   */
+	  this.validateRegisterPassword = function () {
+	    var setData = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
-	    /**
-	     * Updates register form data
-	     * @param  {string}  options.field
-	     * @param  {string}  options.value
-	     */
-	    this.updateRegisterFieldValue = function (options) {
-	        d.set(['user', 'registerFormData', options.field], options.value);
-	    };
+	    var p = d.get(['user', 'registerFormData', 'password']);
+	    var v = '';
+	    if (!this.passwordIsValid(p)) {
+	      v = ERROR_PASSWORD;
+	    }
+	    if (setData) {
+	      d.set(['user', 'registerFormData', 'passwordError'], v);
+	    }
+	    return v === '';
+	  };
+	  /**
+	   * Validates password and optionally sets error data
+	   */
+	  this.validateRegisterConfirmPassword = function () {
+	    var setData = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
-	    this.emailIsValid = function (email) {
-	        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-	        return re.test(email);
-	    };
+	    var p1 = d.get(['user', 'registerFormData', 'password']);
+	    var p2 = d.get(['user', 'registerFormData', 'confirmPassword']);
+	    var v = '';
+	    if (p1 !== p2) {
+	      v = ERROR_PASSWORD_CONFIRM;
+	    }
+	    if (setData) {
+	      d.set(['user', 'registerFormData', 'confirmPasswordError'], v);
+	    }
+	    return v === '';
+	  };
+	  this.validateRegisterForm = function () {
+	    var setData = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-	    this.passwordIsValid = function (password) {
-	        if (!password) {
-	            return false;
-	        }
-	        if (password.length < self.passwordMinLength) {
-	            return false;
-	        }
-	        return true;
-	    };
+	    var valid = true;
+	    [this.validateRegisterUsername.bind(this), this.validateRegisterEmail.bind(this), this.validateRegisterPassword.bind(this), this.validateRegisterConfirmPassword.bind(this)].forEach(function (f) {
+	      if (!f(setData)) {
+	        valid = false;
+	      }
+	    });
+	    d.set(['user', 'registerFormData', 'formIsValid'], valid);
+	    return valid;
+	  };
+	  /**
+	   * Updates register form data
+	   * @param  {string}  options.field
+	   * @param  {string}  options.value
+	   */
+	  this.updateRegisterFieldValue = function (options) {
+	    d.set(['user', 'registerFormData', options.field], options.value);
+	  };
+	  /**
+	   * Handles submitting registration data
+	   */
+	  this.submitRegisterForm = function () {
+	    if (!this.validateRegisterForm(true)) {
+	      return;
+	    }
+	    var data = {};
+	    ['username', 'email', 'password'].forEach(function (k) {
+	      data[k] = d.get(['user', 'registerFormData', k]);
+	    });
 
-	    this.usernameIsValid = function (username) {
-	        if (!username || username.length < 2) {
-	            return false;
-	        }
-	        return (/^([a-zA-Z0-9]|\-|\_|\.)+$/.test(username)
-	        );
-	    };
+	    superagent.post(siteUrl + '/api/auth/register').send(data).end(function (err, response) {
+	      if (err) {
+	        console.log(err);
+	      }
+	      if (response.body.status === 'success') {
+	        d.set(['user', 'id'], response.body.data.user.id);
+	        (0, _page2.default)('/');
+	        // d.set('view', 'home');
+	        console.log('success');
+	      } else {
+	        console.log('error');
+	      }
+	      console.log(response.body);
+	    });
+	  };
+
+	  /***************************************************************************
+	   *
+	   * 		Validation functions
+	   * 
+	   **************************************************************************/
+	  this.emailIsValid = function (email) {
+	    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	    return re.test(email);
+	  };
+
+	  this.passwordIsValid = function (password) {
+	    return !(!password || password.length < 8);
+	  };
+
+	  this.usernameIsValid = function (username) {
+	    if (!username || username.length < 2) {
+	      return false;
+	    }
+	    return (/^([a-zA-Z0-9]|\-|\_|\.)+$/.test(username)
+	    );
+	  };
 	};
 
 /***/ },
@@ -47935,7 +48106,7 @@
 		_page2.default.start();
 
 		(0, _page2.default)('/', function () {
-			// console.log('home');
+			c.view.showHome();
 		});
 
 		(0, _page2.default)('/path/create', function () {
@@ -48992,6 +49163,28 @@
 	  return Object.prototype.toString.call(arr) == '[object Array]';
 	};
 
+
+/***/ },
+/* 448 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Immutable = __webpack_require__(433);
+
+	module.exports = function (options) {
+
+	   var self = this;
+
+	   var c = options.controllers;
+	   var d = options.data;
+	   var superagent = options.superagent;
+	   var siteUrl = options.siteUrl;
+
+	   this.showHome = function () {
+	      d.set('view', 'home');
+	   };
+	};
 
 /***/ }
 /******/ ]);

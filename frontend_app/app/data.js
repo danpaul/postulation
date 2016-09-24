@@ -28,14 +28,16 @@ const INITIAL_STATE = {
 	user: {
 		id: null,
 		registerFormData: {
-			username: '',
-			usernameError: '',
 			email: '',
 			emailError: '',
+			error: '',
+			formIsValid: false,
 			password: '',
 			passwordError: '',
-			repeatPassword: '',
-			repeatPasswordError: ''
+			confirmPassword: '',
+			confirmPasswordError: '',
+			username: '',
+			usernameError: '',
 		}
 	}
 };

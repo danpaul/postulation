@@ -6,27 +6,45 @@ import User from './user.jsx';
 import React from 'react';
 
 module.exports = BaseComponent.createClass({
-	render: function() {
-        var view = this.props.data.get('view');
-		return <div>
-            <AppBar />
-            <User
+    getUser: function(options){
+        if( options.view === 'register' ){
+            return <User
                 controllers={this.props.controllers}
                 user={this.props.data.get('user')}
-                view={view}
+                view={options.view}
             />
-            <CreatePath
+        } else if( options.view !== 'login' ){
+            
+        }
+        return null;
+    },
+    getCreatePath(options){
+        if( options.view === 'createPath' ){
+            return <CreatePath
                 controllers={this.props.controllers}
                 path={this.props.data.get('createPath')}
-                visible={view === 'createPath'}
             />
+        }
+        return null;
+    },
+    getPath(options){
+        if( options.view === 'path' ){
             <Path
                 controllers={this.props.controllers}
                 createPath={this.props.data.get('createPath')}
                 detailItem={this.props.data.get('detailItem')}
                 path={this.props.data.get('path')}
-                visible={view === 'path'}
             />
+        }
+        return null;
+    },
+	render: function() {
+        var view = this.props.data.get('view');
+		return <div>
+            <AppBar />
+            { this.getUser({view: view}) }
+            { this.getCreatePath({view: view}) }
+            { this.getPath({view: view}) }
 		</div>;
 	}
 });
