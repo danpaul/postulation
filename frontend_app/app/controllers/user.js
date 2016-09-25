@@ -4,6 +4,7 @@ const Immutable = require('immutable');
 const ERROR_EMAIL = 'Email is not valid';
 const ERROR_USERNAME = 'Username must be at least two characters and only contain characters, letters, underscores, dots and dashes';
 const ERROR_PASSWORD = 'Password must be at leat eight characters';
+const ERROR_PASSWORD_LOGIN = 'Password can not be blank';
 const ERROR_PASSWORD_CONFIRM = 'Passwords do not match';
 
 module.exports = function(options){
@@ -133,12 +134,12 @@ module.exports = function(options){
 	  		.send(data)
 	  		.end(function (err, response){
 	  			if( err ){
+	  				// todo handle error
 	  				console.log(err);
 	  			}
                 if( response.body.status === 'success'){
                 	d.set(['user', 'id'], response.body.data.user.id);
                 	page('/');
-                	// d.set('view', 'home');
                     console.log('success');
                 } else {
                     console.log('error');
@@ -146,7 +147,6 @@ module.exports = function(options){
                 console.log(response.body)
 	  		}
 		);
-
     }
 
     /***************************************************************************
@@ -159,6 +159,87 @@ module.exports = function(options){
      * Shows the new login view
      */
     this.showLogin = function(){ d.set('view', 'login'); }
+
+    /**
+     * Updates register form data
+     * @param  {string}  options.field
+     * @param  {string}  options.value
+     */
+    this.updateLoginFieldValue = function(options){
+    	d.set(['user', 'loginFormData', options.field], options.value);
+    }
+
+    /**
+     * Validates email and optionally sets error data
+     */
+    this.validateLoginEmail = function(setData = true){
+    	const email = d.get(['user', 'loginFormData', 'email']);
+    	var v = '';
+    	if( !this.emailIsValid(email) ){ v = ERROR_EMAIL; }
+
+    	if( setData ){
+    		d.set(['user', 'loginFormData', 'emailError'], v);
+    	}
+    	return( v === '' );
+    }
+
+    /**
+     * Validates password and optionally sets error data
+     */
+    this.validateLoginPassword = function(setData = true){
+    	const p = d.get(['user', 'loginFormData', 'password']);
+    	var v = '';
+    	if( !p.length ){ v = ERROR_PASSWORD_LOGIN; }
+    	if( setData ){
+    		d.set(['user', 'loginFormData', 'passwordError'], v);
+    	}
+    	return( v === '' );
+    }
+
+    this.validateLoginForm = function(setData = false){
+    	var valid = true;
+ 	    [this.validateLoginEmail.bind(this),
+    	 this.validateLoginPassword.bind(this)].forEach(function(f){
+		 	if( !f(setData) ){ valid = false; }
+		});
+		d.set(['user', 'loginFormData', 'formIsValid'], valid);
+		return valid;
+    }
+
+    /**
+     * Handles submitting registration data
+     */
+    this.submitLoginForm = function(){
+    	if( !this.validateLoginForm(true) ){ return; }
+    	var data = {};
+    	['email', 'password'].forEach(function(k){
+    		data[k] = d.get(['user', 'loginFormData', k]);
+    	});
+		superagent
+	  		.post(siteUrl + '/api/auth/api/login')
+	  		.send(data)
+	  		.end(function (err, response){
+// asdf
+console.log('response', response)
+
+	  			if( err ){
+	  				// todo handle error
+	  				console.log(err);
+	  				return;
+	  			}
+                if( response.body.status === 'success'){
+                	d.set(['user', 'id'], response.body.data.user.id);
+                	page('/');
+                	// d.set('view', 'home');
+                    console.log('success');
+                } else {
+                    console.log('error');
+                }
+                console.log(response.body)
+	  		}
+		);
+    }
+
 
     /***************************************************************************
      *

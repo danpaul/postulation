@@ -12,10 +12,7 @@ const STYLE = {
 module.exports = BaseComponent.createClass({
 
     handleSubmit: function(){
-        this.props.controllers.user.submitRegisterForm();
-    },
-    onChangeUsername: function(e){
-        this.updateField('username', e.target.value);
+        this.props.controllers.user.submitLoginForm();
     },
     onChangeEmail: function(e){
         this.updateField('email', e.target.value);
@@ -23,26 +20,16 @@ module.exports = BaseComponent.createClass({
     onChangePassword: function(e){
         this.updateField('password', e.target.value);
     },
-    onChangeConfirmPassword: function(e){
-        this.updateField('confirmPassword', e.target.value);
-        this.props.controllers.user.validateRegisterConfirmPassword();
-        this.props.controllers.user.validateRegisterForm();        
-    },
-    onBlurUsername: function(e){
-        this.props.controllers.user.validateRegisterUsername();
-        this.props.controllers.user.validateRegisterForm();
-    },
     onBlurEmail: function(e){
-        this.props.controllers.user.validateRegisterEmail();
-        this.props.controllers.user.validateRegisterForm();
+        this.props.controllers.user.validateLoginEmail();
     },
     onBlurPassword: function(e){
-        this.props.controllers.user.validateRegisterPassword();
-        this.props.controllers.user.validateRegisterForm();
+        this.props.controllers.user.validateLoginPassword();
     },
     updateField: function(field, value){
         var d= {field: field, value: value};
-        this.props.controllers.user.updateRegisterFieldValue(d);
+        this.props.controllers.user.updateLoginFieldValue(d);
+        this.props.controllers.user.validateLoginForm();
     },
 	render: function() {
 		return <div>
@@ -55,9 +42,18 @@ module.exports = BaseComponent.createClass({
                         onChange={this.onChangeEmail}
                         onBlur={this.onBlurEmail}
                     />
+                    <TextField
+                        floatingLabelText="Password"
+                        type="password"
+                        value={this.props.formData.get('password')}
+                        fullWidth={true}
+                        onBlur={this.onBlurPassword}
+                        errorText={this.props.formData.get('passwordError')}
+                        onChange={this.onChangePassword}
+                    />
                     <RaisedButton
                         onClick={this.handleSubmit}
-                        label="Register"
+                        label="Login"
                         secondary={true}
                         disabled={!this.props.formData.get('formIsValid')}
                         style={{float: 'right'}} />

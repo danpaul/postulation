@@ -42,7 +42,8 @@ const INITIAL_STATE = {
 			email: '',
 			emailError: '',
 			password: '',
-			passwordError: ''
+			passwordError: '',
+			formIsValid: false
 		}
 	}
 };
