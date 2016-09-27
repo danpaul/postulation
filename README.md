@@ -46,6 +46,10 @@ Models should return raw errors to controllers.
 
 ## Todo
 
+* Ranking for paths, nodes, links
+* get user voting history
+* allow change vote
+* Add user info to paths and nodes
 * Add authorization to routes
 * Add error handling to routes
 * Add input sanitization and validation to back end

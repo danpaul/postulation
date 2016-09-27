@@ -2,6 +2,7 @@ import CreatePath from './createPath';
 import Path from './path';
 import User from './user';
 import View from './view';
+import Vote from './vote';
 
 const _ = require('underscore');
 const superagent = require('superagent-cache')();
@@ -9,7 +10,8 @@ const CONTROLLERS = {
 	createPath: CreatePath,
 	path: Path,
 	user: User,
-	view: View
+	view: View,
+	vote: Vote
 };
 
 module.exports = function(options){

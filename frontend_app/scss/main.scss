@@ -10,3 +10,22 @@ html, body{
 	background-size: 80% 80%;
 	cursor: pointer;
 }
+
+.vote-button{
+	width: 40px;
+	height: 40px;
+	cursor: pointer;	
+}
+
+.vote-button_affirm{
+	background: url('/img/icons/add-circle.svg') center no-repeat;	
+}
+
+.vote-button_negate{
+	background: url('/img/icons/remove-circle.svg') center no-repeat;
+}
+
+.vote-button_disabled{
+	cursor: default;
+	opacity: 0.2;
+}

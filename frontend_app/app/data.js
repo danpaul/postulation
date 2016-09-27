@@ -24,7 +24,18 @@ const INITIAL_STATE = {
 			nodes: []
 		}
 	},
-	path: {},
+	path: {
+		id: null,
+		isNegatingResponse: null,
+		path: [],
+		title: '',
+		true: 0,
+		false: 0,
+		total: 0,
+		strength: 0,
+		user: null,
+		userVote: null
+	},
 	user: {
 		id: null,
 		registerFormData: {

@@ -3,6 +3,7 @@ import React from 'react';
 import PathItemDetail from './pathItemDetail.jsx';
 import PathLink from './pathLink.jsx';
 import PathNode from './pathNode.jsx';
+import PathTitle from './pathTitle.jsx';
 import Paper from 'material-ui/Paper';
 
 const STYLE = { margin: 20,
@@ -53,7 +54,10 @@ module.exports = BaseComponent.createClass({
 	render: function() {
         return <div>
             <Paper style={STYLE} zDepth={1}>
-                <h3>{this.props.path.get('title')}</h3>
+                <PathTitle
+                    controllers={this.props.controllers}
+                    path={this.props.path}
+                />
                 {this.getEllements()}
             </Paper>
             <PathItemDetail

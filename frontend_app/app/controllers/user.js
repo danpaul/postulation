@@ -219,9 +219,6 @@ module.exports = function(options){
 	  		.post(siteUrl + '/api/auth/api/login')
 	  		.send(data)
 	  		.end(function (err, response){
-// asdf
-console.log('response', response)
-
 	  			if( err ){
 	  				// todo handle error
 	  				console.log(err);
