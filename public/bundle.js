@@ -435,7 +435,7 @@
 
 	var _controllers2 = _interopRequireDefault(_controllers);
 
-	var _router = __webpack_require__(450);
+	var _router = __webpack_require__(451);
 
 	var _router2 = _interopRequireDefault(_router);
 
@@ -31797,24 +31797,83 @@
 	var STYLE = { padding: 10, cursor: 'pointer' };
 
 	module.exports = _baseComponent2.default.createClass({
-		handleNodeClick: function handleNodeClick() {
-			var d = { item: this.props.node };
-			this.props.controllers.path.setDetailItem(d);
-		},
-		render: function render() {
-			if (this.props.node.get('hidden')) {
-				return null;
-			}
-			var zDepth = 1;
-			if (this.props.focused) {
-				zDepth = 2;
-			}
-			return _react2.default.createElement(
-				_Paper2.default,
-				{ style: STYLE, zDepth: zDepth, onClick: this.handleNodeClick },
-				this.props.node.get('statement')
-			);
-		}
+	    componentDidMount: function componentDidMount() {
+	        this.props.controllers.vote.get({ type: 'node',
+	            id: this.props.node.get('id') });
+	    },
+	    handleNodeClick: function handleNodeClick() {
+	        var d = { item: this.props.node };
+	        this.props.controllers.path.setDetailItem(d);
+	    },
+	    handleAffirmVote: function handleAffirmVote(e) {
+	        var userVote = this.props.node.get('userVote');
+	        if (userVote) {
+	            return;
+	        }
+	        this.props.controllers.vote.add({ type: 'node',
+	            id: this.props.node.get('id'),
+	            true: true });
+	    },
+	    handleNegateVote: function handleNegateVote(e) {
+	        var userVote = this.props.node.get('userVote');
+	        if ((userVote !== null || typeof userVote !== 'undefined') && !userVote) {
+	            return;
+	        }
+	        this.props.controllers.vote.add({ type: 'node',
+	            id: this.props.node.get('id'),
+	            true: false });
+	    },
+	    render: function render() {
+	        if (this.props.node.get('hidden')) {
+	            return null;
+	        }
+	        var zDepth = 1;
+	        if (this.props.focused) {
+	            zDepth = 2;
+	        }
+
+	        var affirmVoteClass = 'vote-button vote-button_affirm';
+	        var negateVoteClass = 'vote-button vote-button_negate';
+
+	        var userVote = this.props.node.get('userVote');
+	        if (userVote !== null && typeof userVote !== 'undefined') {
+	            if (userVote) {
+	                affirmVoteClass += ' vote-button_disabled';
+	            } else {
+	                negateVoteClass += ' vote-button_disabled';
+	            }
+	        }
+
+	        return _react2.default.createElement(
+	            _Paper2.default,
+	            { style: STYLE, zDepth: zDepth, onClick: this.handleNodeClick },
+	            _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Strength: ',
+	                    this.props.node.get('strength')
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Votes: ',
+	                    this.props.node.get('true'),
+	                    ' / ',
+	                    this.props.node.get('false')
+	                ),
+	                _react2.default.createElement('div', {
+	                    onClick: this.handleAffirmVote,
+	                    className: affirmVoteClass }),
+	                _react2.default.createElement('div', {
+	                    onClick: this.handleNegateVote,
+	                    className: negateVoteClass })
+	            ),
+	            this.props.node.get('statement')
+	        );
+	    }
 	});
 
 /***/ },
@@ -45686,14 +45745,14 @@
 
 	var _view2 = _interopRequireDefault(_view);
 
-	var _vote = __webpack_require__(451);
+	var _vote = __webpack_require__(444);
 
 	var _vote2 = _interopRequireDefault(_vote);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var _ = __webpack_require__(434);
-	var superagent = __webpack_require__(444)();
+	var superagent = __webpack_require__(445)();
 	var CONTROLLERS = {
 		createPath: _createPath2.default,
 		path: _path2.default,
@@ -47300,7 +47359,98 @@
 /* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(445);
+	'use strict';
+
+	var Immutable = __webpack_require__(435);
+
+	module.exports = function (options) {
+
+	    var self = this;
+
+	    var c = options.controllers;
+	    var d = options.data;
+	    var superagent = options.superagent;
+	    var siteUrl = options.siteUrl;
+
+	    /**
+	     * Handles submitting votting
+	     * @param  {string}  options.type  path, node or link
+	     * @param  {int}  options.id
+	     * @param  {bool}  options.true
+	     */
+	    this.add = function (options) {
+	        var self = this;
+
+	        superagent.post(siteUrl + '/api/vote').send(options).end(function (err, response) {
+	            if (err) {
+	                // todo handle error
+	                console.log(err);
+	            }
+	            if (response.body.status === 'success') {
+	                options.refresh = true;
+	                self.get(options);
+	                console.log('success');
+	            } else {
+	                console.log('error');
+	            }
+	        });
+	    };
+
+	    /**
+	     * Gets user vote history
+	     * @param  {string}  options.type  path, node or link
+	     * @param  {int}  options.id
+	     * @param  {bool}  options.refresh  optional, defaults to false
+	     */
+	    this.get = function (options) {
+	        var userId = d.get(['user', 'id']);
+	        var refresh = options.refresh ? true : false;
+
+	        // ASDF
+	        userId = 666;
+
+	        if (!userId) {
+	            return;
+	        }
+	        var url = siteUrl + '/api/vote/user/' + userId + '/' + options.type + '/' + options.id;
+	        superagent.get(url).forceUpdate(refresh).end(function (err, response) {
+	            if (err) {
+	                // todo handle error
+	                console.log(err);
+	            }
+	            if (response.body.status === 'success') {
+	                var vote = response.body.data.vote;
+	                if (!vote) {
+	                    return;
+	                }
+	                if (options.type === 'path') {
+	                    var pathId = d.get(['path', 'id']);
+	                    if (pathId !== vote.item) {
+	                        return;
+	                    }
+	                    d.set(['path', 'userVote'], vote.true);
+	                } else if (options.type === 'node') {
+	                    var path = d.get(['path', 'path']);
+	                    for (var i = 0; i < path.size; i++) {
+	                        var item = path.get(i);
+	                        if (item.get('type') === 'node' && item.get('id') === options.id) {
+	                            d.set(['path', 'path', i, 'userVote'], vote.true);
+	                        }
+	                    }
+	                }
+	            } else {
+	                // TODO: handle error
+	                console.log('error');
+	            }
+	        });
+	    };
+	};
+
+/***/ },
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var utils = __webpack_require__(446);
 
 	/**
 	 * superagentCache constructor
@@ -47311,10 +47461,10 @@
 	 */
 	module.exports = function(agent, cache, defaults){
 
-	  var superagent = (agent) ? agent : __webpack_require__(446);
+	  var superagent = (agent) ? agent : __webpack_require__(447);
 
 	  if(!superagent.patchedBySuperagentCache){
-	    superagent.cache = (cache && cache.get) ? cache : new (__webpack_require__(449))(cache);
+	    superagent.cache = (cache && cache.get) ? cache : new (__webpack_require__(450))(cache);
 	    superagent.defaults = defaults || {};
 	    superagent.pendingRequests = {};
 	    var Request = superagent.Request;
@@ -47537,7 +47687,7 @@
 
 
 /***/ },
-/* 445 */
+/* 446 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -47778,15 +47928,15 @@
 
 
 /***/ },
-/* 446 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var Emitter = __webpack_require__(447);
-	var reduce = __webpack_require__(448);
+	var Emitter = __webpack_require__(448);
+	var reduce = __webpack_require__(449);
 
 	/**
 	 * Root reference for iframes.
@@ -48975,7 +49125,7 @@
 
 
 /***/ },
-/* 447 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -49144,7 +49294,7 @@
 
 
 /***/ },
-/* 448 */
+/* 449 */
 /***/ function(module, exports) {
 
 	
@@ -49173,7 +49323,7 @@
 	};
 
 /***/ },
-/* 449 */
+/* 450 */
 /***/ function(module, exports) {
 
 	/**
@@ -49474,7 +49624,7 @@
 
 
 /***/ },
-/* 450 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49518,83 +49668,6 @@
 		this.navigate = function () {
 			(0, _page2.default)(window.location.pathname);
 		};
-	};
-
-/***/ },
-/* 451 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Immutable = __webpack_require__(435);
-
-	module.exports = function (options) {
-
-	    var self = this;
-
-	    var c = options.controllers;
-	    var d = options.data;
-	    var superagent = options.superagent;
-	    var siteUrl = options.siteUrl;
-
-	    /**
-	     * Handles submitting votting
-	     * @param  {string}  options.type  path, node or link
-	     * @param  {int}  options.id
-	     * @param  {bool}  options.true
-	     */
-	    this.add = function (options) {
-	        superagent.post(siteUrl + '/api/vote').send(options).end(function (err, response) {
-	            if (err) {
-	                // todo handle error
-	                console.log(err);
-	            }
-	            if (response.body.status === 'success') {
-	                console.log('success');
-	            } else {
-	                console.log('error');
-	            }
-	            console.log(response.body);
-	        });
-	    };
-
-	    /**
-	     * Gets user vote history
-	     * @param  {string}  options.type  path, node or link
-	     * @param  {int}  options.id
-	     */
-	    this.get = function (options) {
-	        var userId = d.get(['user', 'id']);
-
-	        // ASDF
-	        userId = 666;
-
-	        if (!userId) {
-	            return;
-	        }
-	        var url = siteUrl + '/api/vote/user/' + userId + '/' + options.type + '/' + options.id;
-	        superagent.get(url).end(function (err, response) {
-	            if (err) {
-	                // todo handle error
-	                console.log(err);
-	            }
-	            if (response.body.status === 'success') {
-	                var vote = response.body.data.vote;
-	                if (!vote) {
-	                    return;
-	                }
-	                if (options.type === 'path') {
-	                    var pathId = d.get(['path', 'id']);
-	                    if (pathId !== vote.item) {
-	                        return;
-	                    }
-	                    d.set(['path', 'userVote'], vote.true);
-	                }
-	            } else {
-	                console.log('error');
-	            }
-	        });
-	    };
 	};
 
 /***/ }

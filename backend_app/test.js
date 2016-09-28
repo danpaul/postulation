@@ -218,6 +218,28 @@ async.series([
 			callback();
 		});
 	},
+	// reverse vote
+	function(callback){
+		controllers.vote.add({
+			item: path.id,
+			type: CONSTANTS.types.path,
+			user: user.id,
+			true: false
+		}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			callback();
+		});
+	},
+	// confirm path strength has decreased
+	function(callback){
+		controllers.path.get({id: path.id}, function(err, response){
+			if( err ){ return callback(err); }
+			assert(response.status === 'success');
+			assert(response.data.path.path[1].strength === 0);
+			callback();
+		});
+	},
 	// vote for node
 	function(callback){
 		var node = fullPath.path[0];

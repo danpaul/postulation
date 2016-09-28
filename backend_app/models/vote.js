@@ -72,6 +72,56 @@ module.exports = function(options){
 		], callback);
 	}
 
+	/**
+	 * Reverses user vote. Should confirm user has existing opposite vote already
+	 * @param  {int}  options.item  id of item
+	 * @param  {int}  options.type  constant for item type
+	 * @param  {int}  options.user
+	 * @param  {bool}  options.true
+	 */
+	this.reverse = function(options, callback){
+		var self = this;
+		var table = null;
+		if( options.type === CONSTANTS.types.path ){
+			table = 'path';
+		} else if( options.type === CONSTANTS.types.node ){
+			table = 'node';
+		} else {
+			return callback(new Error('Invalid type'));
+		}
+
+		async.series([
+
+			// delete existing vote and log
+			function(callback){
+				k(TABLE)
+					.where('item', options.item)
+					.andWhere('user', options.user)
+					.andWhere('type', options.type)
+					.delete()
+					.asCallback(callback)
+			},			
+			// decrement true/false
+			function(callback){
+				// reverse existing vote
+				var q = k(table).where('id', '=', options.item);
+				if( options.true ){ q.decrement('false', 1);
+				} else { q.decrement('true', 1); }
+				q.asCallback(callback);
+			},
+			// decrement total
+			function(callback){
+				k(table)
+					.where('id', '=', options.item)
+					.decrement('total', 1)
+					.asCallback(callback);
+			}
+		], function(err){
+			if( err ){ return callback(err); }
+			self.add(options, callback);
+		});
+	}
+
 	this._getUpdateQuery = function(table, id){
 		return 'UPDATE ' + table + ' ' +
 				'SET strength=' + table + '.true / (' + table + '.true + ' + table + '.false)' +

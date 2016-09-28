@@ -8,7 +8,8 @@ require('./lib/schema')({knex: knex}, function(err){
 
 var sqlLoginMiddleware = require('sql_login_middleware')({
     rootUrl: config.rootUrl,
-    knex: knex
+    knex: knex,
+    useUsername: true
 });
 
 var Models = require('./models');
@@ -22,5 +23,6 @@ module.exports = function(app){
 	app.use('/api/auth', sqlLoginMiddleware);
 
 	var Routes = require('./routes/index.js');
-	var routes = new Routes(app, {controllers: controllers});
+	var routes = new Routes(app, {controllers: controllers,
+								  sqlLogin: sqlLoginMiddleware.sqlLogin});
 }

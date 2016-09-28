@@ -1,4 +1,4 @@
-const ROUTES = ['link', 'path', 'vote'];
+const ROUTES = ['link', 'path', 'user', 'vote'];
 const response = require('../lib/response');
 const constants = require('../constants');
 

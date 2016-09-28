@@ -38,16 +38,34 @@ module.exports = function(options){
 				return r({errorCode: 'unknown'}, callback);
 			}
 			if( votes.length ){
-				return r({errorCode: 'userVoted'}, callback);
-			}
-			// if voting for path, update links and path rankings
-			m.vote.add(options, function(err){
-				if( err ){
-					console.log(err);
-					return r({errorCode: 'unknown'}, callback);
+				// test if user is reversing their vote
+				const voteTruth = votes[0]['true'] ? true : false;
+				const newVoteTruth = options.true ? true : false;
+
+				if( voteTruth === newVoteTruth ){
+					return r({errorCode: 'userVoted'}, callback);
 				}
-				return r({}, callback);
-			});
+
+				// if voting for path, update links and path rankings
+				m.vote.reverse(options, function(err){
+					if( err ){
+						console.log(err);
+						return r({errorCode: 'unknown'}, callback);
+					}
+					return r({}, callback);
+				});
+
+				
+			} else {
+				// if voting for path, update links and path rankings
+				m.vote.add(options, function(err){
+					if( err ){
+						console.log(err);
+						return r({errorCode: 'unknown'}, callback);
+					}
+					return r({}, callback);
+				});
+			}
 		});
 	}
 

@@ -46,9 +46,9 @@ Models should return raw errors to controllers.
 
 ## Todo
 
-* Ranking for paths, nodes, links
-* get user voting history
-* allow change vote
+* X Ranking for paths, nodes
+* X get user voting history
+* X allow change vote
 * Add user info to paths and nodes
 * Add authorization to routes
 * Add error handling to routes
@@ -56,3 +56,4 @@ Models should return raw errors to controllers.
 * Add dynamic config for API url to front end
 * Add prod build for front end
 * Validate that new paths have atleast two nodes
+* add main view w/ new/trending paths
