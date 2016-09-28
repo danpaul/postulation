@@ -3,6 +3,8 @@ const ERRORS = {
 	invalidType: 'Type provided is not valid',
 	invalidResponseItem: 'Could not locate item for response',
 	missingOptions: 'Function called with missing data',
+	missingRouteParams: 'Route called with missing or incorrect data',
+	notLoggedIn: 'You must be log in',
 	unknown: 'An unknown error occurred',
 	userVoted: 'User has already voted'
 };

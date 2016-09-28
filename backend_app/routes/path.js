@@ -1,22 +1,24 @@
 module.exports = function(options){
 
-// asdf
-var TEST_USER = 666;
-
     var self = this;
     var app = require('express')();
     const c = options.controllers;
     const r = options.response;
-
-    app.get('/', function(req, res){
-        res.send('test');
-    });
+    const auth = options.auth;
+    const validation = options.validation;
 
     app.post('/create', function(req, res){
 
+console.log(req.user);
+
+        const user = auth.loginCheck(req, res);
+        if( !user ){ return; }
+
+console.log(JSON.stringify(req.body));
+
     	// do validation and sanitization
     	var data = req.body;
-    	data.user = TEST_USER;
+    	data.user = user.id;
 
     	c.path.create(data, function(err, response){
     		if( err ){

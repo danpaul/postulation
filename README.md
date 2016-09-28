@@ -51,9 +51,11 @@ Models should return raw errors to controllers.
 * X allow change vote
 * Add user info to paths and nodes
 * Add authorization to routes
-* Add error handling to routes
 * Add input sanitization and validation to back end
+* Add error handling to routes
+* Add error handling to UI
 * Add dynamic config for API url to front end
 * Add prod build for front end
+* ensure knex is escaping character and raw queries are safe
 * Validate that new paths have atleast two nodes
 * add main view w/ new/trending paths

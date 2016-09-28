@@ -2,14 +2,13 @@ module.exports = function(options){
 
     const PUBLIC_PROPS = ['username', 'id'];
 
-// asdf
-var TEST_USER = 666;
-
     var self = this;
     var app = require('express')();
     const c = options.controllers;
     const r = options.response;
     const sqlLogin = options.sqlLogin;
+    const auth = options.auth;
+    const validation = options.validation;
 
     const getPublicProps = function(user){
         var cleanUser = {};

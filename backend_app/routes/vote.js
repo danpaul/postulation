@@ -5,20 +5,19 @@ module.exports = function(options){
     const constants = options.constants;
     const c = options.controllers;
     const r = options.response;
-
-// ASDF
-var TEST_USER = 666;
+    const auth = options.auth;
+    const validation = options.validation;
 
     app.post('/', function(req, res){
 
-        // TODO: input validation/sanitization
-        // 
-        //
+        const user = auth.loginCheck(req, res);
+        if( !user ){ return; }
+
         var options = {
             item: req.body.id,
             type: req.body.type,
             true: req.body.true,
-            user: TEST_USER
+            user: user.id
         }
 
         c.vote.add(options, function(err, response){

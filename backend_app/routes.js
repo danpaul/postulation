@@ -18,11 +18,14 @@ var models = new Models({knex: knex});
 var Controllers = require('./controllers');
 var controllers = new Controllers({models: models});
 
+var auth = require('./lib/auth');
+
 module.exports = function(app){
 
 	app.use('/api/auth', sqlLoginMiddleware);
 
 	var Routes = require('./routes/index.js');
 	var routes = new Routes(app, {controllers: controllers,
-								  sqlLogin: sqlLoginMiddleware.sqlLogin});
+								  sqlLogin: sqlLoginMiddleware.sqlLogin,
+								  auth: auth});
 }
