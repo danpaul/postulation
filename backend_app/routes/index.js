@@ -5,7 +5,7 @@ module.exports = function(app, options){
 
 	options.response = require('../lib/response');
 	options.constants = require('../constants');
-	options.validation = require('../lib/validation');
+	options.validation = new(require('../lib/validation'));
 
 	_.each(ROUTES, function(routeName){
 		var Route = require('./' + routeName);

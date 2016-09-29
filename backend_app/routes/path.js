@@ -9,15 +9,26 @@ module.exports = function(options){
 
     app.post('/create', function(req, res){
 
-console.log(req.user);
+//asdf
+var user = {id: 666}
+// console.log(req.user);
 
-        const user = auth.loginCheck(req, res);
-        if( !user ){ return; }
+        // asdf
+        // const user = auth.loginCheck(req, res);
+        // if( !user ){ return; }
 
-console.log(JSON.stringify(req.body));
+// asdf
+// console.log(JSON.stringify(req.body));
 
     	// do validation and sanitization
-    	var data = req.body;
+    	// var data = req.body;
+        var data = validation.parsePathCreate(req, res);
+        if( !data ){ return; }
+
+console.log(data);
+
+
+
     	data.user = user.id;
 
     	c.path.create(data, function(err, response){

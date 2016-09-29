@@ -5,6 +5,14 @@ const ERRORS = {
 	missingOptions: 'Function called with missing data',
 	missingRouteParams: 'Route called with missing or incorrect data',
 	notLoggedIn: 'You must be log in',
+	pathChargeInvalid: 'Path charge must be a boolean',
+	pathNodeInvalid: 'Invalid or missing path node',
+	pathNodeTooShort: 'Path node must be at least 3 characters',
+	pathNodeTooLong: 'Path node can not be more thn 1024 characters',
+	pathNodesInvalid: 'Invalid or missing path nodes',
+	pathTitleInvalid: 'Path title is not valid',
+	pathTitleTooShort: 'Path title must be at least 3 characters',
+	pathTitleTooLong: 'Path title must be less than 255 characters',
 	unknown: 'An unknown error occurred',
 	userVoted: 'User has already voted'
 };
