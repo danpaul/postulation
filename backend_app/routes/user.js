@@ -22,8 +22,12 @@ module.exports = function(options){
         return cleanUser;
     }
 
+    /**
+     * Gets public user info
+     */
     app.get('/:id', function(req, res){
-        // TODO: validation
+        var id = validation.getNumericValue(req.params.pathId);
+        if( !id ){ return res.json(r({errorCode: 'idInvalid'})); }
         sqlLogin.getUser(req.params.id, function(err, user){
             if( err ){
                 console.log(err);
@@ -32,10 +36,8 @@ module.exports = function(options){
             if( !user ){
                 return res.json(r({data: {user: null}}));
             }
-            user = getPublicProps(user);
-            return res.json(r({data: {user: user}}));
+            return res.json(r({data: {user: getPublicProps(user)}}));
         });
     });
-
     return app;
 }

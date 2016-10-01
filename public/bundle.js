@@ -47406,9 +47406,6 @@
 	        var userId = d.get(['user', 'id']);
 	        var refresh = options.refresh ? true : false;
 
-	        // ASDF
-	        userId = 666;
-
 	        if (!userId) {
 	            return;
 	        }
@@ -47440,7 +47437,7 @@
 	                }
 	            } else {
 	                // TODO: handle error
-	                console.log('error');
+	                console.log('error', response);
 	            }
 	        });
 	    };

@@ -49,6 +49,7 @@ Models should return raw errors to controllers.
 * X Ranking for paths, nodes
 * X get user voting history
 * X allow change vote
+* confirm path/node exists before linking new path
 * Add user info to paths and nodes
 * Add authorization to routes
 * Add input sanitization and validation to back end
@@ -59,3 +60,7 @@ Models should return raw errors to controllers.
 * ensure knex is escaping character and raw queries are safe
 * Validate that new paths have atleast two nodes
 * add main view w/ new/trending paths
+
+## Bugs
+
+* Vote history for non-logged in user: http://take.ms/Px7Kkc

@@ -13,14 +13,12 @@ module.exports = function(options){
         const user = auth.loginCheck(req, res);
         if( !user ){ return; }
 
-        var options = {
-            item: req.body.id,
-            type: req.body.type,
-            true: req.body.true,
-            user: user.id
-        }
+        var voteData = validation.parseVoteCreate(req, res);
+        if( !voteData ){ return; }
 
-        c.vote.add(options, function(err, response){
+        voteData.user = user.id;
+
+        c.vote.add(voteData, function(err, response){
             if( err ){
                 console.log(err);
                 return res.json(r({errorCode: 'unknown'}));
@@ -31,13 +29,14 @@ module.exports = function(options){
 
     app.get('/user/:userId/:type/:id', function(req, res){
 
-        // TODO: input validation/sanitization
-        // 
-        //
-        var options = {
-            user: req.params.userId,
-            type: req.params.type,
-            item: req.params.id
+        const user = auth.loginCheck(req, res);
+        if( !user ){ return; }
+
+        var options = validation.parseVoteGet(req, res);
+        if( !options ){ return; }
+
+        if( options.user !== user.id ){
+            return res.json(r({errorCode: 'notAuthorized'}));
         }
 
         c.vote.get(options, function(err, response){

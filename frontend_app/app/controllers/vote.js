@@ -46,9 +46,6 @@ module.exports = function(options){
     	var userId = d.get(['user', 'id']);
         const refresh = options.refresh ? true : false;
 
-// ASDF
-userId = 666;
-
     	if( !userId ){ return; }
     	var url = siteUrl + '/api/vote/user/' + userId + '/' +
     						options.type + '/' + options.id;
@@ -80,7 +77,7 @@ userId = 666;
                     }
                 } else {
                     // TODO: handle error
-                    console.log('error');
+                    console.log('error', response);
                 }
 	  		});
     }

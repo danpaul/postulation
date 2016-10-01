@@ -1,11 +1,12 @@
-const _ = require('underscore');
-var response = require('./response');
-const constants = require('../constants');
+/**
+ * Handles route validation.
+ * Module will return http response to user on invalid and return `null`
+ * 	to calling function.
+ */
 
-// asdf
-// setInterval(function(){
-// 	console.log(response);
-// }, 100);
+const _ = require('underscore');
+const response = require('./response');
+const constants = require('../constants');
 
 const charges = {
 	affirm: true,
@@ -72,18 +73,58 @@ module.exports = function(){
 		}
 
 		cleanPath.charge = req.body.charge;
-// asdf
-// console.log('req.body.nodes', req.body.nodes)
 
 		var resp = this.parsePathNodes(req.body.nodes);
-// console.log('resp', resp)
+
 		if( _.isString(resp) ){
-			res.json(response({errorCode: response}));
+			res.json(response({errorCode: resp}));
 			return null;
 		}
 
 		cleanPath.nodes = resp;
 		return cleanPath;
+	}
+
+	/**
+	 * Parses req data for vote create
+	 */
+	this.parseVoteCreate = function(req, res){
+
+		if( !req.body.id ||
+			!Number(req.body.id) ||
+			!req.body.type ||
+			this.isValidType(req.body.type) ||
+			typeof(req.body.true) === 'undefined' ||
+			!_.isBoolean(req.body.true) ){
+
+			res.json(response({errorCode: 'missingRouteParams'}));
+			return null;
+		}
+
+		return({
+            item: req.body.id,
+            type: req.body.type,
+            true: req.body.true,
+		});
+	}
+
+	this.parseVoteGet = function(req, res){
+		if( !req.params ||
+			!req.params.userId ||
+			!Number(req.params.userId) ||
+			!req.params.type ||
+			this.isValidType(req.params.type) ||
+			!req.params.id ||
+			!Number(req.params.id) ){
+
+			res.json(response({errorCode: 'missingRouteParams'}));
+			return null;
+		}
+        return({
+            user: Number(req.params.userId),
+            type: req.params.type,
+            item: Number(req.params.id)
+        });
 	}
 
 	/**
@@ -137,6 +178,13 @@ module.exports = function(){
 
 	this.isValidType = function(type){
 		return constants.types[type] ? true : false;
+	}
+
+	this.getNumericValue = function(value){
+		if( !value ){ return null; }
+		const n = Number(value);
+		if( !n ){ return null; }
+		return n;
 	}
 
 };

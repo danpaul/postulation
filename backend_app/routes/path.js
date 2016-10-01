@@ -9,25 +9,11 @@ module.exports = function(options){
 
     app.post('/create', function(req, res){
 
-//asdf
-var user = {id: 666}
-// console.log(req.user);
+        const user = auth.loginCheck(req, res);
+        if( !user ){ return; }
 
-        // asdf
-        // const user = auth.loginCheck(req, res);
-        // if( !user ){ return; }
-
-// asdf
-// console.log(JSON.stringify(req.body));
-
-    	// do validation and sanitization
-    	// var data = req.body;
         var data = validation.parsePathCreate(req, res);
         if( !data ){ return; }
-
-console.log(data);
-
-
 
     	data.user = user.id;
 
@@ -41,7 +27,8 @@ console.log(data);
     });
 
     app.get('/get/:pathId', function(req, res){
-    	var id = req.params.pathId;
+    	var id = validation.getNumericValue(req.params.pathId);
+        if( !id ){ return res.json(r({errorCode: 'idInvalid'})); }
     	c.path.get({id: id}, function(err, response){
     		if( err ){
     			console.log(err);
