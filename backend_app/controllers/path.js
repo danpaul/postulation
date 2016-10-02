@@ -6,15 +6,56 @@ module.exports = function(options){
 	var r = options.response;
 
 	/**
+	 * Passes back boolean to callback true if final node is valid
+	 */
+	this._validateFinalNode = function(nodes, callback){
+		const node = nodes[nodes.length - 1];
+		if(_.isString(node) ){ return callback(null, true); }
+		if( node.type === 'link' ){
+			var method = m.link.getLink.bind(this);
+		} else if( node.type === 'node' ){
+			var method = m.node.getNode.bind(this);
+		} else {
+			return callback(null, false);
+		}
+		method({id: node.id}, function(err, items){
+			if( err ){ return callback(err); }
+			if( !items || !items.length ){
+				return callback(null, false);
+			} else {
+				return callback(null, true);
+			}
+		});
+	}
+
+	/**
 	 * @param  {int}  options.user
 	 * @param  {array}  options.nodes - mixed elements
 	 * @param  {bool}  options.charge - if path negates a node or link, should be false
 	 *                                	negated element should be last element of path
 	 */
 	this.create = function(options, callback){
+		var self = this;
 		if( !options || !options.user ){
 			return r({errorCode: 'missingOptions'}, callback);
 		}
+		if( _.isArray(options.nodes) ){
+			this._validateFinalNode(options.nodes, function(err, isValid){
+				if( err ){
+					console.log(err);
+					return r({errorCode: 'unknown'}, callback);
+				}
+				if( !isValid ){
+					return r({errorCode: 'invalidNode'}, callback);
+				}
+				self._create(options, callback);
+			});
+		} else {
+			this._create(options, callback);
+		}
+	}
+
+	this._create = function(options, callback){
 		var charge = null;
 		if( options.hasOwnProperty('charge') ){ charge = options.charge; }
 		m.path.create({user: options.user, title: options.title},

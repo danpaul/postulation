@@ -1,11 +1,12 @@
 const ERRORS = {
 	invalidId: 'ID is invalid',
+	invalidNode: 'Node is invalid',
 	invalidPath: 'Path id is not valid',
 	invalidType: 'Type provided is not valid',
 	invalidResponseItem: 'Could not locate item for response',
 	missingOptions: 'Function called with missing data',
 	missingRouteParams: 'Route called with missing or incorrect data',
-	notLoggedIn: 'You must be log in',
+	notLoggedIn: 'You must be logged in',
 	notAuthorized: 'You are not authorized to perform this action',
 	pathChargeInvalid: 'Path charge must be a boolean',
 	pathNodeInvalid: 'Invalid or missing path node',
