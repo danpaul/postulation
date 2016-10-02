@@ -11,3 +11,5 @@ Thumbs.db
 # Packages
 /node_modules
 /frontend_app/node_modules
+
+/secret.js
