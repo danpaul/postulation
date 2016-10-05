@@ -18,13 +18,6 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 
 app.use(express.static(__dirname + '/public'));
-
-app.use(require('cookie-parser')(config.cookieSecret)); 
-app.use(session({
-    secret: config.sessionSecret,
-    resave: true,
-    saveUninitialized: true
-}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

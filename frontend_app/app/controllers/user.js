@@ -22,22 +22,34 @@ module.exports = function(options){
     this.init = function(){
         var self = this;
 		superagent
-	  		.get(siteUrl + '/api/auth')
+	  		.get(siteUrl + '/auth/api')
 	  		.end(function (err, response){
 	  			if( err ){
 	  				// TODO: add error handling
 	  				console.log(err);
 	  				return;
 	  			}
-
 	  			// set user id to null
 	  			if( response.body.status === 'failure' ){
 	  				return d.set(['user', 'id'], null);
 	  			}
-
 	  			// setup user...
+                d.set('user', response.body.data);
 	  		}
 		);
+    }
+
+    /***************************************************************************
+     *
+     *      View management
+     * 
+     **************************************************************************/
+    this.showLogin = function(){
+        window.location.href = siteUrl + '/auth/login';
+    }
+
+    this.logout = function(){
+        window.location.href = siteUrl + '/auth/logout';
     }
 
     /***************************************************************************
@@ -158,7 +170,7 @@ module.exports = function(options){
     /**
      * Shows the new login view
      */
-    this.showLogin = function(){ d.set('view', 'login'); }
+    // this.showLogin = function(){d.set('view', 'login'); }
 
     /**
      * Updates register form data

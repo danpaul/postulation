@@ -1,4 +1,5 @@
 var config = require('../config');
+var secret = require('../secret');
 
 // init schema and knex
 var knex = require('knex')(config.knex);
@@ -6,10 +7,19 @@ require('./lib/schema')({knex: knex}, function(err){
 	if( err ){ throw(err); }
 });
 
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var transporter = nodemailer.createTransport(smtpTransport(secret.smtp));
+
 var sqlLoginMiddleware = require('sql_login_middleware')({
-    rootUrl: config.rootUrl,
+    rootUrl: config.rootUrl + '/auth',
     knex: knex,
-    useUsername: true
+    useUsername: true,
+
+    transporter: transporter,
+    siteName: 'Postulation',
+    sessionSecret: 'super duper secret',
+    loginSuccessRedirect: config.rootUrl
 });
 
 var Models = require('./models');
@@ -22,7 +32,7 @@ var auth = require('./lib/auth');
 
 module.exports = function(app){
 
-	app.use('/api/auth', sqlLoginMiddleware);
+	app.use('/auth', sqlLoginMiddleware);
 
 	var Routes = require('./routes/index.js');
 	var routes = new Routes(app, {controllers: controllers,

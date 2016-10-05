@@ -8,14 +8,8 @@ module.exports = function(options){
     const validation = options.validation;
 
     app.post('/create', function(req, res){
-
-
-// asdf
-var user = {id: 666};
-
-
-        // const user = auth.loginCheck(req, res);
-        // if( !user ){ return; }
+        const user = auth.loginCheck(req, res);
+        if( !user ){ return; }
 
         var data = validation.parsePathCreate(req, res);
         if( !data ){ return; }

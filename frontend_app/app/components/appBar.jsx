@@ -2,6 +2,7 @@ import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import Popover from 'material-ui/Popover';
+import FlatButton from 'material-ui/FlatButton';
 
 module.exports = BaseComponent.createClass({
 	// getInitialState: function(){
@@ -18,11 +19,36 @@ module.exports = BaseComponent.createClass({
 	// 	this.setState({popoverOpen: false});
 
 	// },
+	handleLoginClick: function(){
+		this.props.controllers.user.showLogin();
+	},
+	handleLogoutClick: function(){
+		this.props.controllers.user.logout();
+	},
 	render: function() {
+
+		var loginButton = null;
+		var logoutButton = null;
+
+// asdf
+// console.log('this.props.user', this.props.user.toJS());
+
+		if( this.props.user.get('id') ){
+			logoutButton = <FlatButton
+				label="Logout"
+				onClick={this.handleLogoutClick} />
+		} else {
+			loginButton = <FlatButton
+				label="Login/Register"
+				onClick={this.handleLoginClick} />
+		}
+
+
 		return <div>
 			<AppBar
 				title="Postulation"
 				onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
+				iconElementRight={loginButton ? loginButton : logoutButton}
 			/>
 		</div>;
 	}

@@ -21864,6 +21864,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = _baseComponent2.default.createClass({
+	    componentDidMount: function componentDidMount() {
+	        // console.log(this.props.controllers.user.init())
+	        this.props.controllers.user.init();
+	    },
 	    getUser: function getUser(options) {
 	        if (options.view === 'register' || options.view === 'login') {
 	            return _react2.default.createElement(_user2.default, {
@@ -21900,7 +21904,10 @@
 	        return _react2.default.createElement(
 	            'div',
 	            null,
-	            _react2.default.createElement(_appBar2.default, null),
+	            _react2.default.createElement(_appBar2.default, {
+	                user: this.props.data.get('user'),
+	                controllers: this.props.controllers
+	            }),
 	            this.getUser({ view: view }),
 	            this.getCreatePath({ view: view }),
 	            this.getPath({ view: view })
@@ -21930,6 +21937,10 @@
 
 	var _Popover2 = _interopRequireDefault(_Popover);
 
+	var _FlatButton = __webpack_require__(251);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	module.exports = _baseComponent2.default.createClass({
@@ -21947,13 +21958,37 @@
 		// 	this.setState({popoverOpen: false});
 
 		// },
+		handleLoginClick: function handleLoginClick() {
+			this.props.controllers.user.showLogin();
+		},
+		handleLogoutClick: function handleLogoutClick() {
+			this.props.controllers.user.logout();
+		},
 		render: function render() {
+
+			var loginButton = null;
+			var logoutButton = null;
+
+			// asdf
+			// console.log('this.props.user', this.props.user.toJS());
+
+			if (this.props.user.get('id')) {
+				logoutButton = _react2.default.createElement(_FlatButton2.default, {
+					label: 'Logout',
+					onClick: this.handleLogoutClick });
+			} else {
+				loginButton = _react2.default.createElement(_FlatButton2.default, {
+					label: 'Login/Register',
+					onClick: this.handleLoginClick });
+			}
+
 			return _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(_AppBar2.default, {
 					title: 'Postulation',
-					onLeftIconButtonTouchTap: this.handleLeftIconButtonTouchTap
+					onLeftIconButtonTouchTap: this.handleLeftIconButtonTouchTap,
+					iconElementRight: loginButton ? loginButton : logoutButton
 				})
 			);
 		}
@@ -46035,20 +46070,32 @@
 	   */
 	  this.init = function () {
 	    var self = this;
-	    superagent.get(siteUrl + '/api/auth').end(function (err, response) {
+	    superagent.get(siteUrl + '/auth/api').end(function (err, response) {
 	      if (err) {
 	        // TODO: add error handling
 	        console.log(err);
 	        return;
 	      }
-
 	      // set user id to null
 	      if (response.body.status === 'failure') {
 	        return d.set(['user', 'id'], null);
 	      }
-
 	      // setup user...
+	      d.set('user', response.body.data);
 	    });
+	  };
+
+	  /***************************************************************************
+	   *
+	   *      View management
+	   * 
+	   **************************************************************************/
+	  this.showLogin = function () {
+	    window.location.href = siteUrl + '/auth/login';
+	  };
+
+	  this.logout = function () {
+	    window.location.href = siteUrl + '/auth/logout';
 	  };
 
 	  /***************************************************************************
@@ -46186,9 +46233,7 @@
 	  /**
 	   * Shows the new login view
 	   */
-	  this.showLogin = function () {
-	    d.set('view', 'login');
-	  };
+	  // this.showLogin = function(){d.set('view', 'login'); }
 
 	  /**
 	   * Updates register form data

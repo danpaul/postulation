@@ -6,6 +6,10 @@ import User from './user.jsx';
 import React from 'react';
 
 module.exports = BaseComponent.createClass({
+    componentDidMount: function(){
+// console.log(this.props.controllers.user.init())
+        this.props.controllers.user.init();
+    },
     getUser: function(options){
         if( options.view === 'register' || options.view === 'login' ){
             return <User
@@ -39,7 +43,10 @@ module.exports = BaseComponent.createClass({
 	render: function() {
         var view = this.props.data.get('view');
 		return <div>
-            <AppBar />
+            <AppBar
+                user={this.props.data.get('user')}
+                controllers={this.props.controllers}
+            />
             { this.getUser({view: view}) }
             { this.getCreatePath({view: view}) }
             { this.getPath({view: view}) }
