@@ -32,6 +32,11 @@ const schema = {
 		user: null,
 		userVote: null
 	},
+	recentPaths: {
+		loading: false,
+		page: null,
+		paths: []
+	},
 	user: {
 		id: null
 	}

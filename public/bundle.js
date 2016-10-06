@@ -21853,6 +21853,10 @@
 
 	var _path2 = _interopRequireDefault(_path);
 
+	var _paths = __webpack_require__(450);
+
+	var _paths2 = _interopRequireDefault(_paths);
+
 	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21883,6 +21887,15 @@
 	        }
 	        return null;
 	    },
+	    getPaths: function getPaths(options) {
+	        if (options.view === 'paths') {
+	            return _react2.default.createElement(_paths2.default, {
+	                controllers: this.props.controllers,
+	                recentPaths: this.props.data.get('recentPaths')
+	            });
+	        }
+	        return null;
+	    },
 
 	    render: function render() {
 	        var view = this.props.data.get('view');
@@ -21894,7 +21907,8 @@
 	                controllers: this.props.controllers
 	            }),
 	            this.getCreatePath({ view: view }),
-	            this.getPath({ view: view })
+	            this.getPath({ view: view }),
+	            this.getPaths({ view: view })
 	        );
 	    }
 	});
@@ -30982,9 +30996,9 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _pathItemDetailResponsePath = __webpack_require__(264);
+	var _pathPreview = __webpack_require__(451);
 
-	var _pathItemDetailResponsePath2 = _interopRequireDefault(_pathItemDetailResponsePath);
+	var _pathPreview2 = _interopRequireDefault(_pathPreview);
 
 	var _react = __webpack_require__(7);
 
@@ -31003,7 +31017,7 @@
 	      _Paper2.default,
 	      { style: STYLE, zDepth: 2 },
 	      this.props.paths.map(function (p) {
-	        return _react2.default.createElement(_pathItemDetailResponsePath2.default, {
+	        return _react2.default.createElement(_pathPreview2.default, {
 	          key: p.get('id'),
 	          path: p
 	        });
@@ -31013,61 +31027,7 @@
 	});
 
 /***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _baseComponent = __webpack_require__(180);
-
-	var _baseComponent2 = _interopRequireDefault(_baseComponent);
-
-	var _react = __webpack_require__(7);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _config = __webpack_require__(6);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var STYLE = {};
-
-	module.exports = _baseComponent2.default.createClass({
-	  render: function render() {
-	    var nodes = [];
-	    this.props.path.get('path').forEach(function (i) {
-	      if (i.get('type') === 'node' && !i.get('hidden')) {
-	        nodes.push(i);
-	      }
-	    });
-	    var pathLink = _config2.default.siteUrl + '/path/get/' + this.props.path.get('id');
-
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'h4',
-	        null,
-	        _react2.default.createElement(
-	          'a',
-	          { href: pathLink },
-	          this.props.path.get('title')
-	        )
-	      ),
-	      nodes.map(function (n) {
-	        return _react2.default.createElement(
-	          'p',
-	          { key: n.get('id') },
-	          n.get('statement')
-	        );
-	      })
-	    );
-	  }
-	});
-
-/***/ },
+/* 264 */,
 /* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -45454,6 +45414,11 @@
 			user: null,
 			userVote: null
 		},
+		recentPaths: {
+			loading: false,
+			page: null,
+			paths: []
+		},
 		user: {
 			id: null
 		}
@@ -45682,6 +45647,30 @@
 	            self._parsePath(path);
 	            d.set('path', response.body.data.path);
 	            d.set('view', 'path');
+	        });
+	    };
+
+	    /**
+	     * Shows recent paths
+	     * @param  {options.page}
+	     */
+	    this.showRecent = function (options) {
+	        var self = this;
+	        d.set('view', 'paths');
+	        d.set(['recentPaths', 'loading'], true);
+	        superagent.get(siteUrl + '/api/path/get-recent/' + options.page).end(function (err, response) {
+	            d.set(['recentPaths', 'loading'], false);
+	            if (err) {
+	                // TODO: add error handling
+	                console.log(err);
+	                return;
+	            }
+	            if (response.body.status !== 'success') {
+	                // TODO: add error handling
+	                console.log(new Error(response.body.error));
+	                return;
+	            }
+	            d.set(['recentPaths', 'paths'], response.body.data.paths);
 	        });
 	    };
 
@@ -49153,6 +49142,14 @@
 			c.path.show({ id: ctx.params.id });
 		});
 
+		(0, _page2.default)('/paths/recent', function (ctx) {
+			c.path.showRecent({ page: 1 });
+		});
+
+		(0, _page2.default)('/paths/recent/:page', function (ctx) {
+			c.path.show({ page: ctx.params.page });
+		});
+
 		(0, _page2.default)('/user/login', function (ctx) {
 			c.user.showLogin();
 		});
@@ -49169,6 +49166,100 @@
 			(0, _page2.default)(window.location.pathname);
 		};
 	};
+
+/***/ },
+/* 450 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pathPreview = __webpack_require__(451);
+
+	var _pathPreview2 = _interopRequireDefault(_pathPreview);
+
+	var _Paper = __webpack_require__(224);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = _baseComponent2.default.createClass({
+	    render: function render() {
+	        return _react2.default.createElement(
+	            _Paper2.default,
+	            { zDepth: 2 },
+	            this.props.recentPaths.get('paths').map(function (p) {
+	                return _react2.default.createElement(_pathPreview2.default, {
+	                    key: p.get('id'),
+	                    path: p
+	                });
+	            })
+	        );
+	    }
+	});
+
+/***/ },
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _config = __webpack_require__(6);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STYLE = {};
+
+	module.exports = _baseComponent2.default.createClass({
+	  render: function render() {
+	    var nodes = [];
+	    this.props.path.get('path').forEach(function (i) {
+	      if (i.get('type') === 'node' && !i.get('hidden')) {
+	        nodes.push(i);
+	      }
+	    });
+	    var pathLink = _config2.default.siteUrl + '/path/get/' + this.props.path.get('id');
+
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h4',
+	        null,
+	        _react2.default.createElement(
+	          'a',
+	          { href: pathLink },
+	          this.props.path.get('title')
+	        )
+	      ),
+	      nodes.map(function (n) {
+	        return _react2.default.createElement(
+	          'p',
+	          { key: n.get('id') },
+	          n.get('statement')
+	        );
+	      })
+	    );
+	  }
+	});
 
 /***/ }
 /******/ ]);

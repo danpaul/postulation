@@ -1,3 +1,5 @@
+// DEPRECATED, USING MIDDLEWARE FOR USER MANAGEMENT
+
 var _ = require('underscore');
 const TABLE = 'user';
 

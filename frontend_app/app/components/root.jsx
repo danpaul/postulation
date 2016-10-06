@@ -2,6 +2,7 @@ import AppBar from './appBar.jsx';
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
 import Path from './path.jsx';
+import Paths from './paths.jsx';
 import React from 'react';
 
 module.exports = BaseComponent.createClass({
@@ -28,6 +29,15 @@ module.exports = BaseComponent.createClass({
         }
         return null;
     },
+    getPaths(options){
+        if( options.view === 'paths' ){
+            return <Paths
+                controllers={this.props.controllers}
+                recentPaths={this.props.data.get('recentPaths')}
+            />
+        }
+        return null;
+    },
 	render: function() {
         var view = this.props.data.get('view');
 		return <div>
@@ -37,6 +47,7 @@ module.exports = BaseComponent.createClass({
             />
             { this.getCreatePath({view: view}) }
             { this.getPath({view: view}) }
+            { this.getPaths({view: view}) }
 		</div>;
 	}
 });

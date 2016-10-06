@@ -151,8 +151,10 @@ module.exports = function(options){
 
 	/**
 	 * @param  {int}  options.path
+	 *
+	 * Note: may be deprecated
 	 */
-	this.getPathAverate = function(options, callback){
+	this.getPathAverage = function(options, callback){
 		k(TABLE)
 			.avg('strength')
 			.where('type', CONSTANTS.types.path)

@@ -18,6 +18,14 @@ module.exports = function(options){
 		c.path.show({id: ctx.params.id});
 	});
 
+	page('/paths/recent', function(ctx){
+		c.path.showRecent({page: 1});
+	});
+
+	page('/paths/recent/:page', function(ctx){
+		c.path.show({page: ctx.params.page});
+	});
+
 	page('/user/login', function(ctx){
 		c.user.showLogin();
 	})
