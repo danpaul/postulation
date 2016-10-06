@@ -49,6 +49,8 @@ module.exports = function(options){
     	if( !userId ){ return; }
     	var url = siteUrl + '/api/vote/user/' + userId + '/' +
     						options.type + '/' + options.id;
+console.log('siteUrl')
+console.log(url)
 		superagent
 	  		.get(url)
             .forceUpdate(refresh)

@@ -97,7 +97,7 @@ module.exports = function(){
 		if( !req.body.id ||
 			!Number(req.body.id) ||
 			!req.body.type ||
-			this.isValidType(req.body.type) ||
+			!this.isValidType(req.body.type) ||
 			typeof(req.body.true) === 'undefined' ||
 			!_.isBoolean(req.body.true) ){
 
@@ -117,7 +117,7 @@ module.exports = function(){
 			!req.params.userId ||
 			!Number(req.params.userId) ||
 			!req.params.type ||
-			this.isValidType(req.params.type) ||
+			!this.isValidType(req.params.type) ||
 			!req.params.id ||
 			!Number(req.params.id) ){
 
