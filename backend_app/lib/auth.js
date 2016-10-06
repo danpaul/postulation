@@ -7,7 +7,7 @@ module.exports = {
 			res.json(response({errorCode: 'notLoggedIn'}));
 			return null;
 		}
-		return req.user;
+		return req.session.user;
 	}
 
 };

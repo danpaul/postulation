@@ -67,12 +67,16 @@ module.exports = function(){
 		}
 
 		cleanPath.title = req.body.title;
-		if( !_.isBoolean(req.body.charge) ){
+		if( typeof(req.body.charge) !== 'undefined' &&
+				   !_.isBoolean(req.body.charge) ){
+
 			res.json(response({errorCode: 'pathChargeInvalid'}));
-			return null;	
+			return null;
 		}
 
-		cleanPath.charge = req.body.charge;
+		if( typeof(req.body.charge) !== 'undefined' ){
+			cleanPath.charge = req.body.charge;
+		}
 
 		var resp = this.parsePathNodes(req.body.nodes);
 

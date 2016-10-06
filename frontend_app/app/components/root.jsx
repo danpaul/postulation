@@ -2,23 +2,11 @@ import AppBar from './appBar.jsx';
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
 import Path from './path.jsx';
-import User from './user.jsx';
 import React from 'react';
 
 module.exports = BaseComponent.createClass({
     componentDidMount: function(){
-// console.log(this.props.controllers.user.init())
         this.props.controllers.user.init();
-    },
-    getUser: function(options){
-        if( options.view === 'register' || options.view === 'login' ){
-            return <User
-                controllers={this.props.controllers}
-                user={this.props.data.get('user')}
-                view={options.view}
-            />
-        }
-        return null;
     },
     getCreatePath(options){
         if( options.view === 'createPath' ){
@@ -47,7 +35,6 @@ module.exports = BaseComponent.createClass({
                 user={this.props.data.get('user')}
                 controllers={this.props.controllers}
             />
-            { this.getUser({view: view}) }
             { this.getCreatePath({view: view}) }
             { this.getPath({view: view}) }
 		</div>;

@@ -29,6 +29,7 @@ const SCHEMA = {
         table.integer('total').default(0).index();
         table.float('strength').default(0.0).index();
         table.text('title').default('');
+        table.timestamp('created_at').defaultTo(knex.fn.now()).index();
     },
     vote: function(table){
         table.integer('item').default(0).index();

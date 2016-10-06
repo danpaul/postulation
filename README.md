@@ -46,6 +46,9 @@ Models should return raw errors to controllers.
 
 ## Todo
 
+* landing page should have most recent/most popular posts
+* landing page should have add path
+
 * X Ranking for paths, nodes
 * X get user voting history
 * X allow change vote

@@ -68,6 +68,11 @@ module.exports = function(options){
 	  		.post(siteUrl + '/api/path/create')
 	  		.send(data)
 	  		.end(function (err, response){
+
+// asdf
+console.log('err', err)
+console.log('response', response)
+
 	  			if( err ){
 	  				console.log(err);
 	  			}

@@ -8,6 +8,7 @@ module.exports = function(options){
     const validation = options.validation;
 
     app.post('/create', function(req, res){
+
         const user = auth.loginCheck(req, res);
         if( !user ){ return; }
 
@@ -35,6 +36,18 @@ module.exports = function(options){
     		}
     		return res.json(response);
     	});
+    });
+
+    app.get('/get-recent/:page', function(req, res){
+        var page = Number(req.params.page);
+        if( !page ){ page = 1; }
+        c.path.getRecent({page: page}, function(err, response){
+            if( err ){
+                console.log(err);
+                return res.json(r({errorCode: 'unknown'}));
+            }
+            return res.json(response);
+        });
     });
 
     return app;

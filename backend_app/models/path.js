@@ -12,4 +12,18 @@ module.exports = function(options){
 	this.get = function(options, callback){
 		k(TABLE).where('id', options.id).asCallback(callback);
 	}
+
+	/**
+	 * @param  {number}  options.limit
+	 * @param  {number}  options.page
+	 */
+	this.getRecent = function(options, callback){
+		const offset = options.limit * (options.page - 1);
+		k(TABLE).select('*')
+			.orderBy('created_at', 'desc')
+			.limit(options.limit)
+			.offset(offset)
+			.asCallback(callback);
+
+	}
 }

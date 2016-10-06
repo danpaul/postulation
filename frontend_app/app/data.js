@@ -2,62 +2,7 @@ const _ = require('underscore');
 const config = require('./config');
 const Immutable = require('immutable');
 
-const INITIAL_STATE = {
-	view: 'home', // see `components/root.jsx` for possible views
-	createPath: {
-		dataLocation: ['createPath'],
-		title: '',
-		titleError: '',
-		valid: false,
-		nodes: []
-	},
-	detailItem: {
-		item: null,
-		affirming: [],
-		negating: [],
-		responseIsAffirming: true,
-		responsePath: {
-			dataLocation: ['detailItem', 'responsePath'],
-			title: '',
-			titleError: '',
-			valid: false,
-			nodes: []
-		}
-	},
-	path: {
-		id: null,
-		isNegatingResponse: null,
-		path: [],
-		title: '',
-		true: 0,
-		false: 0,
-		total: 0,
-		strength: 0,
-		user: null,
-		userVote: null
-	},
-	user: {
-		id: null,
-		registerFormData: {
-			email: '',
-			emailError: '',
-			formIsValid: false,
-			password: '',
-			passwordError: '',
-			confirmPassword: '',
-			confirmPasswordError: '',
-			username: '',
-			usernameError: '',
-		},
-		loginFormData: {
-			email: '',
-			emailError: '',
-			password: '',
-			passwordError: '',
-			formIsValid: false
-		}
-	}
-};
+const INITIAL_STATE = require('./schema');
 
 var data = Immutable.fromJS(INITIAL_STATE);
 var callbacks = [];

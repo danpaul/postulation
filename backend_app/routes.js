@@ -11,17 +11,6 @@ var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 var transporter = nodemailer.createTransport(smtpTransport(secret.smtp));
 
-var sqlLoginMiddleware = require('sql_login_middleware')({
-    rootUrl: config.rootUrl + '/auth',
-    knex: knex,
-    useUsername: true,
-
-    transporter: transporter,
-    siteName: 'Postulation',
-    sessionSecret: 'super duper secret',
-    loginSuccessRedirect: config.rootUrl
-});
-
 var Models = require('./models');
 var models = new Models({knex: knex});
 
@@ -31,6 +20,18 @@ var controllers = new Controllers({models: models});
 var auth = require('./lib/auth');
 
 module.exports = function(app){
+
+
+    var sqlLoginMiddleware = require('sql_login_middleware')(app, {
+        rootUrl: config.rootUrl + '/auth',
+        knex: knex,
+        useUsername: true,
+
+        transporter: transporter,
+        siteName: 'Postulation',
+        sessionSecret: 'super duper secret',
+        loginSuccessRedirect: config.rootUrl
+    });
 
 	app.use('/auth', sqlLoginMiddleware);
 
