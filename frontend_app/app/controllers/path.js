@@ -41,8 +41,17 @@ module.exports = function(options){
      * @param  {options.page}
      */
     this.showRecent = function(options){
-        var self = this;
         d.set('view', 'paths');
+        this.loadRecent(options);
+    }
+
+    /**
+     * Loads recent paths
+     * @param  {[type]} options [description]
+     * @return {[type]}         [description]
+     */
+    this.loadRecent = function(options){
+        var self = this;
         d.set(['recentPaths', 'loading'], true);
         superagent
             .get(siteUrl + '/api/path/get-recent/' + options.page)

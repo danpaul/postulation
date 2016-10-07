@@ -1,6 +1,7 @@
 import AppBar from './appBar.jsx';
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
+import Home from './home.jsx';
 import Path from './path.jsx';
 import Paths from './paths.jsx';
 import React from 'react';
@@ -18,6 +19,15 @@ module.exports = BaseComponent.createClass({
         }
         return null;
     },
+    getHome(options){
+        if( options.view === 'home' ){
+            return <Home
+                controllers={this.props.controllers}
+                createPath={this.props.data.get('createPath')}
+                recentPaths={this.props.data.get('recentPaths')}
+            />
+        }
+    },
     getPath(options){
         if( options.view === 'path' ){
             return <Path
@@ -33,21 +43,22 @@ module.exports = BaseComponent.createClass({
         if( options.view === 'paths' ){
             return <Paths
                 controllers={this.props.controllers}
-                recentPaths={this.props.data.get('recentPaths')}
+                paths={this.props.data.get('recentPaths')}
             />
         }
         return null;
     },
 	render: function() {
-        var view = this.props.data.get('view');
+        const options = {view: this.props.data.get('view')};
 		return <div>
             <AppBar
                 user={this.props.data.get('user')}
                 controllers={this.props.controllers}
             />
-            { this.getCreatePath({view: view}) }
-            { this.getPath({view: view}) }
-            { this.getPaths({view: view}) }
+            { this.getHome(options)}
+            { this.getCreatePath(options) }
+            { this.getPath(options) }
+            { this.getPaths(options) }
 		</div>;
 	}
 });

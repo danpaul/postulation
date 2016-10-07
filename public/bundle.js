@@ -21849,6 +21849,10 @@
 
 	var _createPath2 = _interopRequireDefault(_createPath);
 
+	var _home = __webpack_require__(451);
+
+	var _home2 = _interopRequireDefault(_home);
+
 	var _path = __webpack_require__(261);
 
 	var _path2 = _interopRequireDefault(_path);
@@ -21876,6 +21880,15 @@
 	        }
 	        return null;
 	    },
+	    getHome: function getHome(options) {
+	        if (options.view === 'home') {
+	            return _react2.default.createElement(_home2.default, {
+	                controllers: this.props.controllers,
+	                createPath: this.props.data.get('createPath'),
+	                recentPaths: this.props.data.get('recentPaths')
+	            });
+	        }
+	    },
 	    getPath: function getPath(options) {
 	        if (options.view === 'path') {
 	            return _react2.default.createElement(_path2.default, {
@@ -21891,14 +21904,14 @@
 	        if (options.view === 'paths') {
 	            return _react2.default.createElement(_paths2.default, {
 	                controllers: this.props.controllers,
-	                recentPaths: this.props.data.get('recentPaths')
+	                paths: this.props.data.get('recentPaths')
 	            });
 	        }
 	        return null;
 	    },
 
 	    render: function render() {
-	        var view = this.props.data.get('view');
+	        var options = { view: this.props.data.get('view') };
 	        return _react2.default.createElement(
 	            'div',
 	            null,
@@ -21906,9 +21919,10 @@
 	                user: this.props.data.get('user'),
 	                controllers: this.props.controllers
 	            }),
-	            this.getCreatePath({ view: view }),
-	            this.getPath({ view: view }),
-	            this.getPaths({ view: view })
+	            this.getHome(options),
+	            this.getCreatePath(options),
+	            this.getPath(options),
+	            this.getPaths(options)
 	        );
 	    }
 	});
@@ -32034,7 +32048,7 @@
 	        return _react2.default.createElement(
 	            _Paper2.default,
 	            { zDepth: 2 },
-	            this.props.recentPaths.get('paths').map(function (p) {
+	            this.props.paths.get('paths').map(function (p) {
 	                return _react2.default.createElement(_pathPreview2.default, {
 	                    key: p.get('id'),
 	                    path: p
@@ -45574,8 +45588,13 @@
 
 	'use strict';
 
-	var Immutable = __webpack_require__(433);
+	var _page = __webpack_require__(439);
 
+	var _page2 = _interopRequireDefault(_page);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Immutable = __webpack_require__(433);
 	var ERROR_TITLE = 'Title can not be blank';
 	var ERROR_NODE = 'Node can not be blank';
 
@@ -45652,7 +45671,7 @@
 	                console.log(err);
 	            }
 	            if (response.body.status === 'success') {
-	                console.log('success');
+	                return (0, _page2.default)('/path/get/' + response.body.data.path.id);
 	            } else {
 	                console.log('error');
 	            }
@@ -45748,8 +45767,17 @@
 	     * @param  {options.page}
 	     */
 	    this.showRecent = function (options) {
-	        var self = this;
 	        d.set('view', 'paths');
+	        this.loadRecent(options);
+	    };
+
+	    /**
+	     * Loads recent paths
+	     * @param  {[type]} options [description]
+	     * @return {[type]}         [description]
+	     */
+	    this.loadRecent = function (options) {
+	        var self = this;
 	        d.set(['recentPaths', 'loading'], true);
 	        superagent.get(siteUrl + '/api/path/get-recent/' + options.page).end(function (err, response) {
 	            d.set(['recentPaths', 'loading'], false);
@@ -46995,8 +47023,6 @@
 	            return;
 	        }
 	        var url = siteUrl + '/api/vote/user/' + userId + '/' + options.type + '/' + options.id;
-	        console.log('siteUrl');
-	        console.log(url);
 	        superagent.get(url).forceUpdate(refresh).end(function (err, response) {
 	            if (err) {
 	                // todo handle error
@@ -49261,6 +49287,64 @@
 			(0, _page2.default)(window.location.pathname);
 		};
 	};
+
+/***/ },
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _createPath = __webpack_require__(245);
+
+	var _createPath2 = _interopRequireDefault(_createPath);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _paths = __webpack_require__(273);
+
+	var _paths2 = _interopRequireDefault(_paths);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var pathWrapStyle = {
+		width: 400,
+		marginLeft: 20
+	};
+
+	module.exports = _baseComponent2.default.createClass({
+		componentDidMount: function componentDidMount() {
+			if (this.props.recentPaths.get('page') === null) {
+				this.props.controllers.path.loadRecent({ page: 1 });
+			}
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'div',
+					{ style: pathWrapStyle },
+					_react2.default.createElement(_paths2.default, {
+						paths: this.props.recentPaths
+					})
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(_createPath2.default, {
+						controllers: this.props.controllers,
+						path: this.props.createPath
+					})
+				)
+			);
+		}
+	});
 
 /***/ }
 /******/ ]);

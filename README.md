@@ -49,17 +49,13 @@ Models should return raw errors to controllers.
 * landing page should have most recent/most popular posts
 * landing page should have add path
 
-* X Ranking for paths, nodes
-* X get user voting history
-* X allow change vote
-* confirm path/node exists before linking new path
-* Add user info to paths and nodes
-* Add authorization to routes
-* Add input sanitization and validation to back end
-* Add error handling to routes
+* have all basic user flows/error handling working
+* make first pass and UI styling
+
 * Add error handling to UI
 * Add dynamic config for API url to front end
-* Add prod build for front end
+
+
 * ensure knex is escaping character and raw queries are safe
 * Validate that new paths have atleast two nodes
 * add main view w/ new/trending paths
@@ -67,3 +63,8 @@ Models should return raw errors to controllers.
 ## Bugs
 
 * Vote history for non-logged in user: http://take.ms/Px7Kkc
+
+## Features
+
+* Add history of paths visited in panel on left side
+* Show trending paths

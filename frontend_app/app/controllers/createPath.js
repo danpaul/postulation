@@ -1,5 +1,6 @@
-const Immutable = require('immutable');
+import page from 'page';
 
+const Immutable = require('immutable');
 const ERROR_TITLE = 'Title can not be blank';
 const ERROR_NODE = 'Node can not be blank';
 
@@ -77,7 +78,7 @@ console.log('response', response)
 	  				console.log(err);
 	  			}
                 if( response.body.status === 'success'){
-                    console.log('success');
+                    return page('/path/get/' + response.body.data.path.id);
                 } else {
                     console.log('error');
                 }
