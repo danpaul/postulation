@@ -5,13 +5,16 @@ import Paper from 'material-ui/Paper';
 
 module.exports = BaseComponent.createClass({
 	render: function(){
+        const self = this;
         const dataLocation = this.props.paths.get('dataLocation');
         return <Paper zDepth={2}>
-            {this.props.paths.get('paths').map(function(p){
+            {this.props.paths.get('paths').map(function(p, index){
                 return <PathPreview
+                    controllers={self.props.controllers}
                     dataLocation={dataLocation}
                     key={p.get('id')}
                     path={p}
+                    index={index}
                 />
             })}
         </Paper>;

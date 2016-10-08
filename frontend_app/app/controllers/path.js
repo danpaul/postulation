@@ -53,6 +53,16 @@ module.exports = function(options){
     }
 
     /**
+     * Handles hiding/showing path preview
+     * @param {Immutable.List}  options.dataLocation  location of the path object
+     * @param {Number}  options.index  index of path
+     */
+    this.togglePathPreview = function(options){
+        // asdf
+        console.log('options', options);
+    }
+
+    /**
      * Loads recent paths
      * @param  {[type]} options [description]
      * @return {[type]}         [description]

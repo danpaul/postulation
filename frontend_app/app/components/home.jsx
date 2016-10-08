@@ -5,7 +5,7 @@ import Paths from './paths.jsx';
 import PathsWrap from './pathsWrap.jsx';
 
 const pathWrapStyle = {
-	width: 400,
+	width: 800,
 	marginLeft: 20
 }
 
@@ -22,6 +22,7 @@ module.exports = BaseComponent.createClass({
 					title="Recent Paths"
 					>
 					<Paths
+						controllers={this.props.controllers}
 						paths={this.props.recentPaths}
 					/>
 				</PathsWrap>

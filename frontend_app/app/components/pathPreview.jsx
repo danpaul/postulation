@@ -9,11 +9,13 @@ import Toggle from 'material-ui/Toggle';
 const STYLE = {};
 
 module.exports = BaseComponent.createClass({
-    handleExpandChange: function(){
-console.log('handleExpandChange');
+    handleExpandChange: function(e){
+        // e.stopPropagation();
+        var d = {   dataLocation: this.props.dataLocation,
+                    index: this.props.index };
+        this.props.controllers.path.togglePathPreview(d);
     },
 	render: function() {
-
 		var nodes = [];
 		this.props.path.get('path').forEach(function(i){
 			if( i.get('type') === 'node' && !i.get('hidden') ){
@@ -23,23 +25,24 @@ console.log('handleExpandChange');
 		var pathLink = config.siteUrl + '/path/get/' + this.props.path.get('id');
 
 
+var title = <a href={pathLink}><h3>
+                {this.props.path.get('title')}
+            </h3></a>;
+
         return <div>
-<Card expanded={true} onExpandChange={this.handleExpandChange}>
-  <CardHeader
-    title="Test title"
-    subtitle="Test subtitle"
-    actAsExpander={true}
-    showExpandableButton={true}
-  />
+            <Card onExpandChange={this.handleExpandChange}>
+                <CardHeader
+                    title={title}
+                    actAsExpander={false}
+                    showExpandableButton={true}
+                />
 
-    <CardText expandable={false}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-    </CardText>
-
-</Card>
+                <CardText expandable={true}>
+                    {nodes.map(function(n){
+                        return <p key={n.get('id')}>{n.get('statement')}</p>
+                    })}
+                </CardText>
+            </Card>
         </div>;
 
 
