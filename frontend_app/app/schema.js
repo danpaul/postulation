@@ -37,6 +37,12 @@ const schema = {
 		page: null,
 		paths: []
 	},
+	recentPathsHome: {
+		dataLocation: ['recentPathsHome'],
+		loading: false,
+		page: null,
+		paths: []
+	},
 	user: {
 		id: null
 	}

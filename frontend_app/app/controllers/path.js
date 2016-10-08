@@ -1,3 +1,5 @@
+const Immutable = require('immutable');
+
 module.exports = function(options){
 
     var c = options.controllers;
@@ -45,18 +47,54 @@ module.exports = function(options){
         this.loadRecent(options);
     }
 
+    this.loadRecentHome = function(options){
+        options.dataLocation = Immutable.List(['recentPathsHome']);
+        this._loadRecent(options);
+    }
+
     /**
      * Loads recent paths
      * @param  {[type]} options [description]
      * @return {[type]}         [description]
      */
     this.loadRecent = function(options){
+        console.log(new Error('this.loadRecent, set data location'));
+        // var self = this;
+        // d.set(['recentPaths', 'loading'], true);
+        // superagent
+        //     .get(siteUrl + '/api/path/get-recent/' + options.page)
+        //     .end(function (err, response){
+        //         d.set(['recentPaths', 'loading'], false);
+        //         if( err ){
+        //             // TODO: add error handling
+        //             console.log(err);
+        //             return;
+        //         }
+        //         if( response.body.status !== 'success' ){
+        //             // TODO: add error handling
+        //             console.log(new Error(response.body.error));
+        //             return;
+        //         }
+        //         d.set(['recentPaths', 'paths'], response.body.data.paths);
+        //     }
+        // );
+    }
+
+    /**
+     * Loads recent paths
+     * @param  {int}  options.page
+     * @param  {array}  options.dataLocation
+     */
+    this._loadRecent = function(options){
         var self = this;
-        d.set(['recentPaths', 'loading'], true);
+        const loadingLocation = options.dataLocation.push('loading');
+        const pathsLocation = options.dataLocation.push('paths');
+
+        d.set(loadingLocation, true);
         superagent
             .get(siteUrl + '/api/path/get-recent/' + options.page)
             .end(function (err, response){
-                d.set(['recentPaths', 'loading'], false);
+                d.set(loadingLocation, true);
                 if( err ){
                     // TODO: add error handling
                     console.log(err);
@@ -67,7 +105,7 @@ module.exports = function(options){
                     console.log(new Error(response.body.error));
                     return;
                 }
-                d.set(['recentPaths', 'paths'], response.body.data.paths);
+                d.set(pathsLocation, response.body.data.paths);
             }
         );
     }

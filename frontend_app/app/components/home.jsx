@@ -2,6 +2,7 @@ import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
 import React from 'react';
 import Paths from './paths.jsx';
+import PathsWrap from './pathsWrap.jsx';
 
 const pathWrapStyle = {
 	width: 400,
@@ -11,15 +12,19 @@ const pathWrapStyle = {
 module.exports = BaseComponent.createClass({
 	componentDidMount: function(){
 		if( this.props.recentPaths.get('page') === null ){
-			this.props.controllers.path.loadRecent({page: 1});
+			this.props.controllers.path.loadRecentHome({page: 1});
 		}
 	},
 	render: function(){
 		return <div>
 			<div style={pathWrapStyle}>
-				<Paths
-					paths={this.props.recentPaths}
-				/>
+				<PathsWrap
+					title="Recent Paths"
+					>
+					<Paths
+						paths={this.props.recentPaths}
+					/>
+				</PathsWrap>
 			</div>
 			<div>
 				<CreatePath

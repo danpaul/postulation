@@ -24,7 +24,7 @@ module.exports = BaseComponent.createClass({
             return <Home
                 controllers={this.props.controllers}
                 createPath={this.props.data.get('createPath')}
-                recentPaths={this.props.data.get('recentPaths')}
+                recentPaths={this.props.data.get('recentPathsHome')}
             />
         }
     },
