@@ -6,11 +6,12 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
 
-const STYLE = {};
+const STYLE = {marginBottom: 10};
 
 module.exports = BaseComponent.createClass({
     handleExpandChange: function(e){
-        // e.stopPropagation();
+        return;
+        // handled inernally by component
         var d = {   dataLocation: this.props.dataLocation,
                     index: this.props.index };
         this.props.controllers.path.togglePathPreview(d);
@@ -22,17 +23,19 @@ module.exports = BaseComponent.createClass({
 				nodes.push(i);
 			}
 		});
+
 		var pathLink = config.siteUrl + '/path/get/' + this.props.path.get('id');
+        // var title = <a href={pathLink}><h4>
+        //     {this.props.path.get('title')}
+        // </h4></a>;
+        var title = this.props.path.get('title');
+        var subtitle = '0.25 1/4 — 2016-07-07 12:38';
 
-
-var title = <a href={pathLink}><h3>
-                {this.props.path.get('title')}
-            </h3></a>;
-
-        return <div>
+        return <div style={STYLE}>
             <Card onExpandChange={this.handleExpandChange}>
                 <CardHeader
                     title={title}
+                    subtitle={subtitle}
                     actAsExpander={false}
                     showExpandableButton={true}
                 />
@@ -44,17 +47,5 @@ var title = <a href={pathLink}><h3>
                 </CardText>
             </Card>
         </div>;
-
-
-        // return <div>
-        // 	<h3>
-        // 		<a href={pathLink}>
-        // 			{this.props.path.get('title')}
-        // 		</a>
-        // 	</h3>
-        // 	{nodes.map(function(n){
-        // 		return <p key={n.get('id')}>{n.get('statement')}</p>
-        // 	})}
-        // </div>;
 	}
 });

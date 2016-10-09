@@ -7,7 +7,8 @@ module.exports = BaseComponent.createClass({
 	render: function(){
         const self = this;
         const dataLocation = this.props.paths.get('dataLocation');
-        return <Paper zDepth={2}>
+        // return <Paper zDepth={2}>
+        return <div>
             {this.props.paths.get('paths').map(function(p, index){
                 return <PathPreview
                     controllers={self.props.controllers}
@@ -17,6 +18,6 @@ module.exports = BaseComponent.createClass({
                     index={index}
                 />
             })}
-        </Paper>;
+        </div>;
 	}
 });

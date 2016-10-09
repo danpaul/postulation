@@ -58,36 +58,8 @@ module.exports = function(options){
      * @param {Number}  options.index  index of path
      */
     this.togglePathPreview = function(options){
-        // asdf
-        console.log('options', options);
-    }
-
-    /**
-     * Loads recent paths
-     * @param  {[type]} options [description]
-     * @return {[type]}         [description]
-     */
-    this.loadRecent = function(options){
-        console.log(new Error('this.loadRecent, set data location'));
-        // var self = this;
-        // d.set(['recentPaths', 'loading'], true);
-        // superagent
-        //     .get(siteUrl + '/api/path/get-recent/' + options.page)
-        //     .end(function (err, response){
-        //         d.set(['recentPaths', 'loading'], false);
-        //         if( err ){
-        //             // TODO: add error handling
-        //             console.log(err);
-        //             return;
-        //         }
-        //         if( response.body.status !== 'success' ){
-        //             // TODO: add error handling
-        //             console.log(new Error(response.body.error));
-        //             return;
-        //         }
-        //         d.set(['recentPaths', 'paths'], response.body.data.paths);
-        //     }
-        // );
+        return;
+        // handled internally by component
     }
 
     /**

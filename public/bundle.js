@@ -30919,9 +30919,10 @@
 	    render: function render() {
 	        var self = this;
 	        var dataLocation = this.props.paths.get('dataLocation');
+	        // return <Paper zDepth={2}>
 	        return _react2.default.createElement(
-	            _Paper2.default,
-	            { zDepth: 2 },
+	            'div',
+	            null,
 	            this.props.paths.get('paths').map(function (p, index) {
 	                return _react2.default.createElement(_pathPreview2.default, {
 	                    controllers: self.props.controllers,
@@ -30965,11 +30966,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var STYLE = {};
+	var STYLE = { marginBottom: 10 };
 
 	module.exports = _baseComponent2.default.createClass({
 	    handleExpandChange: function handleExpandChange(e) {
-	        // e.stopPropagation();
+	        return;
+	        // handled inernally by component
 	        var d = { dataLocation: this.props.dataLocation,
 	            index: this.props.index };
 	        this.props.controllers.path.togglePathPreview(d);
@@ -30981,26 +30983,23 @@
 	                nodes.push(i);
 	            }
 	        });
-	        var pathLink = _config2.default.siteUrl + '/path/get/' + this.props.path.get('id');
 
-	        var title = _react2.default.createElement(
-	            'a',
-	            { href: pathLink },
-	            _react2.default.createElement(
-	                'h3',
-	                null,
-	                this.props.path.get('title')
-	            )
-	        );
+	        var pathLink = _config2.default.siteUrl + '/path/get/' + this.props.path.get('id');
+	        // var title = <a href={pathLink}><h4>
+	        //     {this.props.path.get('title')}
+	        // </h4></a>;
+	        var title = this.props.path.get('title');
+	        var subtitle = '0.25 1/4 — 2016-07-07 12:38';
 
 	        return _react2.default.createElement(
 	            'div',
-	            null,
+	            { style: STYLE },
 	            _react2.default.createElement(
 	                _Card.Card,
 	                { onExpandChange: this.handleExpandChange },
 	                _react2.default.createElement(_Card.CardHeader, {
 	                    title: title,
+	                    subtitle: subtitle,
 	                    actAsExpander: false,
 	                    showExpandableButton: true
 	                }),
@@ -31017,17 +31016,6 @@
 	                )
 	            )
 	        );
-
-	        // return <div>
-	        // 	<h3>
-	        // 		<a href={pathLink}>
-	        // 			{this.props.path.get('title')}
-	        // 		</a>
-	        // 	</h3>
-	        // 	{nodes.map(function(n){
-	        // 		return <p key={n.get('id')}>{n.get('statement')}</p>
-	        // 	})}
-	        // </div>;
 	    }
 	});
 
@@ -47810,11 +47798,6 @@
 			user: null,
 			userVote: null
 		},
-		recentPaths: {
-			loading: false,
-			page: null,
-			paths: []
-		},
 		recentPathsHome: {
 			dataLocation: ['recentPathsHome'],
 			loading: false,
@@ -49113,36 +49096,8 @@
 	     * @param {Number}  options.index  index of path
 	     */
 	    this.togglePathPreview = function (options) {
-	        // asdf
-	        console.log('options', options);
-	    };
-
-	    /**
-	     * Loads recent paths
-	     * @param  {[type]} options [description]
-	     * @return {[type]}         [description]
-	     */
-	    this.loadRecent = function (options) {
-	        console.log(new Error('this.loadRecent, set data location'));
-	        // var self = this;
-	        // d.set(['recentPaths', 'loading'], true);
-	        // superagent
-	        //     .get(siteUrl + '/api/path/get-recent/' + options.page)
-	        //     .end(function (err, response){
-	        //         d.set(['recentPaths', 'loading'], false);
-	        //         if( err ){
-	        //             // TODO: add error handling
-	        //             console.log(err);
-	        //             return;
-	        //         }
-	        //         if( response.body.status !== 'success' ){
-	        //             // TODO: add error handling
-	        //             console.log(new Error(response.body.error));
-	        //             return;
-	        //         }
-	        //         d.set(['recentPaths', 'paths'], response.body.data.paths);
-	        //     }
-	        // );
+	        return;
+	        // handled internally by component
 	    };
 
 	    /**

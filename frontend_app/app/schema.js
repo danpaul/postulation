@@ -32,11 +32,6 @@ const schema = {
 		user: null,
 		userVote: null
 	},
-	recentPaths: {
-		loading: false,
-		page: null,
-		paths: []
-	},
 	recentPathsHome: {
 		dataLocation: ['recentPathsHome'],
 		loading: false,
