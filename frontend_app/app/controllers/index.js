@@ -1,4 +1,5 @@
 import CreatePath from './createPath';
+import Drawer from './drawer';
 import Path from './path';
 import User from './user';
 import View from './view';
@@ -8,6 +9,7 @@ const _ = require('underscore');
 const superagent = require('superagent-cache')();
 const CONTROLLERS = {
 	createPath: CreatePath,
+	drawer: Drawer,
 	path: Path,
 	user: User,
 	view: View,

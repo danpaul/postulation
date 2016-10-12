@@ -1,12 +1,11 @@
 import BaseComponent from '../lib/baseComponent';
-import CreatePath from './createPath.jsx';
 import React from 'react';
 import Paths from './paths.jsx';
-import PathsWrap from './pathsWrap.jsx';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 const pathWrapStyle = {
 	width: 800,
-	marginLeft: 20
+	margin: 20
 }
 
 module.exports = BaseComponent.createClass({
@@ -17,22 +16,36 @@ module.exports = BaseComponent.createClass({
 	},
 	render: function(){
 		return <div>
-			<div style={pathWrapStyle}>
-				<PathsWrap
-					title="Recent Paths"
-					>
-					<Paths
-						controllers={this.props.controllers}
-						paths={this.props.recentPaths}
-					/>
-				</PathsWrap>
-			</div>
-			<div>
-				<CreatePath
-                	controllers={this.props.controllers}
-                	path={this.props.createPath}
-				/>
-			</div>
+			<Tabs style={pathWrapStyle} >
+			    <Tab label="Recent" >
+					<div style={{marginTop: 10}}>
+						<Paths
+							controllers={this.props.controllers}
+							paths={this.props.recentPaths}
+						/>
+					</div>
+				</Tab>
+			</Tabs>
 		</div>
+		// return <div>
+		// 	<Tabs style={pathWrapStyle} >
+		// 	    <Tab label="Recent" >
+		// 			<div style={{marginTop: 10}}>
+		// 				<Paths
+		// 					controllers={this.props.controllers}
+		// 					paths={this.props.recentPaths}
+		// 				/>
+		// 			</div>
+		// 		</Tab>
+		// 	    <Tab label="Trending" >
+		// 			<div style={{marginTop: 10}}>
+		// 				<Paths
+		// 					controllers={this.props.controllers}
+		// 					paths={this.props.recentPaths}
+		// 				/>
+		// 			</div>
+		// 		</Tab>
+		// 	</Tabs>
+		// </div>
 	}
 });

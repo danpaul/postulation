@@ -2,6 +2,10 @@ import BaseComponent from '../lib/baseComponent';
 import Paper from 'material-ui/Paper';
 import React from 'react';
 
+import FlatButton from 'material-ui/FlatButton';
+
+import helpers from '../lib/helpers';
+
 const STYLE = {padding: 10, cursor: 'pointer'};
 
 module.exports = BaseComponent.createClass({
@@ -46,19 +50,17 @@ module.exports = BaseComponent.createClass({
             }
         }
 
-
         return <Paper style={STYLE} zDepth={zDepth} onClick={this.handleNodeClick}>
-        	<div>
-        		<p>Strength: {this.props.node.get('strength')}</p>
-        		<p>Votes: {this.props.node.get('true')} / {this.props.node.get('false')}</p>
+            {this.props.node.get('statement')}
+            <div>
+                {helpers.ranking.getRankingString(this.props.node) + ' — '}
                 <div
                     onClick={this.handleAffirmVote}
                     className={affirmVoteClass} />
                 <div
                     onClick={this.handleNegateVote}
                     className={negateVoteClass} />
-        	</div>
-            {this.props.node.get('statement')}
+            </div>
         </Paper>;
 	}
 });

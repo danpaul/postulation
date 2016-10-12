@@ -1,6 +1,7 @@
 import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 import config from '../config';
+import helpers from '../lib/helpers';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -16,6 +17,9 @@ module.exports = BaseComponent.createClass({
                     index: this.props.index };
         this.props.controllers.path.togglePathPreview(d);
     },
+    getSubtitle: function(){
+        return helpers.ranking.getRankingString(this.props.path);
+    },
 	render: function() {
 		var nodes = [];
 		this.props.path.get('path').forEach(function(i){
@@ -25,17 +29,14 @@ module.exports = BaseComponent.createClass({
 		});
 
 		var pathLink = config.siteUrl + '/path/get/' + this.props.path.get('id');
-        // var title = <a href={pathLink}><h4>
-        //     {this.props.path.get('title')}
-        // </h4></a>;
-        var title = this.props.path.get('title');
-        var subtitle = '0.25 1/4 — 2016-07-07 12:38';
-
+        var title = <a style={{fontWeight: 'bold', color: '#000'}} href={pathLink}>
+            {this.props.path.get('title')}
+        </a>;
         return <div style={STYLE}>
             <Card onExpandChange={this.handleExpandChange}>
                 <CardHeader
                     title={title}
-                    subtitle={subtitle}
+                    subtitle={this.getSubtitle()}
                     actAsExpander={false}
                     showExpandableButton={true}
                 />

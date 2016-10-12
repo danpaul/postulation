@@ -1,8 +1,9 @@
 import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 import Paper from 'material-ui/Paper';
+import helpers from '../lib/helpers';
 
-const STYLE_WRAP = { padding: '10px', fontWeight: 'bold' };
+const STYLE_WRAP = { padding: 10, fontWeight: 'bold', marginBottom: 10 };
 const STYLE_RANK = { width: 40, height: 40, textAlign: 'center', fontSize: 16, paddingTop: 4 };
 const STYLE_RANK_RATIO = {fontSize: 6, paddingTop: 0, marginTop: -9}
 
@@ -38,19 +39,12 @@ module.exports = BaseComponent.createClass({
         }
 
         return <Paper  style={STYLE_WRAP} zDepth={1}>
-            <Paper
-                style={STYLE_RANK}
-                zDepth={1}
-                circle={true}>
-                <div>
-                    {this.props.path.get('strength')}
-                </div>
-                <div style={STYLE_RANK_RATIO}>
-                    {this.props.path.get('true')}/{this.props.path.get('false')}
-                </div>
-            </Paper>
-            <div >
-                {this.props.path.get('title')}
+            <div>
+                <h3>{this.props.path.get('title')}</h3>
+            </div>
+            <div>
+                {helpers.ranking.getRankingString(this.props.path) + ' '}
+                 —
                 <div
                     onClick={this.handleAffirmVote}
                     className={affirmVoteClass} />
@@ -59,5 +53,28 @@ module.exports = BaseComponent.createClass({
                     className={negateVoteClass} />
             </div>
         </Paper>
+
+        // return <Paper  style={STYLE_WRAP} zDepth={1}>
+        //     <Paper
+        //         style={STYLE_RANK}
+        //         zDepth={1}
+        //         circle={true}>
+        //         <div>
+        //             {this.props.path.get('strength')}
+        //         </div>
+        //         <div style={STYLE_RANK_RATIO}>
+        //             {this.props.path.get('true')}/{this.props.path.get('false')}
+        //         </div>
+        //     </Paper>
+        //     <div >
+        //         <h3>{this.props.path.get('title')}</h3>
+        //         <div
+        //             onClick={this.handleAffirmVote}
+        //             className={affirmVoteClass} />
+        //         <div
+        //             onClick={this.handleNegateVote}
+        //             className={negateVoteClass} />
+        //     </div>
+        // </Paper>
 	}
 });

@@ -2,12 +2,12 @@ import BaseComponent from '../lib/baseComponent';
 import Paper from 'material-ui/Paper';
 import React from 'react';
 
-const STYLE = {	textAlign: 'center',
-				width: 40,
-				height: 40,
-				margin: '0 auto',
-				marginTop: 10,
-				marginBottom: 10	};
+import helpers from '../lib/helpers';
+
+const STYLE = { 
+                marginTop: 10,
+                marginBottom: 10,
+                width: '100%'    };
 
 module.exports = BaseComponent.createClass({
 	handleLinkClick: function(){
@@ -17,10 +17,12 @@ module.exports = BaseComponent.createClass({
 	render: function() {
 		if( this.props.link.get('hidden') ){ return null; }
         return <Paper
-        		className="icon-link"
-        		style={STYLE}
-        		zDepth={this.props.focused ? 2 : 1}
-        		circle={true}
-        		onClick={this.handleLinkClick} />;
+                style={STYLE}
+                zDepth={this.props.focused ? 2 : 1}
+                onClick={this.handleLinkClick} >
+                <div className="link-wrap">
+                    <div className="icon-link" />
+                </div>
+        </Paper>
 	}
 });

@@ -1,6 +1,7 @@
 import AppBar from './appBar.jsx';
 import BaseComponent from '../lib/baseComponent';
 import CreatePath from './createPath.jsx';
+import Drawer from './drawer.jsx';
 import Home from './home.jsx';
 import Path from './path.jsx';
 import Paths from './paths.jsx';
@@ -10,7 +11,7 @@ module.exports = BaseComponent.createClass({
     componentDidMount: function(){
         this.props.controllers.user.init();
     },
-    getCreatePath(options){
+    getCreatePath: function(options){
         if( options.view === 'createPath' ){
             return <CreatePath
                 controllers={this.props.controllers}
@@ -19,7 +20,13 @@ module.exports = BaseComponent.createClass({
         }
         return null;
     },
-    getHome(options){
+    getDrawer: function(options){
+        return <Drawer
+            controllers={this.props.controllers}
+            open={this.props.data.getIn(['drawer', 'open'])}
+        />
+    },
+    getHome: function(options){
         if( options.view === 'home' ){
             return <Home
                 controllers={this.props.controllers}
@@ -28,7 +35,7 @@ module.exports = BaseComponent.createClass({
             />
         }
     },
-    getPath(options){
+    getPath: function(options){
         if( options.view === 'path' ){
             return <Path
                 controllers={this.props.controllers}
@@ -39,7 +46,7 @@ module.exports = BaseComponent.createClass({
         }
         return null;
     },
-    getPaths(options){
+    getPaths: function(options){
         if( options.view === 'paths' ){
             return <Paths
                 controllers={this.props.controllers}
@@ -55,6 +62,7 @@ module.exports = BaseComponent.createClass({
                 user={this.props.data.get('user')}
                 controllers={this.props.controllers}
             />
+            { this.getDrawer(options) }
             { this.getHome(options)}
             { this.getCreatePath(options) }
             { this.getPath(options) }

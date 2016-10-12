@@ -7,7 +7,7 @@ import PathTitle from './pathTitle.jsx';
 import Paper from 'material-ui/Paper';
 
 const STYLE = { margin: 20,
-                width: 400,
+                width: 800,
                 padding: 10,
                 float: 'left'   };
 

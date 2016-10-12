@@ -13,11 +13,13 @@
     "cookie-parser": "^1.3.4",
     "express": "^4.12.3",
     "express-session": "^1.11.1",
+    "install": "^0.8.1",
     "knex": "^0.11.10",
     "mysql": "^2.11.1",
     "nodemailer": "^2.6.4",
     "nodemailer-smtp-transport": "^2.7.2",
-    "sql_login_middleware": "git+https://github.com/danpaul/sql_login_middleware.git",
+    "npm": "^3.10.8",
+    "sql_user_manager": "0.0.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

@@ -22,7 +22,7 @@ var auth = require('./lib/auth');
 module.exports = function(app){
 
 
-    var sqlLoginMiddleware = require('sql_login_middleware')(app, {
+    var sqlLoginMiddleware = require('sql_user_manager')(app, {
         rootUrl: config.rootUrl + '/auth',
         knex: knex,
         useUsername: true,

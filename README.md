@@ -1,14 +1,9 @@
 ## About
-This repo provides a foundation to build single page apps with a Node/Express back end. Running in front end development mode will allow automatic watching of assets in the the `frontend_app/app` and `frontend_app/scss` directories. On change, the SCSS and JS get rebuilt and the browser refreshed.
 
-The Stack:
-* jQuery
-* SASS
-* [Foundation](http://foundation.zurb.com/)
-* [Browserify](http://browserify.org/)
-* [React](https://facebook.github.io/react/)
+Postultion is an application to structure, present and provide ranking for user generated arugments.
 
-The back end uses Node/Express with basic session handling setup.
+Postulation is in development.
+
 
 ## To Setup
 
@@ -17,7 +12,6 @@ The back end uses Node/Express with basic session handling setup.
 * `npm install`
 * `gulp`
 
-## To Run
 
 ### Backend development (if you have [nodemon](https://github.com/remy/nodemon) installed):
 ```
@@ -40,31 +34,37 @@ NODE_ENV=production node index.js
 
 ## Notes
 
-Controllers should return user friendly/safe response object and handle any errors that occur in the models or controllers. Controllers should handle all validation and sanitization.
+* Routes should handle all validation and sanitization that does not require a model/DB call
+* Controllers should handle any validation that requires a call to a model/DB
+* Controllers should return user friendly/safe response objects to the route and handle any errors internally
+* Models should get clean and sanitized data
+* Models should return raw errors to controllers
 
-Models should return raw errors to controllers.
+## UI/UX Todo
 
-## Todo
-
-* landing page should have most recent/most popular posts
-* landing page should have add path
-
-* have all basic user flows/error handling working
-* make first pass and UI styling
-
+* Restyle path detail view
+* Restyle create path
+* Add pagination to recent paths
+* Add header to auth pages
 * Add error handling to UI
+* Lockup non-logged in features
+
+## App Todo
+
+* add history drawer on right side
+* add pagination to new/trending paths
 * Add dynamic config for API url to front end
-
-
 * ensure knex is escaping character and raw queries are safe
 * Validate that new paths have atleast two nodes
-* add main view w/ new/trending paths
+* Mobile styling
+* Add create_at timestamp to node and links
+
+## Features
+
+* Add history of paths visited in panel on right side
+* Show trending paths
+* Add up arrow as you traverse down paths
 
 ## Bugs
 
 * Vote history for non-logged in user: http://take.ms/Px7Kkc
-
-## Features
-
-* Add history of paths visited in panel on left side
-* Show trending paths

@@ -1,5 +1,5 @@
 const schema = {
-	view: 'home', // see `components/root.jsx` for possible views
+	view: '', // see `components/root.jsx` for possible views
 	createPath: {
 		dataLocation: ['createPath'],
 		title: '',
@@ -19,6 +19,9 @@ const schema = {
 			valid: false,
 			nodes: []
 		}
+	},
+	drawer: {
+		open: false
 	},
 	path: {
 		id: null,
