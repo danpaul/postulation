@@ -42,6 +42,7 @@ NODE_ENV=production node index.js
 
 ## UI/UX Todo
 
+* https://monosnap.com/file/QMTJ22uQBC818AzCOBv2xFBHkXFP8x
 * Restyle path detail view
 * Restyle create path
 * Add pagination to recent paths
