@@ -3,12 +3,17 @@ import React from 'react';
 import PathItemDetail from './pathItemDetail.jsx';
 import PathLink from './pathLink.jsx';
 import PathNode from './pathNode.jsx';
-import PathTitle from './pathTitle.jsx';
+import PathVote from './pathVote.jsx';
 import Paper from 'material-ui/Paper';
+import helpers from '../lib/helpers';
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import config from '../config';
 
 const STYLE = { margin: 20,
                 width: 800,
-                padding: 10,
+                // padding: 10,
                 float: 'left'   };
 
 module.exports = BaseComponent.createClass({
@@ -51,13 +56,19 @@ module.exports = BaseComponent.createClass({
             }
         });
     },
-	render: function() {
+    render: function() {
         return <div>
-            <Paper style={STYLE} zDepth={1}>
-                <PathTitle
+            <div style={{marginLeft: 20}}>
+                <h1>{this.props.path.get('title')}</h1>
+                <h3>
+                    { helpers.ranking.getRankingString(this.props.path) }
+                </h3>
+                <PathVote
                     controllers={this.props.controllers}
                     path={this.props.path}
                 />
+            </div>
+            <Paper style={STYLE} zDepth={1}>
                 {this.getEllements()}
             </Paper>
             <PathItemDetail
@@ -65,5 +76,5 @@ module.exports = BaseComponent.createClass({
                 detailItem={this.props.detailItem}
             />
         </div>
-	}
+    }
 });

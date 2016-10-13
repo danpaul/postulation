@@ -61,7 +61,9 @@ NODE_ENV=production node index.js
 * Add create_at timestamp to node and links
 
 ## Features
-
+* Add "Your Paths" section
+* Add function to save paths
+  * Add section for saved paths
 * Add history of paths visited in panel on right side
 * Show trending paths
 * Add up arrow as you traverse down paths
@@ -69,3 +71,4 @@ NODE_ENV=production node index.js
 ## Bugs
 
 * Vote history for non-logged in user: http://take.ms/Px7Kkc
+* https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
