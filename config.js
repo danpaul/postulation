@@ -1,9 +1,12 @@
 var config = {};
+var secret = require('./secret');
 
 config.environment = process.env.NODE_ENV ?
                         process.env.NODE_ENV : 'development';
 
 if( config.environment === 'development' ){
+
+    config.useBasicAuth = false;
 
     config.sessionSecret = 'super secret';
     config.cookieSecrety = 'super secret';
@@ -24,7 +27,8 @@ if( config.environment === 'development' ){
 
 } else if( config.environment === 'production' ) {
 
-
+    config.useBasicAuth = true;
+    config.knex = secret.knex;
 
 } else {
     throw('App must be started with env flag set.')

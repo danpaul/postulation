@@ -21,6 +21,9 @@ var auth = require('./lib/auth');
 
 module.exports = function(app){
 
+    if( config.useBasicAuth ){
+        app.use(require('./lib/basicAuth'));
+    }
 
     var sqlLoginMiddleware = require('sql_user_manager')(app, {
         rootUrl: config.rootUrl + '/auth',

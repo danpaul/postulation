@@ -2,7 +2,7 @@ import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
-const style = {marginBottom: 10};
+const style = {marginBottom: 10, fontWeight: 'bold'};
 
 module.exports = BaseComponent.createClass({
     onBlur: function(e){

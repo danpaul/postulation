@@ -3,7 +3,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-const STYLE = {padding: 10, marginBottom: 20};
+const STYLE = {marginBottom: 20};
 
 module.exports = BaseComponent.createClass({
 	onBlur: function(e){
@@ -21,7 +21,7 @@ module.exports = BaseComponent.createClass({
 	render: function() {
 		if( this.props.isDisabled ){
 			return <div>
-				<Paper zDepth={1} style={STYLE}>
+				<Paper zDepth={0} style={STYLE}>
 	            	<TextField
 	            		value={this.props.node.get('statement')}
 	            		multiLine={true}
@@ -31,7 +31,7 @@ module.exports = BaseComponent.createClass({
 	        </div>
 		}
 		return <div>
-			<Paper zDepth={1} style={STYLE}>
+			<Paper zDepth={0} style={STYLE}>
             	<TextField
             		onBlur={this.onBlur}
             		value={this.props.node.get('statement')}

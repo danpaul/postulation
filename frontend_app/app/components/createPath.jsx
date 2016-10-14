@@ -71,9 +71,6 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
         var self = this;
-//            <Toolbar name={"create-path"}>
-//                <ToolbarTitle text="New Path" />
-//            </Toolbar>
 		return <div>
             {this.getAffirmNegateButtons()}
             <div style={STYLE_CONTENT_WRAP}>

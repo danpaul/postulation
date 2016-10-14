@@ -13,10 +13,12 @@ module.exports = BaseComponent.createClass({
     },
     getCreatePath: function(options){
         if( options.view === 'createPath' ){
-            return <CreatePath
-                controllers={this.props.controllers}
-                path={this.props.data.get('createPath')}
-            />
+            return <div className="create-path-wrap">
+                <CreatePath
+                    controllers={this.props.controllers}
+                    path={this.props.data.get('createPath')}
+                />
+            </div>;
         }
         return null;
     },

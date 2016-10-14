@@ -45,7 +45,7 @@ NODE_ENV=production node index.js
 * X https://monosnap.com/file/QMTJ22uQBC818AzCOBv2xFBHkXFP8x
 * X https://monosnap.com/file/VoyD7bx2jjOm5fHgknhtWCMeh8X7PS
 * X Restyle path detail view
-* Restyle create path
+* X Restyle create path
 * Add pagination to recent paths
 * Add header to auth pages
 * Add error handling to UI
@@ -56,7 +56,13 @@ NODE_ENV=production node index.js
   * Maybe unmount and trigger cleanup on unmount
 * Add user info to path title
 
+## UI/UX Todo 2
+
+* Add delete node on path create
+
 ## App Todo
+* Deploy
+* Add basic auth
 * setup deployment
 * add user info to path
 * add history drawer on right side
