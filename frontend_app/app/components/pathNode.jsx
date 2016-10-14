@@ -13,11 +13,16 @@ module.exports = BaseComponent.createClass({
         this.props.controllers.vote.get({   type: 'node',
                                             id:  this.props.node.get('id') });
     },
-	handleNodeClick: function(){
+	handleNodeClick: function(e){
 		var d = {item: this.props.node};
-		this.props.controllers.path.setDetailItem(d);
+        if( !this.props.focused ){
+            this.props.controllers.path.setDetailItem(d);
+        } else {
+            this.props.controllers.path.unsetDetailItem(d);
+        }		
 	},
     handleAffirmVote: function(e){
+        e.stopPropagation(); 
         const userVote = this.props.node.get('userVote');
         if( userVote ){ return; }
         this.props.controllers.vote.add({   type: 'node',
@@ -25,6 +30,7 @@ module.exports = BaseComponent.createClass({
                                             true: true  });
     },
     handleNegateVote: function(e){
+        e.stopPropagation();
         const userVote = this.props.node.get('userVote');
         if( (userVote !== null || typeof(userVote) !== 'undefined') &&
         	!userVote ){ return; }
@@ -32,35 +38,35 @@ module.exports = BaseComponent.createClass({
                                             id: this.props.node.get('id'),
                                             true: false  });
     },
-	render: function() {
-		if( this.props.node.get('hidden') ){ return null; }
-		var zDepth = 1;
-		if( this.props.focused ){ zDepth = 2; }
-
-        var affirmVoteClass = 'vote-button vote-button_affirm';
-        var negateVoteClass = 'vote-button vote-button_negate';
-
-
+    getRankingSection: function(e){
+        if( !this.props.focused ){ return null; }
+        var affirmButtonDisabled = false;
+        var negateButtonDisabled = false;
         const userVote = this.props.node.get('userVote');
         if(  userVote !== null && typeof(userVote) !== 'undefined' ){
             if( userVote ){
-                affirmVoteClass += ' vote-button_disabled';
+                affirmButtonDisabled = true;
             } else {
-                negateVoteClass += ' vote-button_disabled';
+                negateButtonDisabled = true;
             }
         }
-
-        return <Paper style={STYLE} zDepth={zDepth} onClick={this.handleNodeClick}>
+        return <div>
+            {helpers.ranking.getRankingString(this.props.node) + ' '}
+            <FlatButton
+                disabled={affirmButtonDisabled}
+                label="UPVOTE"
+                onClick={this.handleAffirmVote} />
+            <FlatButton
+                disabled={negateButtonDisabled}
+                label="DOWNVOTE"
+                onClick={this.handleNegateVote} />
+        </div>;
+    },
+	render: function() {
+		if( this.props.node.get('hidden') ){ return null; }
+        return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
             {this.props.node.get('statement')}
-            <div>
-                {helpers.ranking.getRankingString(this.props.node) + ' — '}
-                <div
-                    onClick={this.handleAffirmVote}
-                    className={affirmVoteClass} />
-                <div
-                    onClick={this.handleNegateVote}
-                    className={negateVoteClass} />
-            </div>
+            {this.getRankingSection()}
         </Paper>;
 	}
 });

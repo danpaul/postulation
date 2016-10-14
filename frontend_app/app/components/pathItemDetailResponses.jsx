@@ -8,7 +8,7 @@ const STYLE = {};
 module.exports = BaseComponent.createClass({
 	render: function() {
 		if( !this.props.paths.size ){ return null; }
-        return <Paper style={STYLE} zDepth={2}>
+        return <Paper style={STYLE} zDepth={0}>
         	{this.props.paths.map(function(p){
         		return <PathPreview
         			key={p.get('id')}

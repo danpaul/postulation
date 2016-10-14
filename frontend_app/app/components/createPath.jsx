@@ -58,10 +58,12 @@ module.exports = BaseComponent.createClass({
         if( !this.props.responseTo ){ return null; }
         return <div>
             <RaisedButton
+                style={{width: '50%'}}
                 label="Affirm"
                 secondary={this.props.responseIsAffirming}
                 onClick={this.selectAffirm} />
             <RaisedButton
+            style={{width: '50%'}}
                 label="Negate"
                 secondary={!this.props.responseIsAffirming}
                 onClick={this.selectNegate} />
@@ -69,33 +71,31 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
         var self = this;
+//            <Toolbar name={"create-path"}>
+//                <ToolbarTitle text="New Path" />
+//            </Toolbar>
 		return <div>
-            <Paper style={STYLE} zDepth={1} >
-                <Toolbar name={"create-path"}>
-                    <ToolbarTitle text="New Path" />
-                </Toolbar>
-                {this.getAffirmNegateButtons()}
-                <div style={STYLE_CONTENT_WRAP}>
-                    <CreatePathTitle
-                        controllers={this.props.controllers}
-                        dataLocation={this.props.path.get('dataLocation')}
-                        error={this.props.path.get('titleError')}
-                        title={this.props.path.get('title')}
-                    />
-                    {this.getNodes()}
-                    {this.getResponseNode()}
-                    <FlatButton
-                        onClick={this.addNode}
-                        label="Add Node"
-                        primary={true} />
-                    <RaisedButton
-                        onClick={this.createPath}
-                        label="Create"
-                        secondary={true}
-                        disabled={!this.props.path.get('valid')}
-                        style={{float: 'right'}} />
-                </div>
-            </Paper>
+            {this.getAffirmNegateButtons()}
+            <div style={STYLE_CONTENT_WRAP}>
+                <CreatePathTitle
+                    controllers={this.props.controllers}
+                    dataLocation={this.props.path.get('dataLocation')}
+                    error={this.props.path.get('titleError')}
+                    title={this.props.path.get('title')}
+                />
+                {this.getNodes()}
+                {this.getResponseNode()}
+                <FlatButton
+                    onClick={this.addNode}
+                    label="Add Node"
+                    primary={true} />
+                <RaisedButton
+                    onClick={this.createPath}
+                    label="Create"
+                    secondary={true}
+                    disabled={!this.props.path.get('valid')}
+                    style={{float: 'right'}} />
+            </div>
 		</div>;
 	}
 });

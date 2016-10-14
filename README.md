@@ -42,16 +42,23 @@ NODE_ENV=production node index.js
 
 ## UI/UX Todo
 
-* https://monosnap.com/file/QMTJ22uQBC818AzCOBv2xFBHkXFP8x
-* Restyle path detail view
+* X https://monosnap.com/file/QMTJ22uQBC818AzCOBv2xFBHkXFP8x
+* X https://monosnap.com/file/VoyD7bx2jjOm5fHgknhtWCMeh8X7PS
+* X Restyle path detail view
 * Restyle create path
 * Add pagination to recent paths
 * Add header to auth pages
 * Add error handling to UI
 * Lockup non-logged in features
+* Path Detail
+  * Clear when path changes
+  * Clear afer submit (above might resolve)
+  * Maybe unmount and trigger cleanup on unmount
+* Add user info to path title
 
 ## App Todo
-
+* setup deployment
+* add user info to path
 * add history drawer on right side
 * add pagination to new/trending paths
 * Add dynamic config for API url to front end

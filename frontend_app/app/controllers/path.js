@@ -120,6 +120,10 @@ module.exports = function(options){
         this.loadResponsePaths({item: options.item, charge: false});
     }
 
+    this.unsetDetailItem = function(options){
+        d.set(['detailItem', 'item'], null);
+    }
+
     /**
      * @param  {object}  options.item
      * @param  {boolean}  options.charge

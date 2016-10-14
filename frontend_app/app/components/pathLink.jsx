@@ -12,7 +12,11 @@ const STYLE = {
 module.exports = BaseComponent.createClass({
 	handleLinkClick: function(){
 		var d = {item: this.props.link};
-		this.props.controllers.path.setDetailItem(d);
+        if( !this.props.focused ){
+            this.props.controllers.path.setDetailItem(d);
+        } else {
+            this.props.controllers.path.unsetDetailItem(d);
+        }
 	},
 	render: function() {
 		if( this.props.link.get('hidden') ){ return null; }

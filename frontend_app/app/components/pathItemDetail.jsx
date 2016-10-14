@@ -6,31 +6,48 @@ import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 const STYLE = {margin: 20, width: 400, float: 'left'};
+const noPathsDiv = <div>No paths yet!</div>;
 
 module.exports = BaseComponent.createClass({
+	getAffirmingPaths: function(){
+		if( !this.props.detailItem.get('affirming').size ){
+			return noPathsDiv;
+		}
+		return <PathItemDetailResponses
+			affirming={true}
+			paths={this.props.detailItem.get('affirming')}
+		/>;
+	},
+	getNegatingPaths: function(){
+		if( !this.props.detailItem.get('negating').size ){
+			return noPathsDiv;
+		}
+		return  <PathItemDetailResponses
+			affirming={false}
+			paths={this.props.detailItem.get('negating')}
+		/>;
+	},
 	render: function() {
 		if( !this.props.detailItem.get('item') ){ return null; }
         return <Paper style={STYLE} zDepth={1}>
 			<Tabs>
-				<Tab label="Add" >
+				<Tab label="Affirming" >
+					<div style={{padding: 10}}>
+						{ this.getAffirmingPaths() }
+					</div>
+				</Tab>
+				<Tab label="Negating" >
+					<div style={{padding: 10}}>
+						{ this.getNegatingPaths() }
+					</div>
+				</Tab>
+				<Tab label="Reply" >
 					<CreatePath
 						controllers={this.props.controllers}
 						visible={true}
 						responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
 						responseTo={this.props.detailItem.get('item')}
 						path={this.props.detailItem.get('responsePath')} />
-				</Tab>
-				<Tab label="Affirming" >
-					<PathItemDetailResponses
-						affirming={true}
-						paths={this.props.detailItem.get('affirming')}
-					/>
-				</Tab>
-				<Tab label="Negating" >
-					<PathItemDetailResponses
-						affirming={false}
-						paths={this.props.detailItem.get('negating')}
-					/>
 				</Tab>
 			</Tabs>
         </Paper>;
