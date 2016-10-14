@@ -9,13 +9,12 @@ var path = require('path')
 
 var express = require('express');
 var app = module.exports.app = exports.app = express();
-
-if( config.environment === 'development' ){
-    app.use(require('connect-livereload')());
-}
-
 var bodyParser = require('body-parser')
 var session = require('express-session')
+
+if( config.useBasicAuth ){
+    app.use(require('./backend_app/lib/basicAuth'));
+}
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
