@@ -29,7 +29,7 @@ if( config.environment === 'development' ){
 
     config.useBasicAuth = true;
     config.knex = secret.knex;
-    config.port = 8000;
+    config.port = 80;
 
 } else {
     throw('App must be started with env flag set.')
