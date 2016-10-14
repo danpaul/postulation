@@ -19,7 +19,6 @@
     "mysql": "^2.11.1",
     "nodemailer": "^2.6.4",
     "nodemailer-smtp-transport": "^2.7.2",
-    "npm": "^3.10.8",
     "sql_user_manager": "0.0.1",
     "underscore": "^1.8.3"
   },

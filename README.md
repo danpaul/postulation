@@ -72,6 +72,7 @@ NODE_ENV=production node index.js
 * Validate that new paths have atleast two nodes
 * Mobile styling
 * Add create_at timestamp to node and links
+* Add GA
 
 ## Features
 * Add "Your Paths" section
@@ -80,8 +81,18 @@ NODE_ENV=production node index.js
 * Add history of paths visited in panel on right side
 * Show trending paths
 * Add up arrow as you traverse down paths
+* Create path
+  * Allow sorting
+
+## Infrastructure
+
+* auto restart mysql: https://www.digitalocean.com/community/tutorials/how-to-configure-a-linux-service-to-start-automatically-after-a-crash-or-reboot-part-1-practical-examples
+* auto start app
+* add monitors
+* configure https/cloudflare
 
 ## Bugs
 
 * Vote history for non-logged in user: http://take.ms/Px7Kkc
 * https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
+* undefined resave option; provide resave option node_modules/sql_user_manager/index.js:129:23
