@@ -1,5 +1,8 @@
 var config = {};
 
+config.environment = process.env.NODE_ENV ?
+                     process.env.NODE_ENV : 'development';
+
 config.recordHistory = true;
 config.siteUrl = 'http://localhost:3000';
 
