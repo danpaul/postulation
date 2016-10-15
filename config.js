@@ -27,7 +27,7 @@ if( config.environment === 'development' ){
 
 } else if( config.environment === 'production' ) {
 
-    config.root = 'http://198.199.65.198';
+    config.rootUrl = 'http://198.199.65.198';
     config.useBasicAuth = true;
     config.knex = secret.knex;
     config.port = 80;
