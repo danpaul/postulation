@@ -40,59 +40,61 @@ NODE_ENV=production node index.js
 * Models should get clean and sanitized data
 * Models should return raw errors to controllers
 
-## UI/UX Todo
+## Todo
 
-* X https://monosnap.com/file/QMTJ22uQBC818AzCOBv2xFBHkXFP8x
-* X https://monosnap.com/file/VoyD7bx2jjOm5fHgknhtWCMeh8X7PS
-* X Restyle path detail view
-* X Restyle create path
-* Add pagination to recent paths
-* Add header to auth pages
-* Add error handling to UI
-* Lockup non-logged in features
-* Path Detail
-  * Clear when path changes
-  * Clear afer submit (above might resolve)
-  * Maybe unmount and trigger cleanup on unmount
-* Add user info to path title
+* General app
+  * Add user notification handling
+  * Notify user if they are not logged in
+  * Notify users when errors occur in app (handle errors)
+  * Clean path/form data on unmount
+    * Clear when path changes
+    * Clear afer submit (above might resolve)
+    * Maybe unmount and trigger cleanup on unmount
+  * Add user info to path title
+* Path create
+  * Add ability to delete nodes
+  * Add ability to move node up/down
+  * Validate that new paths have atleast two nodes
+* User management
+  * Inject header into user management pages
+  * Add site-specific styles
+  * Add profile view for user management
+  * Add menu item for profile
+  * Profile page
+    * Display paginated recent posts
+    * Display profile info (email/username) with link to update page
+* Styling
+  * Make app responsive
+  * Improve button/toggle styling: https://monosnap.com/file/vX5RGsAI8Y0VJHJnAcydfYt2PunyYR
+* Landing page
+  * Add trending posts
+  * Add pagination
+* Back end
+  * Add create_at timestamp to node and links
+* Release related
+  * Create about on landing page for first time visitors
+  * Create basic instructions/documentation page
+  * Record screencast/demo/marketing video
+    * http://blog.hubspot.com/marketing/make-a-marketing-video#sm.000tbi5o21198f4wxho1f91lob01l
+    * https://www.americanexpress.com/us/small-business/openforum/articles/10-tools-to-make-your-marketing-videos-wow/
+  * Pick domain
+  * Add analytics
+  * Add monitoring
+  * Setup https, cloudflare?
+* Security
+  * ensure knex is escaping character and raw queries are safe
+* Bugs
+  * downvote inactive on newly created path: https://monosnap.com/file/gnHxtmuQ5hgHU0OYJOqz40tTPZUlDy
+  * Vote history for non-logged in user: http://take.ms/Px7Kkc
+  * https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
+  * undefined resave option; provide resave option node_modules/sql_user_manager/index.js:129:23
 
-## UI/UX Todo 2
-
-* Add delete node on path create
-
-## App Todo
-* Deploy
-* Add basic auth
-* setup deployment
-* add user info to path
-* add history drawer on right side
-* add pagination to new/trending paths
+## Future features
+* Add optional notifications for user when they
+  * Receive new responses
+* Add path caching
+* Add history drawer on right side
+* Add ability to navigate "up"
 * Add dynamic config for API url to front end
-* ensure knex is escaping character and raw queries are safe
-* Validate that new paths have atleast two nodes
-* Mobile styling
-* Add create_at timestamp to node and links
-* Add GA
-
-## Features
-* Add "Your Paths" section
 * Add function to save paths
   * Add section for saved paths
-* Add history of paths visited in panel on right side
-* Show trending paths
-* Add up arrow as you traverse down paths
-* Create path
-  * Allow sorting
-
-## Infrastructure
-
-* auto restart mysql: https://www.digitalocean.com/community/tutorials/how-to-configure-a-linux-service-to-start-automatically-after-a-crash-or-reboot-part-1-practical-examples
-* auto start app
-* add monitors
-* configure https/cloudflare
-
-## Bugs
-
-* Vote history for non-logged in user: http://take.ms/Px7Kkc
-* https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
-* undefined resave option; provide resave option node_modules/sql_user_manager/index.js:129:23
