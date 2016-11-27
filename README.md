@@ -39,7 +39,7 @@ NODE_ENV=production node index.js
     * X Disable vote button if user is not logged in
     * X Disable node vote button if user is not logged in
     * X Do not display path reply tab if user is not logged in
-  * Notify users when errors occur in app (handle errors)
+  * X Add error handling
     * X Add notification method
   * Clean path/form data on unmount
     * Clear when path changes

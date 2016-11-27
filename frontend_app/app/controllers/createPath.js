@@ -113,6 +113,13 @@ module.exports = function(options){
         d.set(['detailItem', 'responseIsAffirming'], false);
     },
     /**
+     * Clears form data
+     * @param {array} dataLocation
+     */
+    this.clearData = function(options){
+        d.reset(options.dataLocation.toJS());
+    }
+    /**
      * Handles formatting new path form data for submission
      * @param  {Immutable.List}  options.dataLocation
      */

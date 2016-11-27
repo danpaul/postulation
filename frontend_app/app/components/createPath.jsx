@@ -29,6 +29,12 @@ module.exports = BaseComponent.createClass({
                         index={index} />
         });
     },
+    componentWillUnmount: function(){
+        const dataLocation = this.props.path.get('dataLocation');
+        this.props.controllers.createPath.clearData({dataLocation: dataLocation});
+// asdf
+// console.log('unmounting');
+    },
     getResponseNode: function(){
         if( this.props.responseTo &&
             this.props.responseIsAffirming &&

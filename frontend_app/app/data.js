@@ -1,12 +1,13 @@
+const debug = false;
+
 const _ = require('underscore');
 const config = require('./config');
 const Immutable = require('immutable');
 
-const INITIAL_STATE = require('./schema');
-
-var data = Immutable.fromJS(INITIAL_STATE);
-var callbacks = [];
-var history = null;
+const initialState = Immutable.fromJS(require('./schema'));
+let data = initialState;
+let callbacks = [];
+let history = null;
 if( config.recordHistory ){
 	history = Immutable.List()
 					   .push(Immutable.Map({data: data, time: Date.now()}));
@@ -24,6 +25,9 @@ var mod = {
 			var d = Immutable.Map({data: data, time: Date.now()});
 			history = history.push(d);
 		}
+		if( debug ){
+			console.log('Data: ', data.toJS());
+		}
 		mod._notifyListeners();
 	},
 	_coerceValue: function(value){
@@ -40,6 +44,14 @@ var mod = {
 	},
 	push(key, item){
 		mod.set(key, mod.get(key).push(item));
+	},
+	reset(key){
+		if( _.isArray(key) ){
+			var value = initialState.getIn(key);
+		} else {
+			var value = initialState.get(key);
+		}
+		mod.set(key, value);
 	},
 	subscribe: function(callback){ callbacks.push(callback); },
 	_notifyListeners: function(){ _.each(callbacks, function(c){ c(); }); },
