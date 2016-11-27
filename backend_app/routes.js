@@ -14,9 +14,6 @@ var transporter = nodemailer.createTransport(smtpTransport(secret.smtp));
 var Models = require('./models');
 var models = new Models({knex: knex});
 
-var Controllers = require('./controllers');
-var controllers = new Controllers({models: models});
-
 var auth = require('./lib/auth');
 
 module.exports = function(app){
@@ -33,6 +30,10 @@ module.exports = function(app){
     });
 
 	app.use('/auth', sqlLoginMiddleware);
+
+    var Controllers = require('./controllers');
+    var controllers = new Controllers({models: models,
+                                       sqlLogin: sqlLoginMiddleware.sqlLogin});
 
 	var Routes = require('./routes/index.js');
 	var routes = new Routes(app, {controllers: controllers,

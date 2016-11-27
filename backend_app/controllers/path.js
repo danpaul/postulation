@@ -1,11 +1,12 @@
 var _ = require('underscore');
 var async = require('async');
-
 const constants = require('../constants');
+const publicUserProps = ['id', 'username'];
 
 module.exports = function(options){
 	var m = options.models;
 	var r = options.response;
+	var sqlLogin = options.sqlLogin;
 
 	/**
 	 * Passes back boolean to callback true if final node is valid
@@ -233,8 +234,34 @@ module.exports = function(options){
 				paths.forEach(function(path){
 					data.paths.push(pathMap[path.id]);
 				});
-				return r({data: data}, callback);
+				self._joinUsers({data: data}, true, callback);
 			});
+		});
+	}
+
+	/**
+	 * Joins users to path data
+	 * @param  {object}  options.data  path data
+	 */
+	this._joinUsers = function(options, public, callback){
+		var paths = options.data.paths;
+		async.eachLimit(paths, constants.parallelLimit, function(path, callback){
+			sqlLogin.getUser(path.user, function(err, user){
+				if(err){ return callback(err); }
+				var cleanUser = {};
+				// TODO: add public check here if ever not public properties are returned
+				publicUserProps.forEach(function(properties){
+					cleanUser[properties] = user[properties];
+				})
+				path.user = cleanUser;
+				callback();
+			});
+		}, function(err){
+			if( err ){
+				console.log(err);
+				return r({errorCode: 'unknown'}, callback);
+			}
+			return r({data: options.data}, callback);
 		});
 	}
 }

@@ -23,7 +23,7 @@ NODE_ENV=production node index.js
 
 `NODE_ENV=development nodemon ./backend_app/test.js`
 
-## Notes
+## Contributing
 
 * Routes should handle all validation and sanitization that does not require a model/DB call
 * Controllers should handle any validation that requires a call to a model/DB
@@ -41,10 +41,10 @@ NODE_ENV=production node index.js
     * X Do not display path reply tab if user is not logged in
   * X Add error handling
     * X Add notification method
-  * Clean path/form data on unmount
-    * Clear when path changes
-    * Clear afer submit (above might resolve)
-    * Maybe unmount and trigger cleanup on unmount
+  * X Clean path/form data on unmount
+    * X Clear when path changes
+    * X Clear afer submit (above might resolve)
+    * X Maybe unmount and trigger cleanup on unmount
   * Add user info to path title
 * Path create
   * Add ability to delete nodes

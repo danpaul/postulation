@@ -52502,6 +52502,10 @@
 
 	        d.set(loadingLocation, true);
 	        superagent.get(siteUrl + '/api/path/get-recent/' + options.page).end(function (err, response) {
+
+	            // asdf
+	            // console.log('response', response.body)
+
 	            d.set(loadingLocation, true);
 	            if (err) {
 	                c.snackbar.add(c.error.unknown);

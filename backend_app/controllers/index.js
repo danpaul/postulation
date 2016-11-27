@@ -14,6 +14,7 @@ module.exports = function(options){
 		var Controller = require('./' + controllerName);
 		self[controllerName] = new Controller({	controllers: self,
 												response: response,
-												models: options.models	});
+												models: options.models,
+												sqlLogin: options.sqlLogin	});
 	})
 }
