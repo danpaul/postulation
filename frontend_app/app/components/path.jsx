@@ -38,6 +38,7 @@ module.exports = BaseComponent.createClass({
                 return <PathNode
                     key={index}
                     node={el}
+                    user={self.props.user}
                     focused={focused}
                     controllers={self.props.controllers}
                 />
@@ -64,6 +65,7 @@ module.exports = BaseComponent.createClass({
                     { helpers.ranking.getRankingString(this.props.path) }
                 </h3>
                 <PathVote
+                    user={this.props.user}
                     controllers={this.props.controllers}
                     path={this.props.path}
                 />
@@ -74,6 +76,7 @@ module.exports = BaseComponent.createClass({
             <PathItemDetail
                 controllers={this.props.controllers}
                 detailItem={this.props.detailItem}
+                user={this.props.user}
             />
         </div>
     }

@@ -31,10 +31,12 @@ module.exports = BaseComponent.createClass({
                                             true: false  });
     },
     render: function() {
-        var affirmButtonDisabled = false;
-        var negateButtonDisabled = false;
+
+        let affirmButtonDisabled = this.props.user.get('id') ? false : true;
+        let negateButtonDisabled = this.props.user.get('id') ? false : true;
         const userVote = this.props.path.get('userVote');
-        if(  userVote !== null ){
+
+        if(  userVote !== null && this.props.user.get('id') ){
             if( userVote ){
                 affirmButtonDisabled = true;
             } else {

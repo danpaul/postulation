@@ -1,6 +1,8 @@
 import CreatePath from './createPath';
 import Drawer from './drawer';
+import Error from './error';
 import Path from './path';
+import Snackbar from './snackbar';
 import User from './user';
 import View from './view';
 import Vote from './vote';
@@ -10,7 +12,9 @@ const superagent = require('superagent-cache')();
 const CONTROLLERS = {
 	createPath: CreatePath,
 	drawer: Drawer,
+	error: Error,
 	path: Path,
+	snackbar: Snackbar,
 	user: User,
 	view: View,
 	vote: Vote

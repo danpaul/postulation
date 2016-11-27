@@ -32,18 +32,17 @@ module.exports = BaseComponent.createClass({
     handleNegateVote: function(e){
         e.stopPropagation();
         const userVote = this.props.node.get('userVote');
-        if( (userVote !== null || typeof(userVote) !== 'undefined') &&
-        	!userVote ){ return; }
+        if( (userVote !== null && userVote !== undefined) && !userVote ){ return; }
         this.props.controllers.vote.add({   type: 'node',
                                             id: this.props.node.get('id'),
                                             true: false  });
     },
     getRankingSection: function(e){
         if( !this.props.focused ){ return null; }
-        var affirmButtonDisabled = false;
-        var negateButtonDisabled = false;
+        let affirmButtonDisabled = this.props.user.get('id') ? false : true;
+        let negateButtonDisabled = this.props.user.get('id') ? false : true;
         const userVote = this.props.node.get('userVote');
-        if(  userVote !== null && typeof(userVote) !== 'undefined' ){
+        if(  userVote !== null && typeof(userVote) !== 'undefined' && this.props.user.get('id') ){
             if( userVote ){
                 affirmButtonDisabled = true;
             } else {

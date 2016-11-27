@@ -6,6 +6,7 @@ import Home from './home.jsx';
 import Path from './path.jsx';
 import Paths from './paths.jsx';
 import React from 'react';
+import Snackbar from './snackbar.jsx';
 
 module.exports = BaseComponent.createClass({
     componentDidMount: function(){
@@ -43,6 +44,7 @@ module.exports = BaseComponent.createClass({
                 controllers={this.props.controllers}
                 createPath={this.props.data.get('createPath')}
                 detailItem={this.props.data.get('detailItem')}
+                user={this.props.data.get('user')}
                 path={this.props.data.get('path')}
             />
         }
@@ -69,6 +71,7 @@ module.exports = BaseComponent.createClass({
             { this.getCreatePath(options) }
             { this.getPath(options) }
             { this.getPaths(options) }
+            <Snackbar snackbar={this.props.data.get('snackbar')} />
 		</div>;
 	}
 });

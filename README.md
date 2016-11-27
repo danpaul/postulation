@@ -4,15 +4,6 @@ Postultion is an application to structure, present and provide ranking for user 
 
 Postulation is in development.
 
-
-## To Setup
-
-* Download and unzip this repo in the project directory
-* cd to project root
-* `npm install`
-* `gulp`
-
-
 ### Backend development (if you have [nodemon](https://github.com/remy/nodemon) installed):
 ```
 NODE_ENV=development nodemon index.js
@@ -45,7 +36,11 @@ NODE_ENV=production node index.js
 * General app
   * Add user notification handling
   * Notify user if they are not logged in
+    * X Disable vote button if user is not logged in
+    * X Disable node vote button if user is not logged in
+    * X Do not display path reply tab if user is not logged in
   * Notify users when errors occur in app (handle errors)
+    * X Add notification method
   * Clean path/form data on unmount
     * Clear when path changes
     * Clear afer submit (above might resolve)
@@ -84,6 +79,8 @@ NODE_ENV=production node index.js
 * Security
   * ensure knex is escaping character and raw queries are safe
 * Bugs
+  * X Babel compilation not working
+  * X If user has not yet voted for a node, downvote as the first vote does not work
   * downvote inactive on newly created path: https://monosnap.com/file/gnHxtmuQ5hgHU0OYJOqz40tTPZUlDy
   * Vote history for non-logged in user: http://take.ms/Px7Kkc
   * https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9

@@ -21,12 +21,12 @@ module.exports = function(options){
 	  		.get(siteUrl + '/api/path/get/' + options.id)
 	  		.end(function (err, response){
 	  			if( err ){
-	  				// TODO: add error handling
 	  				console.log(err);
+                    c.snackbar.add(c.error.unknown);
 	  				return;
 	  			}
 	  			if( response.body.status !== 'success' ){
-                    // TODO: add error handling
+                    c.snackbar.add(response.body.error);
 	  				console.log(new Error(response.body.error));
 	  				return;
 	  			}
@@ -78,12 +78,12 @@ module.exports = function(options){
             .end(function (err, response){
                 d.set(loadingLocation, true);
                 if( err ){
-                    // TODO: add error handling
+                    c.snackbar.add(c.error.unknown);
                     console.log(err);
                     return;
                 }
                 if( response.body.status !== 'success' ){
-                    // TODO: add error handling
+                    c.snackbar.add(response.body.error);
                     console.log(new Error(response.body.error));
                     return;
                 }
@@ -139,12 +139,12 @@ module.exports = function(options){
             .get(url)
             .end(function (err, response){
                 if( err ){
-                    // TODO: add error handling
+                    c.snackbar.add(c.error.unknown);
                     console.log(err);
                     return;
                 }
                 if( response.body.status !== 'success' ){
-                    // TODO: add error handling
+                    c.snackbar.add(response.body.error);
                     console.log(new Error(response.body.error));
                     return;
                 }

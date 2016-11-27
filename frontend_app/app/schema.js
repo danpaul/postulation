@@ -41,6 +41,10 @@ const schema = {
 		page: null,
 		paths: []
 	},
+	snackbar: {
+		open: false,
+		message: ''
+	},
 	user: {
 		id: null
 	}

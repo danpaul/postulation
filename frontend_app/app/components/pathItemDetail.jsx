@@ -41,14 +41,18 @@ module.exports = BaseComponent.createClass({
 						{ this.getNegatingPaths() }
 					</div>
 				</Tab>
-				<Tab label="Reply" >
-					<CreatePath
-						controllers={this.props.controllers}
-						visible={true}
-						responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
-						responseTo={this.props.detailItem.get('item')}
-						path={this.props.detailItem.get('responsePath')} />
-				</Tab>
+				{
+					this.props.user.get('id') ?
+						<Tab label="Reply" >
+							<CreatePath
+								controllers={this.props.controllers}
+								visible={true}
+								responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
+								responseTo={this.props.detailItem.get('item')}
+								path={this.props.detailItem.get('responsePath')} />
+						</Tab>
+						: null
+				}
 			</Tabs>
         </Paper>;
 	}
