@@ -23,15 +23,18 @@ module.exports = function(options){
 	  		.send(options)
 	  		.end(function (err, response){
 	  			if( err ){
-	  				// todo handle error
-	  				console.log(err);
+                    console.log(err);
+                    c.snackbar.add(c.error.unknown);
+                    return;
 	  			}
                 if( response.body.status === 'success'){
                     options.refresh = true;
                     self.get(options);
                     console.log('success');
                 } else {
-                    console.log('error');
+                    c.snackbar.add(response.body.error);
+                    console.log(new Error(response.body.error));
+                    return;
                 }
 	  		});
     }
@@ -54,8 +57,9 @@ module.exports = function(options){
             .forceUpdate(refresh)
 	  		.end(function (err, response){
 	  			if( err ){
-	  				// todo handle error
-	  				console.log(err);
+                    console.log(err);
+                    c.snackbar.add(c.error.unknown);
+                    return;
 	  			}
                 if( response.body.status === 'success'){
                 	const vote = response.body.data.vote;
@@ -76,8 +80,9 @@ module.exports = function(options){
                         }
                     }
                 } else {
-                    // TODO: handle error
-                    console.log('error', response);
+                    c.snackbar.add(response.body.error);
+                    console.log(new Error(response.body.error));
+                    return;
                 }
 	  		});
     }

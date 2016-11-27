@@ -70,14 +70,15 @@ module.exports = function(options){
 	  		.send(data)
 	  		.end(function (err, response){
 	  			if( err ){
-	  				console.log(err);
+                    c.snackbar.add(c.error.unknown);
+	  				return console.log(err);
 	  			}
-                if( response.body.status === 'success'){
-                    return page('/path/get/' + response.body.data.path.id);
-                } else {
-                    console.log('error');
+                if( response.body.status !== 'success'){
+                    c.snackbar.add(response.body.error);
+                    console.log(new Error(response.body.error));
+                    return;
                 }
-                console.log(response.body)
+                return page('/path/get/' + response.body.data.path.id);
 	  		}
 		);
     }

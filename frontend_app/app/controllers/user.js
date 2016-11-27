@@ -20,9 +20,9 @@ module.exports = function(options){
 	  		.get(siteUrl + '/auth/api')
 	  		.end(function (err, response){
 	  			if( err ){
-	  				// TODO: add error handling
-	  				console.log(err);
-	  				return;
+                    console.log(err);
+                    c.snackbar.add(c.error.unknown);
+                    return;
 	  			}
 	  			// set user id to null
 	  			if( response.body.status === 'failure' ){
