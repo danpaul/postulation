@@ -10,13 +10,6 @@ import Toggle from 'material-ui/Toggle';
 const STYLE = {marginBottom: 10};
 
 module.exports = BaseComponent.createClass({
-    handleExpandChange: function(e){
-        return;
-        // handled inernally by component
-        var d = {   dataLocation: this.props.dataLocation,
-                    index: this.props.index };
-        this.props.controllers.path.togglePathPreview(d);
-    },
     getSubtitle: function(){
         return helpers.ranking.getRankingString(this.props.path);
     },
@@ -33,7 +26,7 @@ module.exports = BaseComponent.createClass({
             {this.props.path.get('title')}
         </a>;
         return <div style={STYLE}>
-            <Card onExpandChange={this.handleExpandChange}>
+            <Card >
                 <CardHeader
                     title={title}
                     subtitle={this.getSubtitle()}

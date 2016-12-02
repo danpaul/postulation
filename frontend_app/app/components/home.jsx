@@ -27,25 +27,5 @@ module.exports = BaseComponent.createClass({
 				</Tab>
 			</Tabs>
 		</div>
-		// return <div>
-		// 	<Tabs style={pathWrapStyle} >
-		// 	    <Tab label="Recent" >
-		// 			<div style={{marginTop: 10}}>
-		// 				<Paths
-		// 					controllers={this.props.controllers}
-		// 					paths={this.props.recentPaths}
-		// 				/>
-		// 			</div>
-		// 		</Tab>
-		// 	    <Tab label="Trending" >
-		// 			<div style={{marginTop: 10}}>
-		// 				<Paths
-		// 					controllers={this.props.controllers}
-		// 					paths={this.props.recentPaths}
-		// 				/>
-		// 			</div>
-		// 		</Tab>
-		// 	</Tabs>
-		// </div>
 	}
 });

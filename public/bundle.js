@@ -29512,8 +29512,6 @@
 	    componentWillUnmount: function componentWillUnmount() {
 	        var dataLocation = this.props.path.get('dataLocation');
 	        this.props.controllers.createPath.clearData({ dataLocation: dataLocation });
-	        // asdf
-	        // console.log('unmounting');
 	    },
 	    getResponseNode: function getResponseNode() {
 	        if (this.props.responseTo && this.props.responseIsAffirming && this.props.responseTo.get('type') === 'node') {
@@ -29611,6 +29609,10 @@
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
+	var _IconButton = __webpack_require__(186);
+
+	var _IconButton2 = _interopRequireDefault(_IconButton);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var STYLE = { marginBottom: 20 };
@@ -29627,6 +29629,13 @@
 				statement: e.target.value
 			};
 			this.props.controllers.createPath.updateNodeStatement(d);
+		},
+		handleDelete: function handleDelete(e) {
+			var d = {
+				dataLocation: this.props.dataLocation,
+				index: this.props.index
+			};
+			this.props.controllers.createPath.deleteNode(d);
 		},
 		render: function render() {
 			if (this.props.isDisabled) {
@@ -29656,7 +29665,34 @@
 						multiLine: true,
 						fullWidth: true,
 						errorText: this.props.node.get('error'),
-						onChange: this.handleTextChange })
+						onChange: this.handleTextChange }),
+					_react2.default.createElement(
+						_IconButton2.default,
+						null,
+						_react2.default.createElement(
+							'i',
+							{ className: 'material-icons' },
+							'arrow_downward'
+						)
+					),
+					_react2.default.createElement(
+						_IconButton2.default,
+						null,
+						_react2.default.createElement(
+							'i',
+							{ className: 'material-icons' },
+							'arrow_upward'
+						)
+					),
+					_react2.default.createElement(
+						_IconButton2.default,
+						{ onClick: this.handleDelete },
+						_react2.default.createElement(
+							'i',
+							{ className: 'material-icons' },
+							'close'
+						)
+					)
 				)
 			);
 		}
@@ -35098,26 +35134,6 @@
 					)
 				)
 			);
-			// return <div>
-			// 	<Tabs style={pathWrapStyle} >
-			// 	    <Tab label="Recent" >
-			// 			<div style={{marginTop: 10}}>
-			// 				<Paths
-			// 					controllers={this.props.controllers}
-			// 					paths={this.props.recentPaths}
-			// 				/>
-			// 			</div>
-			// 		</Tab>
-			// 	    <Tab label="Trending" >
-			// 			<div style={{marginTop: 10}}>
-			// 				<Paths
-			// 					controllers={this.props.controllers}
-			// 					paths={this.props.recentPaths}
-			// 				/>
-			// 			</div>
-			// 		</Tab>
-			// 	</Tabs>
-			// </div>
 		}
 	});
 
@@ -35202,13 +35218,6 @@
 	var STYLE = { marginBottom: 10 };
 
 	module.exports = _baseComponent2.default.createClass({
-	    handleExpandChange: function handleExpandChange(e) {
-	        return;
-	        // handled inernally by component
-	        var d = { dataLocation: this.props.dataLocation,
-	            index: this.props.index };
-	        this.props.controllers.path.togglePathPreview(d);
-	    },
 	    getSubtitle: function getSubtitle() {
 	        return _helpers2.default.ranking.getRankingString(this.props.path);
 	    },
@@ -35231,7 +35240,7 @@
 	            { style: STYLE },
 	            _react2.default.createElement(
 	                _Card.Card,
-	                { onExpandChange: this.handleExpandChange },
+	                null,
 	                _react2.default.createElement(_Card.CardHeader, {
 	                    title: title,
 	                    subtitle: this.getSubtitle(),
@@ -35309,6 +35318,7 @@
 	        if (created) {
 	            rankingString += ' — ' + options.helpers.date.format(created);
 	        }
+	        rankingString += ' — ' + path.getIn(['user', 'username']);
 	        return rankingString;
 	    };
 	};
@@ -52364,6 +52374,17 @@
 	        d.set(['detailItem', 'responseIsAffirming'], true);
 	    }, this.setResponseNegate = function () {
 	        d.set(['detailItem', 'responseIsAffirming'], false);
+	    },
+	    /**
+	     * Delets not at options.index
+	     * @param  {Immutable.List}  options.dataLocation
+	     * @param  {int}  options.index
+	     */
+	    this.deleteNode = function (options) {
+	        var location = options.dataLocation.push('nodes');
+	        var nodes = d.get(options.dataLocation.push('nodes'));
+	        nodes = nodes.delete(options.index);
+	        d.set(location, nodes);
 	    },
 	    /**
 	     * Clears form data

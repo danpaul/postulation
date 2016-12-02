@@ -32,8 +32,6 @@ module.exports = BaseComponent.createClass({
     componentWillUnmount: function(){
         const dataLocation = this.props.path.get('dataLocation');
         this.props.controllers.createPath.clearData({dataLocation: dataLocation});
-// asdf
-// console.log('unmounting');
     },
     getResponseNode: function(){
         if( this.props.responseTo &&

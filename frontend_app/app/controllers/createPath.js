@@ -113,6 +113,17 @@ module.exports = function(options){
         d.set(['detailItem', 'responseIsAffirming'], false);
     },
     /**
+     * Delets not at options.index
+     * @param  {Immutable.List}  options.dataLocation
+     * @param  {int}  options.index
+     */
+    this.deleteNode = function(options){
+        var location = options.dataLocation.push('nodes');
+        var nodes = d.get(options.dataLocation.push('nodes'));
+        nodes = nodes.delete(options.index);
+        d.set(location, nodes);
+    },
+    /**
      * Clears form data
      * @param {array} dataLocation
      */

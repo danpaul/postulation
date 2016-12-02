@@ -2,6 +2,7 @@ import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
 
 const STYLE = {marginBottom: 20};
 
@@ -18,6 +19,13 @@ module.exports = BaseComponent.createClass({
 		};
 		this.props.controllers.createPath.updateNodeStatement(d);
 	},
+    handleDelete: function(e){
+        var d = {
+            dataLocation: this.props.dataLocation,
+            index: this.props.index
+        };
+        this.props.controllers.createPath.deleteNode(d);
+    },
 	render: function() {
 		if( this.props.isDisabled ){
 			return <div>
@@ -39,6 +47,15 @@ module.exports = BaseComponent.createClass({
             		fullWidth={true}
             		errorText={this.props.node.get('error')}
             		onChange={this.handleTextChange} />
+                    <IconButton>
+                        <i className="material-icons">arrow_downward</i>
+                    </IconButton>
+                    <IconButton>
+                        <i className="material-icons">arrow_upward</i>
+                    </IconButton>
+                    <IconButton onClick={this.handleDelete}>
+                        <i className="material-icons">close</i>
+                    </IconButton>
             </Paper>
 		</div>;
 	}

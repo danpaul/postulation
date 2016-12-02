@@ -34,8 +34,8 @@ NODE_ENV=production node index.js
 ## Todo
 
 * General app
-  * Add user notification handling
-  * Notify user if they are not logged in
+  * X Add user notification handling
+  * X Notify user if they are not logged in
     * X Disable vote button if user is not logged in
     * X Disable node vote button if user is not logged in
     * X Do not display path reply tab if user is not logged in
@@ -45,7 +45,7 @@ NODE_ENV=production node index.js
     * X Clear when path changes
     * X Clear afer submit (above might resolve)
     * X Maybe unmount and trigger cleanup on unmount
-  * Add user info to path title
+  * X Add user info to path title
 * Path create
   * Add ability to delete nodes
   * Add ability to move node up/down
@@ -76,6 +76,7 @@ NODE_ENV=production node index.js
   * Add analytics
   * Add monitoring
   * Setup https, cloudflare?
+  * create legal/agreement page
 * Security
   * ensure knex is escaping character and raw queries are safe
 * Bugs
