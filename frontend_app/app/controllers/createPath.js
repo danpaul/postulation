@@ -113,7 +113,7 @@ module.exports = function(options){
         d.set(['detailItem', 'responseIsAffirming'], false);
     },
     /**
-     * Delets not at options.index
+     * Deletes not at options.index
      * @param  {Immutable.List}  options.dataLocation
      * @param  {int}  options.index
      */
@@ -122,6 +122,30 @@ module.exports = function(options){
         var nodes = d.get(options.dataLocation.push('nodes'));
         nodes = nodes.delete(options.index);
         d.set(location, nodes);
+    },
+    /**
+     * Moves node at options.index up (to a lower index)
+     * @param  {Immutable.List}  options.dataLocation
+     * @param  {int}  options.index
+     */
+    this.moveNodeUp = function(options){
+        var location = options.dataLocation.push('nodes');
+        const nodes = d.get(options.dataLocation.push('nodes'));
+        var newNodes = nodes.insert(options.index - 1, nodes.get(options.index));
+        newNodes = newNodes.delete(options.index + 1);
+        d.set(location, newNodes);
+    },
+    /**
+     * Moves node at options.index up
+     * @param  {Immutable.List}  options.dataLocation
+     * @param  {int}  options.index
+     */
+    this.moveNodeDown = function(options){
+        var location = options.dataLocation.push('nodes');
+        const nodes = d.get(options.dataLocation.push('nodes'));
+        var newNodes = nodes.insert(options.index + 2, nodes.get(options.index));
+        newNodes = newNodes.delete(options.index);
+        d.set(location, newNodes);
     },
     /**
      * Clears form data

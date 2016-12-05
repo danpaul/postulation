@@ -29499,8 +29499,12 @@
 
 	    getNodes: function getNodes() {
 	        var self = this;
+	        var size = this.props.path.get('nodes').size;
 	        return this.props.path.get('nodes').map(function (node, index) {
 	            return _react2.default.createElement(_createPathNode2.default, {
+	                isFirstNode: index === 0,
+	                isSingleNode: size === 1,
+	                isLastNode: index === size - 1,
 	                dataLocation: self.props.path.get('dataLocation'),
 	                form: self.props.form,
 	                controllers: self.props.controllers,
@@ -29618,84 +29622,100 @@
 	var STYLE = { marginBottom: 20 };
 
 	module.exports = _baseComponent2.default.createClass({
-		onBlur: function onBlur(e) {
-			var d = { dataLocation: this.props.dataLocation };
-			this.props.controllers.createPath.validateForm(d);
-		},
-		handleTextChange: function handleTextChange(e) {
-			var d = {
-				dataLocation: this.props.dataLocation,
-				index: this.props.index,
-				statement: e.target.value
-			};
-			this.props.controllers.createPath.updateNodeStatement(d);
-		},
-		handleDelete: function handleDelete(e) {
-			var d = {
-				dataLocation: this.props.dataLocation,
-				index: this.props.index
-			};
-			this.props.controllers.createPath.deleteNode(d);
-		},
-		render: function render() {
-			if (this.props.isDisabled) {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						_Paper2.default,
-						{ zDepth: 0, style: STYLE },
-						_react2.default.createElement(_TextField2.default, {
-							value: this.props.node.get('statement'),
-							multiLine: true,
-							fullWidth: true,
-							disabled: true })
-					)
-				);
-			}
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					_Paper2.default,
-					{ zDepth: 0, style: STYLE },
-					_react2.default.createElement(_TextField2.default, {
-						onBlur: this.onBlur,
-						value: this.props.node.get('statement'),
-						multiLine: true,
-						fullWidth: true,
-						errorText: this.props.node.get('error'),
-						onChange: this.handleTextChange }),
-					_react2.default.createElement(
-						_IconButton2.default,
-						null,
-						_react2.default.createElement(
-							'i',
-							{ className: 'material-icons' },
-							'arrow_downward'
-						)
-					),
-					_react2.default.createElement(
-						_IconButton2.default,
-						null,
-						_react2.default.createElement(
-							'i',
-							{ className: 'material-icons' },
-							'arrow_upward'
-						)
-					),
-					_react2.default.createElement(
-						_IconButton2.default,
-						{ onClick: this.handleDelete },
-						_react2.default.createElement(
-							'i',
-							{ className: 'material-icons' },
-							'close'
-						)
-					)
-				)
-			);
-		}
+	    onBlur: function onBlur(e) {
+	        this.props.controllers.createPath.validateForm(this._getOptions());
+	    },
+	    handleTextChange: function handleTextChange(e) {
+	        var d = this._getOptions();
+	        d.statement = e.target.value;
+	        this.props.controllers.createPath.updateNodeStatement(d);
+	    },
+	    handleDelete: function handleDelete(e) {
+	        this.props.controllers.createPath.deleteNode(this._getOptions());
+	    },
+	    handleMoveUp: function handleMoveUp(e) {
+	        this.props.controllers.createPath.moveNodeUp(this._getOptions());
+	    },
+	    handleMoveDown: function handleMoveDown(e) {
+	        this.props.controllers.createPath.moveNodeDown(this._getOptions());
+	    },
+	    _getOptions: function _getOptions(e) {
+	        return {
+	            dataLocation: this.props.dataLocation,
+	            index: this.props.index
+	        };
+	    },
+	    render: function render() {
+	        if (this.props.isDisabled) {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    _Paper2.default,
+	                    { zDepth: 0, style: STYLE },
+	                    _react2.default.createElement(_TextField2.default, {
+	                        value: this.props.node.get('statement'),
+	                        multiLine: true,
+	                        fullWidth: true,
+	                        disabled: true })
+	                )
+	            );
+	        }
+
+	        var upIcon = null;
+	        var downIcon = null;
+	        if (!this.props.isSignleNode) {
+	            if (!this.props.isFirstNode) {
+	                upIcon = _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { onClick: this.handleMoveUp },
+	                    _react2.default.createElement(
+	                        'i',
+	                        { className: 'material-icons' },
+	                        'arrow_upward'
+	                    )
+	                );
+	            }
+	            if (!this.props.isLastNode) {
+	                downIcon = _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { onClick: this.handleMoveDown },
+	                    _react2.default.createElement(
+	                        'i',
+	                        { className: 'material-icons' },
+	                        'arrow_downward'
+	                    )
+	                );
+	            }
+	        }
+
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                _Paper2.default,
+	                { zDepth: 0, style: STYLE },
+	                _react2.default.createElement(_TextField2.default, {
+	                    onBlur: this.onBlur,
+	                    value: this.props.node.get('statement'),
+	                    multiLine: true,
+	                    fullWidth: true,
+	                    errorText: this.props.node.get('error'),
+	                    onChange: this.handleTextChange }),
+	                downIcon,
+	                upIcon,
+	                _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { onClick: this.handleDelete },
+	                    _react2.default.createElement(
+	                        'i',
+	                        { className: 'material-icons' },
+	                        'close'
+	                    )
+	                )
+	            )
+	        );
+	    }
 	});
 
 /***/ },
@@ -52376,7 +52396,7 @@
 	        d.set(['detailItem', 'responseIsAffirming'], false);
 	    },
 	    /**
-	     * Delets not at options.index
+	     * Deletes not at options.index
 	     * @param  {Immutable.List}  options.dataLocation
 	     * @param  {int}  options.index
 	     */
@@ -52385,6 +52405,30 @@
 	        var nodes = d.get(options.dataLocation.push('nodes'));
 	        nodes = nodes.delete(options.index);
 	        d.set(location, nodes);
+	    },
+	    /**
+	     * Moves node at options.index up (to a lower index)
+	     * @param  {Immutable.List}  options.dataLocation
+	     * @param  {int}  options.index
+	     */
+	    this.moveNodeUp = function (options) {
+	        var location = options.dataLocation.push('nodes');
+	        var nodes = d.get(options.dataLocation.push('nodes'));
+	        var newNodes = nodes.insert(options.index - 1, nodes.get(options.index));
+	        newNodes = newNodes.delete(options.index + 1);
+	        d.set(location, newNodes);
+	    },
+	    /**
+	     * Moves node at options.index up
+	     * @param  {Immutable.List}  options.dataLocation
+	     * @param  {int}  options.index
+	     */
+	    this.moveNodeDown = function (options) {
+	        var location = options.dataLocation.push('nodes');
+	        var nodes = d.get(options.dataLocation.push('nodes'));
+	        var newNodes = nodes.insert(options.index + 2, nodes.get(options.index));
+	        newNodes = newNodes.delete(options.index);
+	        d.set(location, newNodes);
 	    },
 	    /**
 	     * Clears form data

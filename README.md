@@ -47,7 +47,7 @@ NODE_ENV=production node index.js
     * X Maybe unmount and trigger cleanup on unmount
   * X Add user info to path title
 * Path create
-  * Add ability to delete nodes
+  * X Add ability to delete nodes
   * Add ability to move node up/down
   * Validate that new paths have atleast two nodes
 * User management

@@ -19,8 +19,12 @@ module.exports = BaseComponent.createClass({
 
     getNodes: function(){
         var self = this;
+        var size = this.props.path.get('nodes').size;
         return this.props.path.get('nodes').map(function(node, index){
             return <CreatePathNode
+                        isFirstNode={index === 0}
+                        isSingleNode={size === 1}
+                        isLastNode={index === (size - 1)}
                         dataLocation={self.props.path.get('dataLocation')}
                         form={self.props.form}
                         controllers={self.props.controllers}
