@@ -26,4 +26,18 @@ module.exports = function(options){
 			.asCallback(callback);
 
 	}
+
+	/**
+	 * @param  {number}  options.limit
+	 * @param  {number}  options.page
+	 */
+	this.getTrending = function(options, callback){
+		const offset = options.limit * (options.page - 1);
+		k(TABLE).select('*')
+			.orderBy('created_at', 'desc')
+			.limit(options.limit)
+			.offset(offset)
+			.asCallback(callback);
+
+	}
 }

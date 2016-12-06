@@ -46,24 +46,19 @@ NODE_ENV=production node index.js
     * X Clear afer submit (above might resolve)
     * X Maybe unmount and trigger cleanup on unmount
   * X Add user info to path title
-* Path create
+* X Path create
   * X Add ability to delete nodes
-  * Add ability to move node up/down
-  * Validate that new paths have atleast two nodes
-* User management
-  * Inject header into user management pages
-  * Add site-specific styles
-  * Add profile view for user management
-  * Add menu item for profile
-  * Profile page
-    * Display paginated recent posts
-    * Display profile info (email/username) with link to update page
+  * X Add ability to move node up/down
+  * X Validate that new paths have atleast two nodes
 * Styling
   * Make app responsive
   * Improve button/toggle styling: https://monosnap.com/file/vX5RGsAI8Y0VJHJnAcydfYt2PunyYR
 * Landing page
   * Add trending posts
-  * Add pagination
+    * Add trending field to post
+    * Set cron, calculate trend by strength (or wilson score) * linearly decreasing amount to limit (week)
+  * Add strength
+  * Add pagination/infinite scroll
 * Back end
   * Add create_at timestamp to node and links
 * Release related
@@ -82,10 +77,21 @@ NODE_ENV=production node index.js
 * Bugs
   * X Babel compilation not working
   * X If user has not yet voted for a node, downvote as the first vote does not work
+  * Should be reporting an error: https://monosnap.com/file/JlcgxOW8U2pfSN6WMD1oAtHRgmZevY
+  * Newly created reply: https://monosnap.com/file/o7K0D5gw0FVSPjo08RHbNj65gPdLR4
+  * Error when creating new path with only one node: https://monosnap.com/file/7CtESRuBtnhRIIOwxTRGLIh54BA4tz
   * downvote inactive on newly created path: https://monosnap.com/file/gnHxtmuQ5hgHU0OYJOqz40tTPZUlDy
   * Vote history for non-logged in user: http://take.ms/Px7Kkc
   * https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
   * undefined resave option; provide resave option node_modules/sql_user_manager/index.js:129:23
+* User management
+  * Inject header into user management pages
+  * Add site-specific styles
+  * Add profile view for user management
+  * Add menu item for profile
+  * Profile page
+    * Display paginated recent posts
+    * Display profile info (email/username) with link to update page
 
 ## Future features
 * Add optional notifications for user when they

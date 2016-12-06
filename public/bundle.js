@@ -29654,6 +29654,7 @@
 	                    _Paper2.default,
 	                    { zDepth: 0, style: STYLE },
 	                    _react2.default.createElement(_TextField2.default, {
+	                        name: 'createPathNode',
 	                        value: this.props.node.get('statement'),
 	                        multiLine: true,
 	                        fullWidth: true,
@@ -29696,6 +29697,7 @@
 	                _Paper2.default,
 	                { zDepth: 0, style: STYLE },
 	                _react2.default.createElement(_TextField2.default, {
+	                    name: 'createPathNode',
 	                    onBlur: this.onBlur,
 	                    value: this.props.node.get('statement'),
 	                    multiLine: true,
@@ -30906,6 +30908,7 @@
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(_TextField2.default, {
+	            name: 'createPathTitle',
 	            style: style,
 	            fullWidth: true,
 	            floatingLabelText: 'Path Title',
@@ -52358,11 +52361,11 @@
 
 	        superagent.post(siteUrl + '/api/path/create').send(data).end(function (err, response) {
 	            if (err) {
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                return console.log(err);
 	            }
 	            if (response.body.status !== 'success') {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }
@@ -52516,11 +52519,11 @@
 	        superagent.get(siteUrl + '/api/path/get/' + options.id).end(function (err, response) {
 	            if (err) {
 	                console.log(err);
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                return;
 	            }
 	            if (response.body.status !== 'success') {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }
@@ -52567,18 +52570,14 @@
 
 	        d.set(loadingLocation, true);
 	        superagent.get(siteUrl + '/api/path/get-recent/' + options.page).end(function (err, response) {
-
-	            // asdf
-	            // console.log('response', response.body)
-
 	            d.set(loadingLocation, true);
 	            if (err) {
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                console.log(err);
 	                return;
 	            }
 	            if (response.body.status !== 'success') {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }
@@ -52629,12 +52628,12 @@
 
 	        superagent.get(url).end(function (err, response) {
 	            if (err) {
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                console.log(err);
 	                return;
 	            }
 	            if (response.body.status !== 'success') {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }
@@ -52703,7 +52702,7 @@
 	    superagent.get(siteUrl + '/auth/api').end(function (err, response) {
 	      if (err) {
 	        console.log(err);
-	        c.snackbar.add(c.error.unknown);
+	        c.snackbar.add({ message: c.error.unknown });
 	        return;
 	      }
 	      // set user id to null
@@ -52780,7 +52779,7 @@
 	        superagent.post(siteUrl + '/api/vote').send(options).end(function (err, response) {
 	            if (err) {
 	                console.log(err);
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                return;
 	            }
 	            if (response.body.status === 'success') {
@@ -52788,7 +52787,7 @@
 	                self.get(options);
 	                console.log('success');
 	            } else {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }
@@ -52812,7 +52811,7 @@
 	        superagent.get(url).forceUpdate(refresh).end(function (err, response) {
 	            if (err) {
 	                console.log(err);
-	                c.snackbar.add(c.error.unknown);
+	                c.snackbar.add({ message: c.error.unknown });
 	                return;
 	            }
 	            if (response.body.status === 'success') {
@@ -52836,7 +52835,7 @@
 	                    }
 	                }
 	            } else {
-	                c.snackbar.add(response.body.error);
+	                c.snackbar.add({ message: response.body.error });
 	                console.log(new Error(response.body.error));
 	                return;
 	            }

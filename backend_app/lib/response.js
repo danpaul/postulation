@@ -6,6 +6,7 @@ const ERRORS = {
 	invalidResponseItem: 'Could not locate item for response',
 	missingOptions: 'Function called with missing data',
 	missingRouteParams: 'Route called with missing or incorrect data',
+	nodeMinSize: 'At least two nodes are required',
 	notLoggedIn: 'You must be logged in',
 	notAuthorized: 'You are not authorized to perform this action',
 	pathChargeInvalid: 'Path charge must be a boolean',

@@ -35,6 +35,7 @@ module.exports = BaseComponent.createClass({
 			return <div>
 				<Paper zDepth={0} style={STYLE}>
 	            	<TextField
+                        name="createPathNode"
 	            		value={this.props.node.get('statement')}
 	            		multiLine={true}
 	            		fullWidth={true}
@@ -61,6 +62,7 @@ module.exports = BaseComponent.createClass({
 		return <div>
 			<Paper zDepth={0} style={STYLE}>
             	<TextField
+                    name="createPathNode"
             		onBlur={this.onBlur}
             		value={this.props.node.get('statement')}
             		multiLine={true}

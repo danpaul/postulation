@@ -21,7 +21,7 @@ module.exports = function(options){
 	  		.end(function (err, response){
 	  			if( err ){
                     console.log(err);
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
                     return;
 	  			}
 	  			// set user id to null

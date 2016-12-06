@@ -15,6 +15,7 @@ module.exports = BaseComponent.createClass({
     },
 	render: function(){
 		return <TextField
+                name="createPathTitle"
                 style={style}
                 fullWidth={true}
                 floatingLabelText="Path Title"

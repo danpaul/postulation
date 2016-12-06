@@ -22,11 +22,11 @@ module.exports = function(options){
 	  		.end(function (err, response){
 	  			if( err ){
 	  				console.log(err);
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
 	  				return;
 	  			}
 	  			if( response.body.status !== 'success' ){
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
 	  				console.log(new Error(response.body.error));
 	  				return;
 	  			}
@@ -76,18 +76,14 @@ module.exports = function(options){
         superagent
             .get(siteUrl + '/api/path/get-recent/' + options.page)
             .end(function (err, response){
-
-// asdf
-// console.log('response', response.body)
-
                 d.set(loadingLocation, true);
                 if( err ){
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
                     console.log(err);
                     return;
                 }
                 if( response.body.status !== 'success' ){
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
                     console.log(new Error(response.body.error));
                     return;
                 }
@@ -143,12 +139,12 @@ module.exports = function(options){
             .get(url)
             .end(function (err, response){
                 if( err ){
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
                     console.log(err);
                     return;
                 }
                 if( response.body.status !== 'success' ){
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
                     console.log(new Error(response.body.error));
                     return;
                 }

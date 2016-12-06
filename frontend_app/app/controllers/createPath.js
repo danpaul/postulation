@@ -70,11 +70,11 @@ module.exports = function(options){
 	  		.send(data)
 	  		.end(function (err, response){
 	  			if( err ){
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
 	  				return console.log(err);
 	  			}
                 if( response.body.status !== 'success'){
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
                     console.log(new Error(response.body.error));
                     return;
                 }

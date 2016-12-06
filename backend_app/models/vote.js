@@ -124,14 +124,14 @@ module.exports = function(options){
 
 	this._getUpdateQuery = function(table, id){
 		return 'UPDATE ' + table + ' ' +
-				'SET strength=' + table + '.true / (' + table + '.true + ' + table + '.false)' +
-				'WHERE id=' + id;
+			   'SET strength=' + table + '.true / (' + table + '.true + ' + table + '.false)' +
+			   'WHERE id=' + id;
 	}
 
 	this._getLinkUpdateQuery = function(table, id){
 		return 'UPDATE link ' +
-				'SET strength=' + table + '.true / (' + table + '.true + ' + table + '.false)' +
-				'WHERE id=' + id;
+			   'SET strength=' + table + '.true / (' + table + '.true + ' + table + '.false)' +
+			   'WHERE id=' + id;
 	}
 
 	this._updateNodesStrength = function(options, callback){

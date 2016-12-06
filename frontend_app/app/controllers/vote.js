@@ -24,7 +24,7 @@ module.exports = function(options){
 	  		.end(function (err, response){
 	  			if( err ){
                     console.log(err);
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
                     return;
 	  			}
                 if( response.body.status === 'success'){
@@ -32,7 +32,7 @@ module.exports = function(options){
                     self.get(options);
                     console.log('success');
                 } else {
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
                     console.log(new Error(response.body.error));
                     return;
                 }
@@ -58,7 +58,7 @@ module.exports = function(options){
 	  		.end(function (err, response){
 	  			if( err ){
                     console.log(err);
-                    c.snackbar.add(c.error.unknown);
+                    c.snackbar.add({message: c.error.unknown});
                     return;
 	  			}
                 if( response.body.status === 'success'){
@@ -80,7 +80,7 @@ module.exports = function(options){
                         }
                     }
                 } else {
-                    c.snackbar.add(response.body.error);
+                    c.snackbar.add({message: response.body.error});
                     console.log(new Error(response.body.error));
                     return;
                 }

@@ -79,6 +79,10 @@ module.exports = function(){
 		}
 
 		var resp = this.parsePathNodes(req.body.nodes);
+		if( resp.length <= 1 ){
+			res.json(response({errorCode: 'nodeMinSize'}));
+			return null;
+		}
 
 		if( _.isString(resp) ){
 			res.json(response({errorCode: resp}));

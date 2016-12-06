@@ -239,6 +239,42 @@ module.exports = function(options){
 		});
 	}
 
+	this.getTrending = function(options, callback){
+
+		m.path.getTrending({limit: constants.pageLimit, page: options.page},
+						 function(err, paths){
+			// if( err ){
+			// 	console.log(err);
+			// 	return r({errorCode: 'unknown'}, callback);
+			// }
+
+			// var data = {paths: []};			
+			// if( !paths.length ){ return r({data: data}, callback); }
+
+			// var pathMap = {};
+			// async.eachLimit(paths, constants.parallelLimit, function(path, callback){
+			// 	self.get({id: path.id}, function(err, response){
+			// 		if( err ){ return callback(err); }
+			// 		if( response.status !== 'success' ){
+			// 			return callback(new Error(response.error));
+			// 		}
+			// 		pathMap[path.id] = response.data.path;
+			// 		callback();
+			// 	});
+			// }, function(err){
+			// 	if( err ){
+			// 		console.log(err);
+			// 		return r({errorCode: 'unknown'}, callback);
+			// 	}
+			// 	paths.forEach(function(path){
+			// 		data.paths.push(pathMap[path.id]);
+			// 	});
+			// 	self._joinUsers({data: data}, true, callback);
+			// });
+		});
+
+	}
+
 	/**
 	 * Joins users to path data
 	 * @param  {object}  options.data  path data
