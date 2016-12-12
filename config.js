@@ -4,6 +4,10 @@ var secret = require('./secret');
 config.environment = process.env.NODE_ENV ?
                      process.env.NODE_ENV : 'development';
 
+config.rankUpdateInterval = 1000 * 60 * 10; //update post's rankings every 10 minutes
+config.parallelLimit = 10;
+config.trendLimit = 1000 * 60 * 60 * 24 * 7;// time after which trending rankings will expire (equal zero)
+
 if( config.environment === 'development' ){
 
     config.useBasicAuth = false;

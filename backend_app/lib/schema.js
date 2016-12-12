@@ -28,6 +28,7 @@ const SCHEMA = {
         table.integer('false').default(0);
         table.integer('total').default(0).index();
         table.float('strength').default(0.0).index();
+        table.float('trend_strength').default(0.0).index();
         table.text('title').default('');
         table.timestamp('created_at').defaultTo(knex.fn.now()).index();
     },
@@ -37,9 +38,6 @@ const SCHEMA = {
         table.integer('type').default(0).index();
         table.boolean('true').default(true);
     },
-    user: function(table){
-        table.increments();
-    }
 }
 
 module.exports = function(options,

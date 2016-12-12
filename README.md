@@ -57,6 +57,7 @@ NODE_ENV=production node index.js
   * Add trending posts
     * Add trending field to post
     * Set cron, calculate trend by strength (or wilson score) * linearly decreasing amount to limit (week)
+    * On vote, update score
   * Add strength
   * Add pagination/infinite scroll
 * Back end

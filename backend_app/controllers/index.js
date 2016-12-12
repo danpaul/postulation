@@ -1,12 +1,13 @@
+var _ = require('underscore');
+var response = require('../lib/response');
+
 const CONTROLLERS = [
+						'cron',
 						'link',
 						'path',
 						'user',
 						'vote'
 					];
-
-var _ = require('underscore');
-var response = require('../lib/response');
 
 module.exports = function(options){
 	var self = this;
