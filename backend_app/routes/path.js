@@ -53,7 +53,7 @@ module.exports = function(options){
     app.get('/get-trending/:page', function(req, res){
         var page = Number(req.params.page);
         if( !page ){ page = 1; }
-        c.path.getTrrending({page: page}, function(err, response){
+        c.path.getTrending({page: page}, function(err, response){
             if( err ){
                 console.log(err);
                 return res.json(r({errorCode: 'unknown'}));

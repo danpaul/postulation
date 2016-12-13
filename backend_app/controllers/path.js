@@ -205,9 +205,31 @@ module.exports = function(options){
 	 * @param  {options.page}
 	 */
 	this.getRecent = function(options, callback){
+		options.trending = false;
+		this._getPaths(options, callback);
+	}
+
+	/**
+	 * Gets trending posts
+	 * @param  {options.page}
+	 */
+	this.getTrending = function(options, callback){
+		options.trending = true;
+		this._getPaths(options, callback);
+	}
+
+	this._getPaths = function(options, callback){
+		
 		var self = this;
-		m.path.getRecent({limit: constants.pageLimit, page: options.page},
-						 function(err, paths){
+		if( options.trending ){
+			var method = m.path.getTrending.bind(this);
+		} else {
+			var method = m.path.getRecent.bind(this);
+		}
+
+		method({limit: constants.pageLimit, page: options.page},
+			   function(err, paths){
+
 			if( err ){
 				console.log(err);
 				return r({errorCode: 'unknown'}, callback);
@@ -236,41 +258,6 @@ module.exports = function(options){
 				});
 				self._joinUsers({data: data}, true, callback);
 			});
-		});
-	}
-
-	this.getTrending = function(options, callback){
-
-		m.path.getTrending({limit: constants.pageLimit, page: options.page},
-						 function(err, paths){
-			// if( err ){
-			// 	console.log(err);
-			// 	return r({errorCode: 'unknown'}, callback);
-			// }
-
-			// var data = {paths: []};			
-			// if( !paths.length ){ return r({data: data}, callback); }
-
-			// var pathMap = {};
-			// async.eachLimit(paths, constants.parallelLimit, function(path, callback){
-			// 	self.get({id: path.id}, function(err, response){
-			// 		if( err ){ return callback(err); }
-			// 		if( response.status !== 'success' ){
-			// 			return callback(new Error(response.error));
-			// 		}
-			// 		pathMap[path.id] = response.data.path;
-			// 		callback();
-			// 	});
-			// }, function(err){
-			// 	if( err ){
-			// 		console.log(err);
-			// 		return r({errorCode: 'unknown'}, callback);
-			// 	}
-			// 	paths.forEach(function(path){
-			// 		data.paths.push(pathMap[path.id]);
-			// 	});
-			// 	self._joinUsers({data: data}, true, callback);
-			// });
 		});
 
 	}

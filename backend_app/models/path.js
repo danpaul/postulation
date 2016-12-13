@@ -38,7 +38,7 @@ module.exports = function(options){
 	this.getTrending = function(options, callback){
 		const offset = options.limit * (options.page - 1);
 		k(TABLE).select('*')
-			.orderBy('created_at', 'desc')
+			.orderBy('trend_strength', 'desc')
 			.limit(options.limit)
 			.offset(offset)
 			.asCallback(callback);

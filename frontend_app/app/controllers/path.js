@@ -52,29 +52,30 @@ module.exports = function(options){
         this._loadRecent(options);
     }
 
-    /**
-     * Handles hiding/showing path preview
-     * @param {Immutable.List}  options.dataLocation  location of the path object
-     * @param {Number}  options.index  index of path
-     */
-    this.togglePathPreview = function(options){
-        return;
-        // handled internally by component
+    this.loadTrendingHome = function(options){
+        options.dataLocation = Immutable.List(['trendingPathsHome']);
+        options.trending = true;
+        this._loadRecent(options);
     }
 
     /**
      * Loads recent paths
      * @param  {int}  options.page
      * @param  {array}  options.dataLocation
+     * @param {bool} options.trending optional, will load trending paths if true
      */
     this._loadRecent = function(options){
         var self = this;
         const loadingLocation = options.dataLocation.push('loading');
         const pathsLocation = options.dataLocation.push('paths');
+        let url = siteUrl + '/api/path/get-recent/' + options.page;
+        if( options.trending ){
+            url = siteUrl + '/api/path/get-trending/' + options.page;
+        }
 
         d.set(loadingLocation, true);
         superagent
-            .get(siteUrl + '/api/path/get-recent/' + options.page)
+            .get(url)
             .end(function (err, response){
                 d.set(loadingLocation, true);
                 if( err ){

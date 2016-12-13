@@ -14,6 +14,11 @@ module.exports = BaseComponent.createClass({
 			this.props.controllers.path.loadRecentHome({page: 1});
 		}
 	},
+	handleTrendingSelect: function(){
+		if( this.props.trendingPaths.get('page') === null ){
+			this.props.controllers.path.loadTrendingHome({page: 1});
+		}
+	},
 	render: function(){
 		return <div>
 			<Tabs style={pathWrapStyle} >
@@ -22,6 +27,14 @@ module.exports = BaseComponent.createClass({
 						<Paths
 							controllers={this.props.controllers}
 							paths={this.props.recentPaths}
+						/>
+					</div>
+				</Tab>
+			    <Tab label="Trending" onActive={this.handleTrendingSelect} >
+					<div style={{marginTop: 10}}>
+						<Paths
+							controllers={this.props.controllers}
+							paths={this.props.trendingPaths}
 						/>
 					</div>
 				</Tab>

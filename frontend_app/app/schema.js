@@ -41,6 +41,12 @@ const schema = {
 		page: null,
 		paths: []
 	},
+	trendingPathsHome: {
+		dataLocation: ['trendingPathsHome'],
+		loading: false,
+		page: null,
+		paths: []
+	},
 	snackbar: {
 		open: false,
 		message: ''

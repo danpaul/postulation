@@ -35,6 +35,7 @@ module.exports = BaseComponent.createClass({
                 controllers={this.props.controllers}
                 createPath={this.props.data.get('createPath')}
                 recentPaths={this.props.data.get('recentPathsHome')}
+                trendingPaths={this.props.data.get('trendingPathsHome')}
             />
         }
     },

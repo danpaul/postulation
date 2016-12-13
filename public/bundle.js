@@ -21929,7 +21929,8 @@
 	            return _react2.default.createElement(_home2.default, {
 	                controllers: this.props.controllers,
 	                createPath: this.props.data.get('createPath'),
-	                recentPaths: this.props.data.get('recentPathsHome')
+	                recentPaths: this.props.data.get('recentPathsHome'),
+	                trendingPaths: this.props.data.get('trendingPathsHome')
 	            });
 	        }
 	    },
@@ -35136,6 +35137,11 @@
 				this.props.controllers.path.loadRecentHome({ page: 1 });
 			}
 		},
+		handleTrendingSelect: function handleTrendingSelect() {
+			if (this.props.trendingPaths.get('page') === null) {
+				this.props.controllers.path.loadTrendingHome({ page: 1 });
+			}
+		},
 		render: function render() {
 			return _react2.default.createElement(
 				'div',
@@ -35152,6 +35158,18 @@
 							_react2.default.createElement(_paths2.default, {
 								controllers: this.props.controllers,
 								paths: this.props.recentPaths
+							})
+						)
+					),
+					_react2.default.createElement(
+						_Tabs.Tab,
+						{ label: 'Trending', onActive: this.handleTrendingSelect },
+						_react2.default.createElement(
+							'div',
+							{ style: { marginTop: 10 } },
+							_react2.default.createElement(_paths2.default, {
+								controllers: this.props.controllers,
+								paths: this.props.trendingPaths
 							})
 						)
 					)
@@ -52205,6 +52223,12 @@
 			page: null,
 			paths: []
 		},
+		trendingPathsHome: {
+			dataLocation: ['trendingPathsHome'],
+			loading: false,
+			page: null,
+			paths: []
+		},
 		snackbar: {
 			open: false,
 			message: ''
@@ -52548,28 +52572,29 @@
 	        this._loadRecent(options);
 	    };
 
-	    /**
-	     * Handles hiding/showing path preview
-	     * @param {Immutable.List}  options.dataLocation  location of the path object
-	     * @param {Number}  options.index  index of path
-	     */
-	    this.togglePathPreview = function (options) {
-	        return;
-	        // handled internally by component
+	    this.loadTrendingHome = function (options) {
+	        options.dataLocation = Immutable.List(['trendingPathsHome']);
+	        options.trending = true;
+	        this._loadRecent(options);
 	    };
 
 	    /**
 	     * Loads recent paths
 	     * @param  {int}  options.page
 	     * @param  {array}  options.dataLocation
+	     * @param {bool} options.trending optional, will load trending paths if true
 	     */
 	    this._loadRecent = function (options) {
 	        var self = this;
 	        var loadingLocation = options.dataLocation.push('loading');
 	        var pathsLocation = options.dataLocation.push('paths');
+	        var url = siteUrl + '/api/path/get-recent/' + options.page;
+	        if (options.trending) {
+	            url = siteUrl + '/api/path/get-trending/' + options.page;
+	        }
 
 	        d.set(loadingLocation, true);
-	        superagent.get(siteUrl + '/api/path/get-recent/' + options.page).end(function (err, response) {
+	        superagent.get(url).end(function (err, response) {
 	            d.set(loadingLocation, true);
 	            if (err) {
 	                c.snackbar.add({ message: c.error.unknown });
