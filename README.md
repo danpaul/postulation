@@ -81,6 +81,7 @@ NODE_ENV=production node index.js
   * X Babel compilation not working
   * X If user has not yet voted for a node, downvote as the first vote does not work
   * Node ranking showing undefined: https://monosnap.com/file/aK8D6d4c5sURDLn3WrOQNAppB6s0Wj
+  * User showing undefined: https://monosnap.com/file/fRZ0ZrVIDeOqf3f9incNerXC9et3Eh
   * Should be reporting an error: https://monosnap.com/file/JlcgxOW8U2pfSN6WMD1oAtHRgmZevY
   * Newly created reply: https://monosnap.com/file/o7K0D5gw0FVSPjo08RHbNj65gPdLR4
   * Error when creating new path with only one node: https://monosnap.com/file/7CtESRuBtnhRIIOwxTRGLIh54BA4tz

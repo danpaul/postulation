@@ -10,6 +10,7 @@ const SCHEMA = {
         table.integer('false').default(0);
         table.integer('total').default(0).index();
         table.float('strength').default(0.0).index();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     },
     link: function(table){
         table.increments();
@@ -20,6 +21,7 @@ const SCHEMA = {
         table.boolean('final_is_link').default(false).index();
         table.boolean('charge').default(true).index();
         table.float('strength').default(0.0).index(); // gets from path
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     },
     path: function(table){
         table.increments();
@@ -37,6 +39,7 @@ const SCHEMA = {
         table.integer('user').default(0).index();
         table.integer('type').default(0).index();
         table.boolean('true').default(true);
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     },
 }
 
