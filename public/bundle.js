@@ -38666,8 +38666,7 @@
 	            id: this.props.path.get('id') });
 	    },
 	    handleAffirmVote: function handleAffirmVote(e) {
-	        var userVote = this.props.path.get('userVote');
-	        if (userVote) {
+	        if (this.props.path.get('userVote')) {
 	            return;
 	        }
 	        this.props.controllers.vote.add({ type: 'path',
@@ -38675,8 +38674,7 @@
 	            true: true });
 	    },
 	    handleNegateVote: function handleNegateVote(e) {
-	        var userVote = this.props.path.get('userVote');
-	        if (userVote !== null && !userVote) {
+	        if (this.props.path.get('userVote') === false) {
 	            return;
 	        }
 	        this.props.controllers.vote.add({ type: 'path',
@@ -38689,7 +38687,7 @@
 	        var negateButtonDisabled = this.props.user.get('id') ? false : true;
 	        var userVote = this.props.path.get('userVote');
 
-	        if (userVote !== null && this.props.user.get('id')) {
+	        if (userVote !== null && typeof userVote !== 'undefined' && this.props.user.get('id')) {
 	            if (userVote) {
 	                affirmButtonDisabled = true;
 	            } else {

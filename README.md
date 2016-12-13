@@ -53,12 +53,14 @@ NODE_ENV=production node index.js
 * Styling
   * Make app responsive
   * Improve button/toggle styling: https://monosnap.com/file/vX5RGsAI8Y0VJHJnAcydfYt2PunyYR
+  * Improve node position change sytling: https://monosnap.com/file/gc40hP9yMmoWrIT6gqhHHvQX3hiUoo
+  * Make a revision to customize styling
 * Landing page
-  * Add trending posts
-    * Add trending field to post
-    * Set cron, calculate trend by strength (or wilson score) * linearly decreasing amount to limit (week)
-    * On vote, update score
-  * Add strength
+  * X Add trending posts
+    * X Add trending field to post
+    * X Set cron, calculate trend by strength (or wilson score) * linearly decreasing amount to limit (week)
+    * X On vote, update score
+  * X Add strength
   * Add pagination/infinite scroll
 * Back end
   * Add create_at timestamp to node and links
@@ -78,6 +80,7 @@ NODE_ENV=production node index.js
 * Bugs
   * X Babel compilation not working
   * X If user has not yet voted for a node, downvote as the first vote does not work
+  * Node ranking showing undefined: https://monosnap.com/file/aK8D6d4c5sURDLn3WrOQNAppB6s0Wj
   * Should be reporting an error: https://monosnap.com/file/JlcgxOW8U2pfSN6WMD1oAtHRgmZevY
   * Newly created reply: https://monosnap.com/file/o7K0D5gw0FVSPjo08RHbNj65gPdLR4
   * Error when creating new path with only one node: https://monosnap.com/file/7CtESRuBtnhRIIOwxTRGLIh54BA4tz
@@ -85,6 +88,7 @@ NODE_ENV=production node index.js
   * Vote history for non-logged in user: http://take.ms/Px7Kkc
   * https://monosnap.com/file/yIjldZsvpP54fgLBCxxxuxGbLyrLV9
   * undefined resave option; provide resave option node_modules/sql_user_manager/index.js:129:23
+  * 
 * User management
   * Inject header into user management pages
   * Add site-specific styles

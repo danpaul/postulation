@@ -71,7 +71,7 @@ module.exports = BaseComponent.createClass({
                 secondary={this.props.responseIsAffirming}
                 onClick={this.selectAffirm} />
             <RaisedButton
-            style={{width: '50%'}}
+                style={{width: '50%'}}
                 label="Negate"
                 secondary={!this.props.responseIsAffirming}
                 onClick={this.selectNegate} />

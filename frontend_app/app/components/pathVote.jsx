@@ -17,15 +17,13 @@ module.exports = BaseComponent.createClass({
                                             id:  this.props.path.get('id') });
     },
     handleAffirmVote: function(e){
-        const userVote = this.props.path.get('userVote');
-        if( userVote ){ return; }
+        if( this.props.path.get('userVote') ){ return; }
         this.props.controllers.vote.add({   type: 'path',
                                             id: this.props.path.get('id'),
                                             true: true  });
     },
     handleNegateVote: function(e){
-        const userVote = this.props.path.get('userVote');
-        if( userVote !== null && !userVote ){ return; }
+        if( this.props.path.get('userVote') === false ){ return; }
         this.props.controllers.vote.add({   type: 'path',
                                             id: this.props.path.get('id'),
                                             true: false  });
@@ -36,7 +34,7 @@ module.exports = BaseComponent.createClass({
         let negateButtonDisabled = this.props.user.get('id') ? false : true;
         const userVote = this.props.path.get('userVote');
 
-        if(  userVote !== null && this.props.user.get('id') ){
+        if(  userVote !== null && typeof(userVote) !== 'undefined' && this.props.user.get('id') ){
             if( userVote ){
                 affirmButtonDisabled = true;
             } else {
