@@ -10,5 +10,5 @@ module.exports = function(options){
     var siteUrl = options.siteUrl;
 
     this.showHome = function(){ d.set('view', 'home'); }
-
+    this.showAbout = function(){ d.set('view', 'about'); }
 }

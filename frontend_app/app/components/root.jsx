@@ -5,6 +5,7 @@ import Drawer from './drawer.jsx';
 import Home from './home.jsx';
 import Path from './path.jsx';
 import Paths from './paths.jsx';
+import About from './about.jsx';
 import React from 'react';
 import Snackbar from './snackbar.jsx';
 
@@ -12,9 +13,17 @@ module.exports = BaseComponent.createClass({
     componentDidMount: function(){
         this.props.controllers.user.init();
     },
+    getAbout: function(options){
+        if( options.view === 'about' ){
+            return <div className="center-column">
+                <About />
+            </div>;
+        }
+        return null;
+    },
     getCreatePath: function(options){
         if( options.view === 'createPath' ){
-            return <div className="create-path-wrap">
+            return <div className="center-column">
                 <CreatePath
                     controllers={this.props.controllers}
                     path={this.props.data.get('createPath')}
@@ -69,6 +78,7 @@ module.exports = BaseComponent.createClass({
             />
             { this.getDrawer(options) }
             { this.getHome(options)}
+            { this.getAbout(options) }
             { this.getCreatePath(options) }
             { this.getPath(options) }
             { this.getPaths(options) }

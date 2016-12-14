@@ -7,7 +7,6 @@ import page from 'page';
 
 module.exports = BaseComponent.createClass({
 	handleTitleClick: function(){
-		// console.log('handleTitleClick')
 		page('/');
 	},
 	handleLoginClick: function(){
@@ -33,7 +32,6 @@ module.exports = BaseComponent.createClass({
 				label="Login/Register"
 				onClick={this.handleLoginClick} />
 		}
-
 
 		return <div>
 			<AppBar

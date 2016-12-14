@@ -5,7 +5,7 @@ module.exports = function(options){
      */
     this.getRankingString = function(path){
 // asdf
-console.log('path', path.toJS());
+// console.log('path', path.toJS());
         var strength = Math.round(path.get('strength') * 100) / 100;
         var total = path.get('total');
         var trueVotes = total - path.get('false');

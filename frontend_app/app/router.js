@@ -10,6 +10,10 @@ module.exports = function(options){
 		c.view.showHome();
 	});
 
+	page('/about', function(){
+		c.view.showAbout();
+	});
+
 	page('/path/create', function(){
 		c.path.showCreate();
 	});
@@ -39,7 +43,10 @@ module.exports = function(options){
 	});
 
 	this.navigate = function(){
-		page(window.location.pathname);
+		if( window.location.pathname === '/' ){
+			page('/about');
+		} else {
+			page(window.location.pathname);
+		}
 	}
-
 }
