@@ -40,4 +40,7 @@ if( config.environment === 'development' ){
     throw('App must be started with env flag set.')
 }
 
+// asdf
+console.log('config', config);
+
 module.exports = config;
