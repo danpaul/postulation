@@ -28,6 +28,10 @@ module.exports = BaseComponent.createClass({
 		/>;
 	},
 	render: function() {
+
+// asdf
+// console.log('this.props',this.props.detailItem.toJS())
+
 		if( !this.props.detailItem.get('item') ){ return null; }
         return <Paper style={STYLE} zDepth={1}>
 			<Tabs>

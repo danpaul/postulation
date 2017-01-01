@@ -34,33 +34,22 @@ NODE_ENV=production node index.js
 ## Todo
 
 * General app
-  * X Add user notification handling
-  * X Notify user if they are not logged in
-    * X Disable vote button if user is not logged in
-    * X Disable node vote button if user is not logged in
-    * X Do not display path reply tab if user is not logged in
-  * X Add error handling
-    * X Add notification method
-  * X Clean path/form data on unmount
-    * X Clear when path changes
-    * X Clear afer submit (above might resolve)
-    * X Maybe unmount and trigger cleanup on unmount
-  * X Add user info to path title
-* X Path create
-  * X Add ability to delete nodes
-  * X Add ability to move node up/down
-  * X Validate that new paths have atleast two nodes
+* Front end restyle
+  * Make path view single column
+  * In path view, have child paths appear nested
+  * On clicking on path, have it become top level path
+  * Add up or back arrow to return to top previous level
+  * Maintain map argument path with read location and parent location maintained
+  * Add WYSIWIG editor to create path and auto parse new paragraphs into argument structure
+    * Add HTML santization on back end
+  * Remove path title and auto-create title as conclusion
+  * Add link on premise detail view
+
 * Styling
   * Make app responsive
   * Improve button/toggle styling: https://monosnap.com/file/vX5RGsAI8Y0VJHJnAcydfYt2PunyYR
   * Improve node position change sytling: https://monosnap.com/file/gc40hP9yMmoWrIT6gqhHHvQX3hiUoo
   * Make a revision to customize styling
-* Landing page
-  * X Add trending posts
-    * X Add trending field to post
-    * X Set cron, calculate trend by strength (or wilson score) * linearly decreasing amount to limit (week)
-    * X On vote, update score
-  * X Add strength
   * Add pagination/infinite scroll
 * Back end
   * Add create_at timestamp to node and links

@@ -62,12 +62,9 @@ module.exports = BaseComponent.createClass({
         </div>;
     },
 	render: function() {
-
-// asdf
-// console.log('this.props.node.get', this.props.node.toJS());
-
 		if( this.props.node.get('hidden') ){ return null; }
-        return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
+        // return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
+        return <Paper style={STYLE} zDepth={0} onClick={this.handleNodeClick}>
             {this.props.node.get('statement')}
             {this.getRankingSection()}
         </Paper>;

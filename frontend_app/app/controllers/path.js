@@ -7,16 +7,17 @@ module.exports = function(options){
     var superagent = options.superagent;
     var siteUrl = options.siteUrl;
 
-    this.showCreate = function(){
-    	d.set('view', 'createPath');
-    }
+    this.showCreate = function(){ d.set('view', 'createPath'); }
 
     /**
      * Shows specifc path
-     * @param  {int}  options.id  path id
+     * @param {int}  options.id  path id
+     * @param {array} options.location optional, if set, will set the path to given location in data
+     *                                 defaults to ['path']
      */
     this.show = function(options){
         var self = this;
+        var location = options.location ? options.location : ['path'];
 		superagent
 	  		.get(siteUrl + '/api/path/get/' + options.id)
 	  		.end(function (err, response){
@@ -32,7 +33,8 @@ module.exports = function(options){
 	  			}
                 var path = response.body.data.path;
                 self._parsePath(path);
-	  			d.set('path', response.body.data.path);
+                path.location = location;
+	  			d.set(location, path);
 	  			d.set('view', 'path');
 	  		}
 		);
@@ -152,6 +154,9 @@ module.exports = function(options){
                 response.body.data.paths.forEach(function(p){
                     self._parsePath(p);
                 });
+// asdf
+// console.log('asdf', response.body.data.paths);
+
                 if( options.charge ){
                     d.set(['detailItem', 'affirming'], response.body.data.paths);
                 } else {

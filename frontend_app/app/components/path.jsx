@@ -28,8 +28,18 @@ module.exports = BaseComponent.createClass({
             detailItemId = this.props.detailItem.getIn(['item', 'id']);
         }
 
-        return this.props.path.get('path').map(function(el, index){
-            if( el.get('type') === 'node' ){
+        let paths = this.props.path.get('path');
+        const location = this.props.path.get('location');
+
+        return paths.map(function(el, index){
+            if( el.get('type') === 'node' ){                
+                let next = paths.get(index + 1);
+                let link = next ? next : null;
+                if( link ){
+                    link = link.set('location', location.push(index + 1));
+                }
+                let isConclusion = paths.size === (index + 1);
+
                 var focused = false;
                 if( detailItemType === 'node' &&
                     el.get('id') === detailItemId ){
@@ -41,18 +51,9 @@ module.exports = BaseComponent.createClass({
                     user={self.props.user}
                     focused={focused}
                     controllers={self.props.controllers}
-                />
-            } else {
-                var focused = false;
-                if( detailItemType === 'link' &&
-                    el.get('id') === detailItemId ){
-                    focused = true;
-                }
-                return <PathLink
-                    key={index}
-                    link={el}
-                    focused={focused}
-                    controllers={self.props.controllers}
+                    link={link}
+                    isConclusion={isConclusion}
+                    location={location.push(index)}
                 />
             }
         });

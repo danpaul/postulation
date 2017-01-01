@@ -32,8 +32,13 @@ const schema = {
 		false: 0,
 		total: 0,
 		strength: 0,
+		responses: {
+			affirm: [],
+			negate: []
+		},
 		user: null,
-		userVote: null
+		userVote: null,
+		location: ['path']
 	},
 	recentPathsHome: {
 		dataLocation: ['recentPathsHome'],

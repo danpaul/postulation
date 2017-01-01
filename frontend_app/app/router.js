@@ -44,7 +44,9 @@ module.exports = function(options){
 
 	this.navigate = function(){
 		if( window.location.pathname === '/' ){
-			page('/about');
+			c.view.showHome();
+			// to enable auto redirect to about
+			// page('/about');
 		} else {
 			page(window.location.pathname);
 		}

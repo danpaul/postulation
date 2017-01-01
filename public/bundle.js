@@ -479,8 +479,8 @@
 	//                      process.env.NODE_ENV : 'development';
 
 	// config.recordHistory = true;
-	// config.siteUrl = 'http://localhost:3000';
-	config.siteUrl = 'http://198.199.65.198';
+	config.siteUrl = 'http://localhost:3000';
+	// config.siteUrl = 'http://198.199.65.198';
 
 	// if( config.environment === 'production' ) {
 	//     config.recordHistory = false;
@@ -38385,8 +38385,18 @@
 	            detailItemId = this.props.detailItem.getIn(['item', 'id']);
 	        }
 
-	        return this.props.path.get('path').map(function (el, index) {
+	        var paths = this.props.path.get('path');
+	        var location = this.props.path.get('location');
+
+	        return paths.map(function (el, index) {
 	            if (el.get('type') === 'node') {
+	                var next = paths.get(index + 1);
+	                var link = next ? next : null;
+	                if (link) {
+	                    link = link.set('location', location.push(index + 1));
+	                }
+	                var isConclusion = paths.size === index + 1;
+
 	                var focused = false;
 	                if (detailItemType === 'node' && el.get('id') === detailItemId) {
 	                    focused = true;
@@ -38396,18 +38406,10 @@
 	                    node: el,
 	                    user: self.props.user,
 	                    focused: focused,
-	                    controllers: self.props.controllers
-	                });
-	            } else {
-	                var focused = false;
-	                if (detailItemType === 'link' && el.get('id') === detailItemId) {
-	                    focused = true;
-	                }
-	                return _react2.default.createElement(_pathLink2.default, {
-	                    key: index,
-	                    link: el,
-	                    focused: focused,
-	                    controllers: self.props.controllers
+	                    controllers: self.props.controllers,
+	                    link: link,
+	                    isConclusion: isConclusion,
+	                    location: location.push(index)
 	                });
 	            }
 	        });
@@ -38506,6 +38508,10 @@
 			});
 		},
 		render: function render() {
+
+			// asdf
+			// console.log('this.props',this.props.detailItem.toJS())
+
 			if (!this.props.detailItem.get('item')) {
 				return null;
 			}
@@ -38741,16 +38747,13 @@
 	        );
 	    },
 	    render: function render() {
-
-	        // asdf
-	        // console.log('this.props.node.get', this.props.node.toJS());
-
 	        if (this.props.node.get('hidden')) {
 	            return null;
 	        }
+	        // return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
 	        return _react2.default.createElement(
 	            _Paper2.default,
-	            { style: STYLE, zDepth: this.props.focused ? 2 : 1, onClick: this.handleNodeClick },
+	            { style: STYLE, zDepth: 0, onClick: this.handleNodeClick },
 	            this.props.node.get('statement'),
 	            this.getRankingSection()
 	        );
@@ -45768,6 +45771,7 @@
 
 	'use strict';
 
+	// const debug = true;//asdf
 	var debug = false;
 
 	var _ = __webpack_require__(459);
@@ -52457,8 +52461,13 @@
 			false: 0,
 			total: 0,
 			strength: 0,
+			responses: {
+				affirm: [],
+				negate: []
+			},
 			user: null,
-			userVote: null
+			userVote: null,
+			location: ['path']
 		},
 		recentPathsHome: {
 			dataLocation: ['recentPathsHome'],
@@ -52779,10 +52788,13 @@
 
 	    /**
 	     * Shows specifc path
-	     * @param  {int}  options.id  path id
+	     * @param {int}  options.id  path id
+	     * @param {array} options.location optional, if set, will set the path to given location in data
+	     *                                 defaults to ['path']
 	     */
 	    this.show = function (options) {
 	        var self = this;
+	        var location = options.location ? options.location : ['path'];
 	        superagent.get(siteUrl + '/api/path/get/' + options.id).end(function (err, response) {
 	            if (err) {
 	                console.log(err);
@@ -52796,7 +52808,8 @@
 	            }
 	            var path = response.body.data.path;
 	            self._parsePath(path);
-	            d.set('path', response.body.data.path);
+	            path.location = location;
+	            d.set(location, path);
 	            d.set('view', 'path');
 	        });
 	    };
@@ -52908,6 +52921,9 @@
 	            response.body.data.paths.forEach(function (p) {
 	                self._parsePath(p);
 	            });
+	            // asdf
+	            // console.log('asdf', response.body.data.paths);
+
 	            if (options.charge) {
 	                d.set(['detailItem', 'affirming'], response.body.data.paths);
 	            } else {
@@ -55348,7 +55364,9 @@
 
 		this.navigate = function () {
 			if (window.location.pathname === '/') {
-				(0, _page2.default)('/about');
+				c.view.showHome();
+				// to enable auto redirect to about
+				// page('/about');
 			} else {
 				(0, _page2.default)(window.location.pathname);
 			}
