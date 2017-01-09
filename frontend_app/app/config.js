@@ -14,6 +14,4 @@ config.siteUrl = 'http://localhost:3000';
 
 // config.siteUrl = 'http://198.199.65.198';
 
-console.log('config.siteUrl', config.siteUrl);
-
 module.exports = config;

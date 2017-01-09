@@ -489,8 +489,6 @@
 
 	// config.siteUrl = 'http://198.199.65.198';
 
-	console.log('config.siteUrl', config.siteUrl);
-
 	module.exports = config;
 
 /***/ },
@@ -38386,7 +38384,7 @@
 	        }
 
 	        var paths = this.props.path.get('path');
-	        var location = this.props.path.get('location');
+	        var location = this.props.path.get('location').push('path');
 
 	        return paths.map(function (el, index) {
 	            if (el.get('type') === 'node') {
@@ -38409,7 +38407,9 @@
 	                    controllers: self.props.controllers,
 	                    link: link,
 	                    isConclusion: isConclusion,
-	                    location: location.push(index)
+	                    location: location.push(index),
+	                    responsesAffirm: el.get('responsesAffirm'),
+	                    responsesNegate: el.get('responsesNegate')
 	                });
 	            }
 	        });
@@ -38691,7 +38691,7 @@
 	            id: this.props.node.get('id') });
 	    },
 	    handleNodeClick: function handleNodeClick(e) {
-	        var d = { item: this.props.node };
+	        var d = { item: this.props.node, location: this.props.location };
 	        if (!this.props.focused) {
 	            this.props.controllers.path.setDetailItem(d);
 	        } else {
@@ -38750,7 +38750,6 @@
 	        if (this.props.node.get('hidden')) {
 	            return null;
 	        }
-	        // return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
 	        return _react2.default.createElement(
 	            _Paper2.default,
 	            { style: STYLE, zDepth: 0, onClick: this.handleNodeClick },
@@ -52885,11 +52884,19 @@
 	    /**
 	     * Shows details for a node or link and loads affirming/negating items
 	     * @param {options.item}  either a node or a link
+	     * @param {options.location} Immutable.map location within the stor of the path
 	     */
 	    this.setDetailItem = function (options) {
+
+	        // asdf - legacy to remove
 	        d.set(['detailItem', 'item'], options.item);
-	        this.loadResponsePaths({ item: options.item, charge: true });
-	        this.loadResponsePaths({ item: options.item, charge: false });
+	        this.loadResponsePaths({ item: options.item,
+	            location: options.location,
+	            charge: true });
+
+	        this.loadResponsePaths({ item: options.item,
+	            location: options.location,
+	            charge: false });
 	    };
 
 	    this.unsetDetailItem = function (options) {
@@ -52898,6 +52905,7 @@
 
 	    /**
 	     * @param  {object}  options.item
+	     * @param {options.location} Immutable.map location within the stor of the path
 	     * @param  {boolean}  options.charge
 	     */
 	    this.loadResponsePaths = function (options) {
@@ -52921,12 +52929,17 @@
 	            response.body.data.paths.forEach(function (p) {
 	                self._parsePath(p);
 	            });
-	            // asdf
-	            // console.log('asdf', response.body.data.paths);
-
 	            if (options.charge) {
+	                var location = options.location.push('responsesAffirm');
+	                d.set(location, response.body.data.paths);
+
+	                // legacy to remove - asdf
 	                d.set(['detailItem', 'affirming'], response.body.data.paths);
 	            } else {
+	                var location = options.location.push('responsesNegate');
+	                d.set(location, response.body.data.paths);
+
+	                // legacy to remove - asdf - AND REMOVE FROM DATA STRUCTURE
 	                d.set(['detailItem', 'negating'], response.body.data.paths);
 	            }
 	        });

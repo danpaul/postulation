@@ -29,7 +29,7 @@ module.exports = BaseComponent.createClass({
         }
 
         let paths = this.props.path.get('path');
-        const location = this.props.path.get('location');
+        const location = this.props.path.get('location').push('path');
 
         return paths.map(function(el, index){
             if( el.get('type') === 'node' ){                
@@ -54,6 +54,8 @@ module.exports = BaseComponent.createClass({
                     link={link}
                     isConclusion={isConclusion}
                     location={location.push(index)}
+                    responsesAffirm={el.get('responsesAffirm')}
+                    responsesNegate={el.get('responsesNegate')}
                 />
             }
         });

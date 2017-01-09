@@ -14,7 +14,7 @@ module.exports = BaseComponent.createClass({
                                             id:  this.props.node.get('id') });
     },
 	handleNodeClick: function(e){
-		var d = {item: this.props.node};
+		var d = {item: this.props.node, location: this.props.location};
         if( !this.props.focused ){
             this.props.controllers.path.setDetailItem(d);
         } else {
@@ -63,7 +63,6 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
 		if( this.props.node.get('hidden') ){ return null; }
-        // return <Paper style={STYLE} zDepth={this.props.focused ? 2 : 1} onClick={this.handleNodeClick}>
         return <Paper style={STYLE} zDepth={0} onClick={this.handleNodeClick}>
             {this.props.node.get('statement')}
             {this.getRankingSection()}
