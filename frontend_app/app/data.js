@@ -1,5 +1,5 @@
-// const debug = true;//asdf
-const debug = false;
+// const debug = false;
+const debug = true;
 
 const _ = require('underscore');
 const config = require('./config');

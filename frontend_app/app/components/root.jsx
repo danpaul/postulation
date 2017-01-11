@@ -52,8 +52,6 @@ module.exports = BaseComponent.createClass({
         if( options.view === 'path' ){
             return <Path
                 controllers={this.props.controllers}
-                createPath={this.props.data.get('createPath')}
-                detailItem={this.props.data.get('detailItem')}
                 user={this.props.data.get('user')}
                 path={this.props.data.get('path')}
             />

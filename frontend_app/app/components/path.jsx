@@ -1,6 +1,6 @@
 import BaseComponent from '../lib/baseComponent';
 import React from 'react';
-import PathItemDetail from './pathItemDetail.jsx';
+// import PathItemDetail from './pathItemDetail.jsx';
 import PathLink from './pathLink.jsx';
 import PathNode from './pathNode.jsx';
 import PathVote from './pathVote.jsx';
@@ -20,17 +20,9 @@ module.exports = BaseComponent.createClass({
     getEllements: function(){
         var self = this;
 
-        var detailItemType = null;
-        var detailItemId = null;
-
-        if( this.props.detailItem ){
-            detailItemType = this.props.detailItem.getIn(['item', 'type']);
-            detailItemId = this.props.detailItem.getIn(['item', 'id']);
-        }
-
         let paths = this.props.path.get('path');
         const location = this.props.path.get('location').push('path');
-
+console.log('location', location.toJS())
         return paths.map(function(el, index){
             if( el.get('type') === 'node' ){                
                 let next = paths.get(index + 1);
@@ -41,10 +33,10 @@ module.exports = BaseComponent.createClass({
                 let isConclusion = paths.size === (index + 1);
 
                 var focused = false;
-                if( detailItemType === 'node' &&
-                    el.get('id') === detailItemId ){
-                    focused = true;
-                }
+                // if( detailItemType === 'node' &&
+                //     el.get('id') === detailItemId ){
+                //     focused = true;
+                // }
                 return <PathNode
                     key={index}
                     node={el}
@@ -61,6 +53,29 @@ module.exports = BaseComponent.createClass({
         });
     },
     render: function() {
+// console.log('this.props', this.props.path.toJS());
+        // return <div>
+        //     <div style={{marginLeft: 20}}>
+        //         <h1>{this.props.path.get('title')}</h1>
+        //         <h3>
+        //             { helpers.ranking.getRankingString(this.props.path) }
+        //         </h3>
+        //         <PathVote
+        //             user={this.props.user}
+        //             controllers={this.props.controllers}
+        //             path={this.props.path}
+        //         />
+        //     </div>
+        //     <Paper style={STYLE} zDepth={1}>
+        //         {this.getEllements()}
+        //     </Paper>
+        //     <PathItemDetail
+        //         controllers={this.props.controllers}
+        //         detailItem={this.props.detailItem}
+        //         user={this.props.user}
+        //     />
+        // </div>
+        // 
         return <div>
             <div style={{marginLeft: 20}}>
                 <h1>{this.props.path.get('title')}</h1>
@@ -76,11 +91,6 @@ module.exports = BaseComponent.createClass({
             <Paper style={STYLE} zDepth={1}>
                 {this.getEllements()}
             </Paper>
-            <PathItemDetail
-                controllers={this.props.controllers}
-                detailItem={this.props.detailItem}
-                user={this.props.user}
-            />
         </div>
     }
 });

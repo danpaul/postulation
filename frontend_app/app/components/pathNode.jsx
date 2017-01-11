@@ -3,6 +3,8 @@ import Paper from 'material-ui/Paper';
 import React from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import PathResponses from './pathResponses.jsx';
 
 import helpers from '../lib/helpers';
 
@@ -63,9 +65,20 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
 		if( this.props.node.get('hidden') ){ return null; }
+        var responsePaths = null;
+        if( this.props.responsesAffirm || this.props.responsesNegate ){
+            responsePaths = <PathResponses
+                controllers={this.props.controllers}
+                user={this.props.user}
+                affirming={this.props.responsesAffirm}
+                negating={this.props.responsesNegate}
+            />;
+        }
+
         return <Paper style={STYLE} zDepth={0} onClick={this.handleNodeClick}>
             {this.props.node.get('statement')}
             {this.getRankingSection()}
+            {responsePaths}
         </Paper>;
 	}
 });

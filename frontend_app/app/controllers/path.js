@@ -95,7 +95,7 @@ module.exports = function(options){
         );
     }
 
-    this._parsePath = function(path){
+    this._parsePath = function(path, location){
         var isNegatingResponse = false;
         for( var i = 0; i < path.path.length; i++ ){
             var item = path.path[i];
@@ -110,6 +110,7 @@ module.exports = function(options){
             }
         }
         path.isNegatingResponse = isNegatingResponse;
+        if( location ){ path.location = location; }
         return path;
     }
 
@@ -147,6 +148,15 @@ module.exports = function(options){
         var id = options.item.get('id');
         var url = siteUrl + '/api/link/response/' + type + '/' + direction + '/' + id;
 
+        // var location = null;
+        var location = options.location.push('responsesAffirm');
+        if( !options.charge ){
+            location = options.location.push('responsesNegate');            
+        }
+
+// asdf
+// console.log('options.location', options.location.toJS())
+
         superagent
             .get(url)
             .end(function (err, response){
@@ -160,18 +170,20 @@ module.exports = function(options){
                     console.log(new Error(response.body.error));
                     return;
                 }
-                response.body.data.paths.forEach(function(p){
-                    self._parsePath(p);
+                response.body.data.paths.forEach(function(p, index){
+                    var l = location.push(index);
+                    self._parsePath(p, l);
                 });
                 if( options.charge ){
-                    var location = options.location.push('responsesAffirm');
+                    // var location = options.location.push('responsesAffirm');
+console.log('location', location.toJS())
                     d.set(location, response.body.data.paths)
 
                     // legacy to remove - asdf
                     d.set(['detailItem', 'affirming'], response.body.data.paths);
 
                 } else {
-                    var location = options.location.push('responsesNegate');
+                    // var location = options.location.push('responsesNegate');
                     d.set(location, response.body.data.paths)
 
                     // legacy to remove - asdf - AND REMOVE FROM DATA STRUCTURE
