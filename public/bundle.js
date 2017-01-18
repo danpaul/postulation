@@ -38320,6 +38320,8 @@
 
 	'use strict';
 
+	var _BaseComponent$create;
+
 	var _baseComponent = __webpack_require__(180);
 
 	var _baseComponent2 = _interopRequireDefault(_baseComponent);
@@ -38328,11 +38330,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _pathLink = __webpack_require__(313);
+	var _pathLink = __webpack_require__(311);
 
 	var _pathLink2 = _interopRequireDefault(_pathLink);
 
-	var _pathNode = __webpack_require__(314);
+	var _pathNode = __webpack_require__(312);
 
 	var _pathNode2 = _interopRequireDefault(_pathNode);
 
@@ -38360,150 +38362,212 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	// import PathItemDetail from './pathItemDetail.jsx';
+
+
 	var STYLE = { margin: 20,
 	    width: 800,
 	    // padding: 10,
 	    float: 'left' };
 
-	module.exports = _baseComponent2.default.createClass({
-	    getEllements: function getEllements() {
-	        var self = this;
+	// var count = 0;
 
-	        var paths = this.props.path.get('path');
-	        var location = this.props.path.get('location').push('path');
-	        console.log('location', location.toJS());
-	        return paths.map(function (el, index) {
-	            if (el.get('type') === 'node') {
-	                var next = paths.get(index + 1);
-	                var link = next ? next : null;
-	                if (link) {
-	                    link = link.set('location', location.push(index + 1));
-	                }
-	                var isConclusion = paths.size === index + 1;
+	// var Path = BaseComponent.createClass({
+	//     render: function(){
+	//         count++;
+	//         return <div>
+	//             <div>foo</div>
+	//             { count < 5 ? <Path /> : null}
 
-	                var focused = false;
-	                // if( detailItemType === 'node' &&
-	                //     el.get('id') === detailItemId ){
-	                //     focused = true;
-	                // }
-	                return _react2.default.createElement(_pathNode2.default, {
-	                    key: index,
-	                    node: el,
-	                    user: self.props.user,
-	                    focused: focused,
-	                    controllers: self.props.controllers,
-	                    link: link,
-	                    isConclusion: isConclusion,
-	                    location: location.push(index),
-	                    responsesAffirm: el.get('responsesAffirm'),
-	                    responsesNegate: el.get('responsesNegate')
-	                });
-	            }
-	        });
+	//         </div>
+	//     }
+	// });
+	// 
+	var Node = _baseComponent2.default.createClass({
+	    handleNodeClick: function handleNodeClick(e) {
+
+	        // console.log('this.props.location', this.props.location.toJS());
+	        // return;
+
+	        var d = { item: this.props.node, location: this.props.location };
+
+	        // this should be renamed, maybe?
+	        this.props.controllers.path.setDetailItem(d);
+
+	        // if( !this.props.focused ){
+	        //     this.props.controllers.path.setDetailItem(d);
+	        // } else {
+	        //     this.props.controllers.path.unsetDetailItem(d);
+	        // }       
 	    },
 	    render: function render() {
-	        // console.log('this.props', this.props.path.toJS());
-	        // return <div>
-	        //     <div style={{marginLeft: 20}}>
-	        //         <h1>{this.props.path.get('title')}</h1>
-	        //         <h3>
-	        //             { helpers.ranking.getRankingString(this.props.path) }
-	        //         </h3>
-	        //         <PathVote
-	        //             user={this.props.user}
-	        //             controllers={this.props.controllers}
-	        //             path={this.props.path}
-	        //         />
-	        //     </div>
-	        //     <Paper style={STYLE} zDepth={1}>
-	        //         {this.getEllements()}
-	        //     </Paper>
-	        //     <PathItemDetail
-	        //         controllers={this.props.controllers}
-	        //         detailItem={this.props.detailItem}
-	        //         user={this.props.user}
-	        //     />
-	        // </div>
-	        // 
+
+	        // asdf
+	        // console.log('response and affirm');
+	        if (this.props.responsesAffirm) {
+	            console.log(this.props.responsesAffirm.toJS());
+	        }
+	        // console.log(this.props.responsesNegate);
+
+	        var affirmPaths = null;
+	        if (this.props.responsesAffirm) {
+	            var self = this;
+
+	            affirmPaths = this.props.responsesAffirm.map(function (el, index) {
+	                return _react2.default.createElement(Path, {
+	                    key: index,
+	                    controllers: self.props.controllers,
+	                    user: self.props.user,
+	                    path: el
+	                });
+	            });
+	        }
+
+	        var negatePaths = null;
+	        if (this.props.responsesNegate) {
+	            var self = this;
+
+	            negatePaths = this.props.responsesNegate.map(function (el, index) {
+	                return _react2.default.createElement(Path, {
+	                    key: index,
+	                    controllers: self.props.controllers,
+	                    user: self.props.user,
+	                    path: el
+	                });
+	            });
+	        }
+
+	        // console.lo
+
+	        return _react2.default.createElement(
+	            'div',
+	            { onClick: this.handleNodeClick },
+	            this.props.node.get('statement'),
+	            affirmPaths,
+	            negatePaths
+	        );
+	    }
+	});
+
+	var Path = module.exports = _baseComponent2.default.createClass((_BaseComponent$create = {
+	    getPath: function getPath(path) {
 	        return _react2.default.createElement(
 	            'div',
 	            null,
 	            _react2.default.createElement(
 	                'div',
-	                { style: { marginLeft: 20 } },
-	                _react2.default.createElement(
-	                    'h1',
-	                    null,
-	                    this.props.path.get('title')
-	                ),
-	                _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    _helpers2.default.ranking.getRankingString(this.props.path)
-	                ),
-	                _react2.default.createElement(_pathVote2.default, {
-	                    user: this.props.user,
-	                    controllers: this.props.controllers,
-	                    path: this.props.path
-	                })
-	            ),
-	            _react2.default.createElement(
-	                _Paper2.default,
-	                { style: STYLE, zDepth: 1 },
-	                this.getEllements()
+	                null,
+	                path.get('title')
 	            )
 	        );
-	    }
-	});
+	    },
+	    getNodes: function getNodes(nodes) {}
+	}, _defineProperty(_BaseComponent$create, 'getNodes', function getNodes() {
 
-/***/ },
-/* 311 */,
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
+	    var self = this;
+	    var nodes = this.props.path.get('path');
+	    var location = this.props.path.get('location').push('path');
 
-	'use strict';
+	    return nodes.map(function (el, index) {
 
-	var _baseComponent = __webpack_require__(180);
+	        if (el.get('type') === 'node') {
+	            var next = nodes.get(index + 1);
+	            var link = next ? next : null;
+	            if (link) {
+	                link = link.set('location', location.push(index + 1));
+	            }
 
-	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+	            var isConclusion = nodes.size === index + 1;
 
-	var _Paper = __webpack_require__(224);
+	            return _react2.default.createElement(Node, {
+	                key: index,
+	                node: el,
+	                user: self.props.user,
+	                controllers: self.props.controllers,
+	                link: link,
+	                isConclusion: isConclusion,
+	                location: location.push(index),
+	                responsesAffirm: el.get('responsesAffirm'),
+	                responsesNegate: el.get('responsesNegate')
+	            });
+	        }
+	    });
+	}), _defineProperty(_BaseComponent$create, 'render', function render() {
+	    // console.log(this.props.path.toJS())
 
-	var _Paper2 = _interopRequireDefault(_Paper);
-
-	var _pathPreview = __webpack_require__(286);
-
-	var _pathPreview2 = _interopRequireDefault(_pathPreview);
-
-	var _react = __webpack_require__(7);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var STYLE = {};
-
-	module.exports = _baseComponent2.default.createClass({
-	  render: function render() {
-	    if (!this.props.paths.size) {
-	      return null;
-	    }
 	    return _react2.default.createElement(
-	      _Paper2.default,
-	      { style: STYLE, zDepth: 0 },
-	      this.props.paths.map(function (p) {
-	        return _react2.default.createElement(_pathPreview2.default, {
-	          key: p.get('id'),
-	          path: p
-	        });
-	      })
+	        'div',
+	        { style: STYLE_PATH_WRAP },
+	        _react2.default.createElement(
+	            'div',
+	            null,
+	            this.props.path.get('title')
+	        ),
+	        this.getNodes()
 	    );
-	  }
-	});
+	}), _BaseComponent$create));
+
+	var STYLE_PATH_WRAP = { 'marginLeft': '5%' };
+
+	// module.exports = BaseComponent.createClass({
+	//     getEllements: function(){
+	//         var self = this;
+
+	//         let paths = this.props.path.get('path');
+	//         const location = this.props.path.get('location').push('path');
+	// console.log('asdf 30')
+	//         return paths.map(function(el, index){
+	//             if( el.get('type') === 'node' ){                
+	//                 var next = paths.get(index + 1);
+	//                 var link = next ? next : null;
+	//                 if( link ){
+	//                     link = link.set('location', location.push(index + 1));
+	//                 }
+	//                 var isConclusion = paths.size === (index + 1);
+	//                 var focused = false;
+	// console.log('asdf 31')
+	//                 return <PathNode
+	//                     key={index}
+	//                     node={el}
+	//                     user={self.props.user}
+	//                     focused={focused}
+	//                     controllers={self.props.controllers}
+	//                     link={link}
+	//                     isConclusion={isConclusion}
+	//                     location={location.push(index)}
+	//                     responsesAffirm={el.get('responsesAffirm')}
+	//                     responsesNegate={el.get('responsesNegate')}
+	//                 />
+	//             }
+	//         });
+	//     },
+	//     render: function() {
+
+	// // console.log('this.props.path', this.props.path.toJS())
+	// // console.log('asdf 40')
+
+	//         return <div>
+	//             <div style={{marginLeft: 20}}>
+	//                 <h1>{this.props.path.get('title')}</h1>
+	//                 <h3>
+	//                     { helpers.ranking.getRankingString(this.props.path) }
+	//                 </h3>
+	//                 <PathVote
+	//                     user={this.props.user}
+	//                     controllers={this.props.controllers}
+	//                     path={this.props.path}
+	//                 />
+	//             </div>
+	//             <Paper style={STYLE} zDepth={1}>
+	//                 {this.getEllements()}
+	//             </Paper>
+	//         </div>
+	//     }
+	// });
 
 /***/ },
-/* 313 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38560,7 +38624,7 @@
 	});
 
 /***/ },
-/* 314 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38583,7 +38647,7 @@
 
 	var _Tabs = __webpack_require__(305);
 
-	var _pathResponses = __webpack_require__(478);
+	var _pathResponses = __webpack_require__(313);
 
 	var _pathResponses2 = _interopRequireDefault(_pathResponses);
 
@@ -38660,6 +38724,7 @@
 	        if (this.props.node.get('hidden')) {
 	            return null;
 	        }
+	        console.log('asdf 9');
 	        var responsePaths = null;
 	        if (this.props.responsesAffirm || this.props.responsesNegate) {
 	            responsePaths = _react2.default.createElement(_pathResponses2.default, {
@@ -38669,7 +38734,7 @@
 	                negating: this.props.responsesNegate
 	            });
 	        }
-
+	        console.log('asdf 10');
 	        return _react2.default.createElement(
 	            _Paper2.default,
 	            { style: STYLE, zDepth: 0, onClick: this.handleNodeClick },
@@ -38678,6 +38743,175 @@
 	            responsePaths
 	        );
 	    }
+	});
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _createPath = __webpack_require__(248);
+
+	var _createPath2 = _interopRequireDefault(_createPath);
+
+	var _path = __webpack_require__(310);
+
+	var _path2 = _interopRequireDefault(_path);
+
+	var _pathItemDetailResponses = __webpack_require__(314);
+
+	var _pathItemDetailResponses2 = _interopRequireDefault(_pathItemDetailResponses);
+
+	var _Paper = __webpack_require__(224);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Tabs = __webpack_require__(305);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STYLE = { width: '100%' };
+	var noPathsDiv = _react2.default.createElement(
+	    'div',
+	    null,
+	    'No paths yet!'
+	);
+
+	module.exports = _baseComponent2.default.createClass({
+	    getAffirmingPaths: function getAffirmingPaths() {
+	        if (!this.props.detailItem.get('affirming').size) {
+	            return noPathsDiv;
+	        }
+	        return _react2.default.createElement(_pathItemDetailResponses2.default, {
+	            affirming: true,
+	            paths: this.props.detailItem.get('affirming')
+	        });
+	    },
+	    getNegatingPaths: function getNegatingPaths() {
+	        if (!this.props.detailItem.get('negating').size) {
+	            return noPathsDiv;
+	        }
+	        return _react2.default.createElement(_pathItemDetailResponses2.default, {
+	            affirming: false,
+	            paths: this.props.detailItem.get('negating')
+	        });
+	    },
+	    render: function render() {
+	        // console.log('Path', Path)
+	        var affirming = null;
+	        var negating = null;
+	        var self = this;
+	        // console.log('asdf 20')
+	        if (this.props.affirming) {
+	            affirming = _react2.default.createElement(
+	                'div',
+	                null,
+	                this.props.affirming.map(function (path) {
+	                    return _react2.default.createElement(_path2.default, {
+	                        key: path.get('id'),
+	                        controllers: self.props.controllers,
+	                        user: self.props.user,
+	                        path: path
+	                    });
+	                })
+	            );
+	        }
+	        // console.log('asdf 21')
+
+	        // if( !this.props.detailItem.get('item') ){ return null; }
+	        return _react2.default.createElement(
+	            _Paper2.default,
+	            { style: STYLE, zDepth: 1 },
+	            _react2.default.createElement(
+	                _Tabs.Tabs,
+	                null,
+	                _react2.default.createElement(
+	                    _Tabs.Tab,
+	                    { label: 'Affirming' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { style: { padding: 10 } },
+	                        affirming
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    _Tabs.Tab,
+	                    { label: 'Negating' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { style: { padding: 10 } },
+	                        'test two'
+	                    )
+	                )
+	            )
+	        );
+	    }
+
+	    // {
+	    //     this.props.user.get('id') ?
+	    //         <Tab label="Reply" >
+	    //             <CreatePath
+	    //                 controllers={this.props.controllers}
+	    //                 visible={true}
+	    //                 responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
+	    //                 responseTo={this.props.detailItem.get('item')}
+	    //                 path={this.props.detailItem.get('responsePath')} />
+	    //         </Tab>
+	    //         : null
+	    // }
+	});
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _baseComponent = __webpack_require__(180);
+
+	var _baseComponent2 = _interopRequireDefault(_baseComponent);
+
+	var _Paper = __webpack_require__(224);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	var _pathPreview = __webpack_require__(286);
+
+	var _pathPreview2 = _interopRequireDefault(_pathPreview);
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var STYLE = {};
+
+	module.exports = _baseComponent2.default.createClass({
+	  render: function render() {
+	    if (!this.props.paths.size) {
+	      return null;
+	    }
+	    return _react2.default.createElement(
+	      _Paper2.default,
+	      { style: STYLE, zDepth: 0 },
+	      this.props.paths.map(function (p) {
+	        return _react2.default.createElement(_pathPreview2.default, {
+	          key: p.get('id'),
+	          path: p
+	        });
+	      })
+	    );
+	  }
 	});
 
 /***/ },
@@ -45691,8 +45925,8 @@
 
 	'use strict';
 
-	// const debug = false;
-	var debug = true;
+	var debug = false;
+	// const debug = true;
 
 	var _ = __webpack_require__(459);
 	var config = __webpack_require__(6);
@@ -52693,9 +52927,14 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = Path;
 	var Immutable = __webpack_require__(460);
 
-	module.exports = function (options) {
+	// module.exports = function(options){
+	function Path(options) {
 
 	    var c = options.controllers;
 	    var d = options.data;
@@ -52845,9 +53084,6 @@
 	            location = options.location.push('responsesNegate');
 	        }
 
-	        // asdf
-	        // console.log('options.location', options.location.toJS())
-
 	        superagent.get(url).end(function (err, response) {
 	            if (err) {
 	                c.snackbar.add({ message: c.error.unknown });
@@ -52864,8 +53100,7 @@
 	                self._parsePath(p, l);
 	            });
 	            if (options.charge) {
-	                // var location = options.location.push('responsesAffirm');
-	                console.log('location', location.toJS());
+
 	                d.set(location, response.body.data.paths);
 
 	                // legacy to remove - asdf
@@ -52879,7 +53114,7 @@
 	            }
 	        });
 	    };
-	};
+	}
 
 /***/ },
 /* 467 */
@@ -55320,132 +55555,6 @@
 			}
 		};
 	};
-
-/***/ },
-/* 478 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _baseComponent = __webpack_require__(180);
-
-	var _baseComponent2 = _interopRequireDefault(_baseComponent);
-
-	var _createPath = __webpack_require__(248);
-
-	var _createPath2 = _interopRequireDefault(_createPath);
-
-	var _path = __webpack_require__(310);
-
-	var _path2 = _interopRequireDefault(_path);
-
-	var _pathItemDetailResponses = __webpack_require__(312);
-
-	var _pathItemDetailResponses2 = _interopRequireDefault(_pathItemDetailResponses);
-
-	var _Paper = __webpack_require__(224);
-
-	var _Paper2 = _interopRequireDefault(_Paper);
-
-	var _react = __webpack_require__(7);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Tabs = __webpack_require__(305);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var STYLE = { width: '100%' };
-	var noPathsDiv = _react2.default.createElement(
-	    'div',
-	    null,
-	    'No paths yet!'
-	);
-
-	module.exports = _baseComponent2.default.createClass({
-	    getAffirmingPaths: function getAffirmingPaths() {
-	        if (!this.props.detailItem.get('affirming').size) {
-	            return noPathsDiv;
-	        }
-	        return _react2.default.createElement(_pathItemDetailResponses2.default, {
-	            affirming: true,
-	            paths: this.props.detailItem.get('affirming')
-	        });
-	    },
-	    getNegatingPaths: function getNegatingPaths() {
-	        if (!this.props.detailItem.get('negating').size) {
-	            return noPathsDiv;
-	        }
-	        return _react2.default.createElement(_pathItemDetailResponses2.default, {
-	            affirming: false,
-	            paths: this.props.detailItem.get('negating')
-	        });
-	    },
-	    render: function render() {
-
-	        var affirming = null;
-	        var negating = null;
-	        var self = this;
-
-	        // console.log('this.props', this.props);
-	        if (this.props.affirming) {
-	            // console.log(this.props.affirming.toJS())
-	            affirming = _react2.default.createElement(
-	                'div',
-	                null,
-	                this.props.affirming.map(function (path) {
-	                    return _react2.default.createElement(_path2.default, {
-	                        key: path.get('id'),
-	                        controllers: self.props.controllers,
-	                        user: self.props.user,
-	                        path: path
-	                    });
-	                })
-	            );
-	        }
-
-	        // if( !this.props.detailItem.get('item') ){ return null; }
-	        return _react2.default.createElement(
-	            _Paper2.default,
-	            { style: STYLE, zDepth: 1 },
-	            _react2.default.createElement(
-	                _Tabs.Tabs,
-	                null,
-	                _react2.default.createElement(
-	                    _Tabs.Tab,
-	                    { label: 'Affirming' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { style: { padding: 10 } },
-	                        affirming
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _Tabs.Tab,
-	                    { label: 'Negating' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { style: { padding: 10 } },
-	                        'test two'
-	                    )
-	                )
-	            )
-	        );
-	    }
-
-	    // {
-	    //     this.props.user.get('id') ?
-	    //         <Tab label="Reply" >
-	    //             <CreatePath
-	    //                 controllers={this.props.controllers}
-	    //                 visible={true}
-	    //                 responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
-	    //                 responseTo={this.props.detailItem.get('item')}
-	    //                 path={this.props.detailItem.get('responsePath')} />
-	    //         </Tab>
-	    //         : null
-	    // }
-	});
 
 /***/ }
 /******/ ]);

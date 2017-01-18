@@ -1,6 +1,7 @@
 const Immutable = require('immutable');
 
-module.exports = function(options){
+// module.exports = function(options){
+export default function Path(options){
 
     var c = options.controllers;
     var d = options.data;
@@ -154,9 +155,6 @@ module.exports = function(options){
             location = options.location.push('responsesNegate');            
         }
 
-// asdf
-// console.log('options.location', options.location.toJS())
-
         superagent
             .get(url)
             .end(function (err, response){
@@ -175,8 +173,7 @@ module.exports = function(options){
                     self._parsePath(p, l);
                 });
                 if( options.charge ){
-                    // var location = options.location.push('responsesAffirm');
-console.log('location', location.toJS())
+
                     d.set(location, response.body.data.paths)
 
                     // legacy to remove - asdf

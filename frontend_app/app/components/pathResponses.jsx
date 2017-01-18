@@ -29,14 +29,12 @@ module.exports = BaseComponent.createClass({
         />;
     },
     render: function() {
-
+// console.log('Path', Path)
         var affirming = null;
         var negating = null;
         var self = this;
-
-// console.log('this.props', this.props);
+// console.log('asdf 20')
         if( this.props.affirming ){
-// console.log(this.props.affirming.toJS())
             affirming = <div>
                 {this.props.affirming.map(function(path){
                     return <Path
@@ -48,7 +46,7 @@ module.exports = BaseComponent.createClass({
                 })}
             </div>;
         }
-
+// console.log('asdf 21')
 
         // if( !this.props.detailItem.get('item') ){ return null; }
         return <Paper style={STYLE} zDepth={1}>
