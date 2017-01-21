@@ -29574,6 +29574,7 @@
 	        );
 	    },
 	    render: function render() {
+	        return null;
 	        var self = this;
 	        return _react2.default.createElement(
 	            'div',
@@ -38322,6 +38323,10 @@
 
 	var _BaseComponent$create;
 
+	var _createPath = __webpack_require__(248);
+
+	var _createPath2 = _interopRequireDefault(_createPath);
+
 	var _baseComponent = __webpack_require__(180);
 
 	var _baseComponent2 = _interopRequireDefault(_baseComponent);
@@ -38352,6 +38357,8 @@
 
 	var _Card = __webpack_require__(290);
 
+	var _Tabs = __webpack_require__(305);
+
 	var _FlatButton = __webpack_require__(241);
 
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
@@ -38366,86 +38373,82 @@
 	// import PathItemDetail from './pathItemDetail.jsx';
 
 
-	var STYLE = { margin: 20,
-	    width: 800,
-	    // padding: 10,
-	    float: 'left' };
-
-	// var count = 0;
-
-	// var Path = BaseComponent.createClass({
-	//     render: function(){
-	//         count++;
-	//         return <div>
-	//             <div>foo</div>
-	//             { count < 5 ? <Path /> : null}
-
-	//         </div>
-	//     }
-	// });
-	// 
 	var Node = _baseComponent2.default.createClass({
 	    handleNodeClick: function handleNodeClick(e) {
-
-	        // console.log('this.props.location', this.props.location.toJS());
-	        // return;
-
 	        var d = { item: this.props.node, location: this.props.location };
-
 	        // this should be renamed, maybe?
 	        this.props.controllers.path.setDetailItem(d);
+	    },
+	    getInitialState: function getInitialState() {
+	        return { responsesVisible: false };
+	    },
+	    _getResponsePaths: function _getResponsePaths(affirm) {
+	        var paths = null;
+	        var pathData = affirm ? this.props.responsesAffirm : this.props.responsesNegate;
+	        if (pathData) {
+	            var self = this;
+	            return pathData.map(function (el, index) {
+	                return _react2.default.createElement(Path, {
+	                    key: index,
+	                    controllers: self.props.controllers,
+	                    user: self.props.user,
+	                    path: el
+	                });
+	            });
+	        }
+	        return null;
+	    },
+	    _getReplyTab: function _getReplyTab() {
+	        if (!this.props.user.get('id')) {
+	            return null;
+	        }
+	        return _react2.default.createElement(
+	            _Tabs.Tab,
+	            { label: 'Reply' },
+	            _react2.default.createElement(_createPath2.default, {
+	                controllers: this.props.controllers,
+	                visible: true,
+	                responseIsAffirming: this.props.detailItem.get('responseIsAffirming'),
+	                responseTo: this.props.detailItem.get('item'),
+	                path: this.props.detailItem.get('responsePath') })
+	        );
+	    },
+	    _getResponseTabs: function _getResponseTabs() {
+	        var _this = this;
 
-	        // if( !this.props.focused ){
-	        //     this.props.controllers.path.setDetailItem(d);
-	        // } else {
-	        //     this.props.controllers.path.unsetDetailItem(d);
-	        // }       
+	        if (!this.state.responsesVisible) {
+	            return null;
+	        }
+	        return _react2.default.createElement(
+	            _Tabs.Tabs,
+	            null,
+	            ['Affirming', 'Negating'].map(function (label) {
+	                return _react2.default.createElement(
+	                    _Tabs.Tab,
+	                    { label: label, key: label },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { style: { padding: 10 } },
+	                        _this._getResponsePaths(label === 'Affirming')
+	                    )
+	                );
+	            }),
+	            this._getReplyTab()
+	        );
+	    },
+	    _togleResponsePaths: function _togleResponsePaths() {
+	        this.setState({ responsesVisible: !this.state.responsesVisible });
 	    },
 	    render: function render() {
-
-	        // asdf
-	        // console.log('response and affirm');
-	        if (this.props.responsesAffirm) {
-	            console.log(this.props.responsesAffirm.toJS());
-	        }
-	        // console.log(this.props.responsesNegate);
-
-	        var affirmPaths = null;
-	        if (this.props.responsesAffirm) {
-	            var self = this;
-
-	            affirmPaths = this.props.responsesAffirm.map(function (el, index) {
-	                return _react2.default.createElement(Path, {
-	                    key: index,
-	                    controllers: self.props.controllers,
-	                    user: self.props.user,
-	                    path: el
-	                });
-	            });
-	        }
-
-	        var negatePaths = null;
-	        if (this.props.responsesNegate) {
-	            var self = this;
-
-	            negatePaths = this.props.responsesNegate.map(function (el, index) {
-	                return _react2.default.createElement(Path, {
-	                    key: index,
-	                    controllers: self.props.controllers,
-	                    user: self.props.user,
-	                    path: el
-	                });
-	            });
-	        }
-
-	        // console.lo
-
 	        return _react2.default.createElement(
 	            'div',
 	            { onClick: this.handleNodeClick },
-	            this.props.node.get('statement'),
-	            affirmPaths,
-	            negatePaths
+	            _react2.default.createElement(
+	                'div',
+	                { onClick: this._togleResponsePaths },
+	                this.props.node.get('statement')
+	            ),
+	            this._getResponseTabs()
 	        );
 	    }
 	});
@@ -38494,8 +38497,6 @@
 	        }
 	    });
 	}), _defineProperty(_BaseComponent$create, 'render', function render() {
-	    // console.log(this.props.path.toJS())
-
 	    return _react2.default.createElement(
 	        'div',
 	        { style: STYLE_PATH_WRAP },
@@ -38509,62 +38510,9 @@
 	}), _BaseComponent$create));
 
 	var STYLE_PATH_WRAP = { 'marginLeft': '5%' };
-
-	// module.exports = BaseComponent.createClass({
-	//     getEllements: function(){
-	//         var self = this;
-
-	//         let paths = this.props.path.get('path');
-	//         const location = this.props.path.get('location').push('path');
-	// console.log('asdf 30')
-	//         return paths.map(function(el, index){
-	//             if( el.get('type') === 'node' ){                
-	//                 var next = paths.get(index + 1);
-	//                 var link = next ? next : null;
-	//                 if( link ){
-	//                     link = link.set('location', location.push(index + 1));
-	//                 }
-	//                 var isConclusion = paths.size === (index + 1);
-	//                 var focused = false;
-	// console.log('asdf 31')
-	//                 return <PathNode
-	//                     key={index}
-	//                     node={el}
-	//                     user={self.props.user}
-	//                     focused={focused}
-	//                     controllers={self.props.controllers}
-	//                     link={link}
-	//                     isConclusion={isConclusion}
-	//                     location={location.push(index)}
-	//                     responsesAffirm={el.get('responsesAffirm')}
-	//                     responsesNegate={el.get('responsesNegate')}
-	//                 />
-	//             }
-	//         });
-	//     },
-	//     render: function() {
-
-	// // console.log('this.props.path', this.props.path.toJS())
-	// // console.log('asdf 40')
-
-	//         return <div>
-	//             <div style={{marginLeft: 20}}>
-	//                 <h1>{this.props.path.get('title')}</h1>
-	//                 <h3>
-	//                     { helpers.ranking.getRankingString(this.props.path) }
-	//                 </h3>
-	//                 <PathVote
-	//                     user={this.props.user}
-	//                     controllers={this.props.controllers}
-	//                     path={this.props.path}
-	//                 />
-	//             </div>
-	//             <Paper style={STYLE} zDepth={1}>
-	//                 {this.getEllements()}
-	//             </Paper>
-	//         </div>
-	//     }
-	// });
+	var STYLE = { margin: 20,
+	    width: 800,
+	    float: 'left' };
 
 /***/ },
 /* 311 */

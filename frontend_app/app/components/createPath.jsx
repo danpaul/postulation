@@ -78,6 +78,7 @@ module.exports = BaseComponent.createClass({
         </div>
     },
 	render: function() {
+        return null;
         var self = this;
 		return <div>
             {this.getAffirmNegateButtons()}

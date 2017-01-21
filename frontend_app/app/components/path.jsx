@@ -1,3 +1,4 @@
+import CreatePath from './createPath.jsx';
 import BaseComponent from '../lib/baseComponent';
 import React from 'react';
 // import PathItemDetail from './pathItemDetail.jsx';
@@ -8,89 +9,69 @@ import Paper from 'material-ui/Paper';
 import helpers from '../lib/helpers';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Tabs, Tab} from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
 import config from '../config';
 
-const STYLE = { margin: 20,
-                width: 800,
-                // padding: 10,
-                float: 'left'   };
-
-// var count = 0;
-
-// var Path = BaseComponent.createClass({
-//     render: function(){
-//         count++;
-//         return <div>
-//             <div>foo</div>
-//             { count < 5 ? <Path /> : null}
-
-//         </div>
-//     }
-// });
-// 
 var Node = BaseComponent.createClass({
     handleNodeClick: function(e){
-
-// console.log('this.props.location', this.props.location.toJS());
-// return;
-
         var d = {item: this.props.node, location: this.props.location};
-
         // this should be renamed, maybe?
         this.props.controllers.path.setDetailItem(d);
-
-        // if( !this.props.focused ){
-        //     this.props.controllers.path.setDetailItem(d);
-        // } else {
-        //     this.props.controllers.path.unsetDetailItem(d);
-        // }       
+    },
+    getInitialState: function(){
+        return {responsesVisible: false};
+    },
+    _getResponsePaths: function(affirm){
+        var paths = null;
+        var pathData = affirm ? this.props.responsesAffirm :
+                                this.props.responsesNegate;
+        if( pathData ){
+            var self = this;
+            return pathData.map(function(el, index){
+                return <Path
+                    key={index}
+                    controllers={self.props.controllers}
+                    user={self.props.user}
+                    path={el}
+                />
+            });
+        }
+        return null;
+    },
+    _getReplyTab: function(){
+        if( !this.props.user.get('id') ){ return null; }
+        return <Tab label="Reply" >
+            <CreatePath
+                controllers={this.props.controllers}
+                visible={true}
+                responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
+                responseTo={this.props.detailItem.get('item')}
+                path={this.props.detailItem.get('responsePath')} />
+        </Tab>
+    },
+    _getResponseTabs: function(){
+        if( !this.state.responsesVisible ){ return null; }
+        return <Tabs>
+            {['Affirming', 'Negating'].map((label) => {
+                return <Tab label={label} key={label} >
+                    <div style={{padding: 10}}>
+                        {this._getResponsePaths((label === 'Affirming'))}
+                    </div>
+                </Tab>                
+            })}
+            {this._getReplyTab()}
+        </Tabs>;
+    },
+    _togleResponsePaths: function(){
+        this.setState({responsesVisible: !this.state.responsesVisible});
     },
     render: function(){
-
-// asdf
-// console.log('response and affirm');
-if( this.props.responsesAffirm ){
-    console.log(this.props.responsesAffirm.toJS());
-}
-// console.log(this.props.responsesNegate);
-
-        var affirmPaths = null;
-        if( this.props.responsesAffirm ){
-            var self = this;
-
-            affirmPaths = this.props.responsesAffirm.map(function(el, index){
-                return <Path
-                    key={index}
-                    controllers={self.props.controllers}
-                    user={self.props.user}
-                    path={el}
-                />
-
-            });
-        }
-
-        var negatePaths = null;
-        if( this.props.responsesNegate ){
-            var self = this;
-
-            negatePaths = this.props.responsesNegate.map(function(el, index){
-                return <Path
-                    key={index}
-                    controllers={self.props.controllers}
-                    user={self.props.user}
-                    path={el}
-                />
-
-            });
-        }
-
-// console.lo
-
         return <div onClick={this.handleNodeClick}>
-            {this.props.node.get('statement')}
-            {affirmPaths}
-            {negatePaths}
+            <div onClick={this._togleResponsePaths}>
+                {this.props.node.get('statement')}
+            </div>
+            {this._getResponseTabs()}
         </div>;
     }
 });
@@ -106,20 +87,20 @@ var Path = module.exports = BaseComponent.createClass({
     },
     getNodes: function(){
 
-        var self = this;
-        var nodes = this.props.path.get('path');
-        var location = this.props.path.get('location').push('path');
+        let self = this;
+        let nodes = this.props.path.get('path');
+        let location = this.props.path.get('location').push('path');
 
         return nodes.map(function(el, index){
 
             if( el.get('type') === 'node' ){
-                var next = nodes.get(index + 1);
-                var link = next ? next : null;
+                let next = nodes.get(index + 1);
+                let link = next ? next : null;
                 if( link ){
                     link = link.set('location', location.push(index + 1));
                 }
 
-                var isConclusion = nodes.size === (index + 1);
+                let isConclusion = nodes.size === (index + 1);
 
                 return <Node
                     key={index}
@@ -136,8 +117,6 @@ var Path = module.exports = BaseComponent.createClass({
         });
     },
     render: function() {
-        // console.log(this.props.path.toJS())
-
         return <div style={STYLE_PATH_WRAP}>
             <div>{this.props.path.get('title')}</div>
             {this.getNodes()}
@@ -145,61 +124,7 @@ var Path = module.exports = BaseComponent.createClass({
     }
 });
 
-var STYLE_PATH_WRAP = {'marginLeft': '5%'};
-
-
-// module.exports = BaseComponent.createClass({
-//     getEllements: function(){
-//         var self = this;
-
-//         let paths = this.props.path.get('path');
-//         const location = this.props.path.get('location').push('path');
-// console.log('asdf 30')
-//         return paths.map(function(el, index){
-//             if( el.get('type') === 'node' ){                
-//                 var next = paths.get(index + 1);
-//                 var link = next ? next : null;
-//                 if( link ){
-//                     link = link.set('location', location.push(index + 1));
-//                 }
-//                 var isConclusion = paths.size === (index + 1);
-//                 var focused = false;
-// console.log('asdf 31')
-//                 return <PathNode
-//                     key={index}
-//                     node={el}
-//                     user={self.props.user}
-//                     focused={focused}
-//                     controllers={self.props.controllers}
-//                     link={link}
-//                     isConclusion={isConclusion}
-//                     location={location.push(index)}
-//                     responsesAffirm={el.get('responsesAffirm')}
-//                     responsesNegate={el.get('responsesNegate')}
-//                 />
-//             }
-//         });
-//     },
-//     render: function() {
-
-// // console.log('this.props.path', this.props.path.toJS())
-// // console.log('asdf 40')
-
-//         return <div>
-//             <div style={{marginLeft: 20}}>
-//                 <h1>{this.props.path.get('title')}</h1>
-//                 <h3>
-//                     { helpers.ranking.getRankingString(this.props.path) }
-//                 </h3>
-//                 <PathVote
-//                     user={this.props.user}
-//                     controllers={this.props.controllers}
-//                     path={this.props.path}
-//                 />
-//             </div>
-//             <Paper style={STYLE} zDepth={1}>
-//                 {this.getEllements()}
-//             </Paper>
-//         </div>
-//     }
-// });
+const STYLE_PATH_WRAP = {'marginLeft': '5%'};
+const STYLE = { margin: 20,
+                width: 800,
+                float: 'left'   };
