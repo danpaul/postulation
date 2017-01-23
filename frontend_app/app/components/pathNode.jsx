@@ -65,7 +65,6 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
 		if( this.props.node.get('hidden') ){ return null; }
-console.log('asdf 9')
         var responsePaths = null;
         if( this.props.responsesAffirm || this.props.responsesNegate ){
             responsePaths = <PathResponses
@@ -75,7 +74,6 @@ console.log('asdf 9')
                 negating={this.props.responsesNegate}
             />;
         }
-console.log('asdf 10')
         return <Paper style={STYLE} zDepth={0} onClick={this.handleNodeClick}>
             {this.props.node.get('statement')}
             {this.getRankingSection()}

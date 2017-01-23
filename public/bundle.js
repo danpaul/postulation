@@ -29555,7 +29555,7 @@
 	        this.props.controllers.createPath.setResponseNegate();
 	    },
 	    getAffirmNegateButtons: function getAffirmNegateButtons() {
-	        if (!this.props.responseTo) {
+	        if (!this.props.isResponse) {
 	            return null;
 	        }
 	        return _react2.default.createElement(
@@ -29574,7 +29574,20 @@
 	        );
 	    },
 	    render: function render() {
+
+	        console.log('this.props', this.props);
+
+	        var self = this;
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            this.getAffirmNegateButtons()
+	        );
+
+	        // console.log('this.props', this.props)
+	        // asdf
 	        return null;
+
 	        var self = this;
 	        return _react2.default.createElement(
 	            'div',
@@ -38373,6 +38386,51 @@
 	// import PathItemDetail from './pathItemDetail.jsx';
 
 
+	var RESPONSE_FORM_STYLE = { padding: "1%" };
+
+	var ResponseForm = _baseComponent2.default.createClass({
+	    render: function render() {
+	        return _react2.default.createElement('div', null);
+	    }
+	});
+
+	var ResponseForms = _baseComponent2.default.createClass({
+	    render: function render() {
+	        var affirmLocation = this.props.location.push('responses').push('affirm');
+	        var negateLocation = this.props.location.push('responses').push('negate');
+
+	        // console.log('location', this.props.node.toJS());
+
+	        return _react2.default.createElement(
+	            'div',
+	            { style: RESPONSE_FORM_STYLE },
+	            _react2.default.createElement(
+	                _Paper2.default,
+	                null,
+	                _react2.default.createElement(
+	                    _Tabs.Tabs,
+	                    null,
+	                    _react2.default.createElement(
+	                        _Tabs.Tab,
+	                        { label: 'Support', key: 'support' },
+	                        _react2.default.createElement(ResponseForm, {
+	                            location: affirmLocation
+
+	                        })
+	                    ),
+	                    _react2.default.createElement(
+	                        _Tabs.Tab,
+	                        { label: 'Refute', key: 'refute' },
+	                        _react2.default.createElement(ResponseForm, {
+	                            location: negateLocation
+	                        })
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
 	var Node = _baseComponent2.default.createClass({
 	    handleNodeClick: function handleNodeClick(e) {
 	        var d = { item: this.props.node, location: this.props.location };
@@ -38398,48 +38456,48 @@
 	        }
 	        return null;
 	    },
-	    _getReplyTab: function _getReplyTab() {
-	        if (!this.props.user.get('id')) {
-	            return null;
-	        }
-	        return _react2.default.createElement(
-	            _Tabs.Tab,
-	            { label: 'Reply' },
-	            _react2.default.createElement(_createPath2.default, {
-	                controllers: this.props.controllers,
-	                visible: true,
-	                responseIsAffirming: this.props.detailItem.get('responseIsAffirming'),
-	                responseTo: this.props.detailItem.get('item'),
-	                path: this.props.detailItem.get('responsePath') })
-	        );
-	    },
 	    _getResponseTabs: function _getResponseTabs() {
-	        var _this = this;
-
 	        if (!this.state.responsesVisible) {
 	            return null;
 	        }
 	        return _react2.default.createElement(
-	            _Tabs.Tabs,
-	            null,
-	            ['Affirming', 'Negating'].map(function (label) {
-	                return _react2.default.createElement(
+	            _Paper2.default,
+	            { style: STYLE_PATH_WRAP },
+	            _react2.default.createElement(
+	                _Tabs.Tabs,
+	                null,
+	                _react2.default.createElement(
 	                    _Tabs.Tab,
-	                    { label: label, key: label },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { style: { padding: 10 } },
-	                        _this._getResponsePaths(label === 'Affirming')
-	                    )
-	                );
-	            }),
-	            this._getReplyTab()
+	                    { label: 'Respond', key: 'responseForms' },
+	                    _react2.default.createElement(ResponseForms, {
+	                        node: this.props.node })
+	                ),
+	                ['Affirming', 'Negating'].map(function (label) {
+	                    return _react2.default.createElement(
+	                        _Tabs.Tab,
+	                        { label: label, key: label },
+	                        _react2.default.createElement('div', { style: { padding: 10 } })
+	                    );
+	                })
+	            )
 	        );
 	    },
 	    _togleResponsePaths: function _togleResponsePaths() {
 	        this.setState({ responsesVisible: !this.state.responsesVisible });
 	    },
 	    render: function render() {
+	        console.log('node', this.props.node.toJS());
+	        return _react2.default.createElement(
+	            'div',
+	            { onClick: this.handleNodeClick },
+	            _react2.default.createElement(
+	                'div',
+	                { onClick: this._togleResponsePaths },
+	                this.props.node.get('statement'),
+	                this._getResponseTabs()
+	            )
+	        );
+	        return null;
 	        return _react2.default.createElement(
 	            'div',
 	            { onClick: this.handleNodeClick },
@@ -38484,22 +38542,30 @@
 	            var isConclusion = nodes.size === index + 1;
 
 	            return _react2.default.createElement(Node, {
-	                key: index,
 	                node: el,
+	                key: index,
 	                user: self.props.user,
-	                controllers: self.props.controllers,
-	                link: link,
-	                isConclusion: isConclusion,
-	                location: location.push(index),
-	                responsesAffirm: el.get('responsesAffirm'),
-	                responsesNegate: el.get('responsesNegate')
+	                controllers: self.props.controllers
 	            });
+
+	            // return <Node
+	            //     node={el}
+	            //     key={index}
+	            //     node={el}
+	            //     user={self.props.user}
+	            //     controllers={self.props.controllers}
+	            //     link={link}
+	            //     isConclusion={isConclusion}
+	            //     location={location.push(index)}
+	            //     responsesAffirm={el.get('responsesAffirm')}
+	            //     responsesNegate={el.get('responsesNegate')}
+	            // />
 	        }
 	    });
 	}), _defineProperty(_BaseComponent$create, 'render', function render() {
 	    return _react2.default.createElement(
 	        'div',
-	        { style: STYLE_PATH_WRAP },
+	        null,
 	        _react2.default.createElement(
 	            'div',
 	            null,
@@ -38507,9 +38573,13 @@
 	        ),
 	        this.getNodes()
 	    );
+	    // return <div style={STYLE_PATH_WRAP}>
+	    //     <div>{this.props.path.get('title')}</div>
+	    //     {this.getNodes()}
+	    // </div>
 	}), _BaseComponent$create));
 
-	var STYLE_PATH_WRAP = { 'marginLeft': '5%' };
+	var STYLE_PATH_WRAP = { 'marginLeft': '1%', 'marginRight': '1%' };
 	var STYLE = { margin: 20,
 	    width: 800,
 	    float: 'left' };
@@ -38672,7 +38742,6 @@
 	        if (this.props.node.get('hidden')) {
 	            return null;
 	        }
-	        console.log('asdf 9');
 	        var responsePaths = null;
 	        if (this.props.responsesAffirm || this.props.responsesNegate) {
 	            responsePaths = _react2.default.createElement(_pathResponses2.default, {
@@ -38682,7 +38751,6 @@
 	                negating: this.props.responsesNegate
 	            });
 	        }
-	        console.log('asdf 10');
 	        return _react2.default.createElement(
 	            _Paper2.default,
 	            { style: STYLE, zDepth: 0, onClick: this.handleNodeClick },
@@ -52914,7 +52982,7 @@
 	                return;
 	            }
 	            var path = response.body.data.path;
-	            self._parsePath(path);
+	            self._parsePath(path, location);
 	            path.location = location;
 	            d.set(location, path);
 	            d.set('view', 'path');
@@ -52973,9 +53041,23 @@
 	        });
 	    };
 
-	    this._parsePath = function (path, location) {
+	    this._parsePath = function (path, locationIn) {
+
+	        var location = Immutable.List.isList(locationIn) ? locationIn : Immutable.fromJS(locationIn);
 	        var isNegatingResponse = false;
+	        var nodes = path.path;
 	        for (var i = 0; i < path.path.length; i++) {
+	            var next = nodes[i + 1] ? nodes[i + 1] : null;
+	            var link = next ? next : null;
+	            if (link) {
+	                link.location = location.push(i + 1);
+	                nodes[i]['link'] = link;
+	            } else {
+	                nodes[i]['link'] = null;
+	            }
+	            nodes[i]['isConclusion'] = nodes.size === i + 1;
+	            nodes[i]['location'] = location.push(i);
+
 	            var item = path.path[i];
 	            // check if second to last item and hide it and remaining element
 	            if (i === path.path.length - 2 && item.type === 'link' && !item.charge) {
@@ -52984,6 +53066,8 @@
 	            } else {
 	                item.hidden = isNegatingResponse;
 	            }
+	            // item.responsesAffirm = {argument: ''}
+	            item.responses = { negate: '', affirm: '' };
 	        }
 	        path.isNegatingResponse = isNegatingResponse;
 	        if (location) {

@@ -33,7 +33,7 @@ export default function Path(options){
 	  				return;
 	  			}
                 var path = response.body.data.path;
-                self._parsePath(path);
+                self._parsePath(path, location);
                 path.location = location;
 	  			d.set(location, path);
 	  			d.set('view', 'path');
@@ -96,9 +96,24 @@ export default function Path(options){
         );
     }
 
-    this._parsePath = function(path, location){
+    this._parsePath = function(path, locationIn){
+
+        const location = Immutable.List.isList(locationIn) ? locationIn :
+                                                             Immutable.fromJS(locationIn);
         var isNegatingResponse = false;
+        let nodes = path.path;
         for( var i = 0; i < path.path.length; i++ ){
+            let next = nodes[i + 1] ? nodes[i + 1] : null;
+            let link = next ? next : null;
+            if( link ){
+                link.location = location.push(i + 1);
+                nodes[i]['link'] = link;
+            } else {
+                nodes[i]['link'] = null;
+            }
+            nodes[i]['isConclusion'] = nodes.size === (i + 1);
+            nodes[i]['location'] = location.push(i);
+
             var item = path.path[i];
             // check if second to last item and hide it and remaining element
             if( i === path.path.length - 2 &&
@@ -109,6 +124,8 @@ export default function Path(options){
             } else {
                 item.hidden = isNegatingResponse;
             }
+            // item.responsesAffirm = {argument: ''}
+            item.responses = {negate: '', affirm: ''};
         }
         path.isNegatingResponse = isNegatingResponse;
         if( location ){ path.location = location; }

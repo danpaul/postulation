@@ -63,7 +63,7 @@ module.exports = BaseComponent.createClass({
         this.props.controllers.createPath.setResponseNegate();
     },
     getAffirmNegateButtons: function(){
-        if( !this.props.responseTo ){ return null; }
+        if( !this.props.isResponse ){ return null; }
         return <div>
             <RaisedButton
                 style={{width: '50%'}}
@@ -78,7 +78,19 @@ module.exports = BaseComponent.createClass({
         </div>
     },
 	render: function() {
-        return null;
+
+console.log('this.props', this.props)
+
+        var self = this;
+        return <div>
+            {this.getAffirmNegateButtons()}
+        </div>;
+
+// console.log('this.props', this.props)
+// asdf
+return null;
+
+
         var self = this;
 		return <div>
             {this.getAffirmNegateButtons()}

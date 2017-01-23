@@ -13,6 +13,47 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
 import config from '../config';
 
+const RESPONSE_FORM_STYLE = {padding: "1%"};
+
+var ResponseForm = BaseComponent.createClass({
+    render: function(){
+        return <div>
+
+        </div>;
+    }
+});
+
+var ResponseForms = BaseComponent.createClass({
+    render: function(){
+        const affirmLocation = this.props.location
+                                         .push('responses')
+                                         .push('affirm');
+        const negateLocation = this.props.location
+                                         .push('responses')
+                                         .push('negate');
+
+// console.log('location', this.props.node.toJS());
+
+        return <div style={RESPONSE_FORM_STYLE}>
+            <Paper >
+                <Tabs>
+                    <Tab label="Support" key="support" >
+                        <ResponseForm
+                            location={affirmLocation}
+
+                        />
+                    </Tab>
+                    <Tab label="Refute" key="refute" >
+                        <ResponseForm
+                            location={negateLocation}
+                        />
+                    </Tab>
+                </Tabs>
+            </Paper>
+        </div>;
+    }
+});
+
 var Node = BaseComponent.createClass({
     handleNodeClick: function(e){
         var d = {item: this.props.node, location: this.props.location};
@@ -39,34 +80,37 @@ var Node = BaseComponent.createClass({
         }
         return null;
     },
-    _getReplyTab: function(){
-        if( !this.props.user.get('id') ){ return null; }
-        return <Tab label="Reply" >
-            <CreatePath
-                controllers={this.props.controllers}
-                visible={true}
-                responseIsAffirming={this.props.detailItem.get('responseIsAffirming')}
-                responseTo={this.props.detailItem.get('item')}
-                path={this.props.detailItem.get('responsePath')} />
-        </Tab>
-    },
     _getResponseTabs: function(){
         if( !this.state.responsesVisible ){ return null; }
-        return <Tabs>
-            {['Affirming', 'Negating'].map((label) => {
-                return <Tab label={label} key={label} >
-                    <div style={{padding: 10}}>
-                        {this._getResponsePaths((label === 'Affirming'))}
-                    </div>
-                </Tab>                
-            })}
-            {this._getReplyTab()}
-        </Tabs>;
+        return <Paper style={STYLE_PATH_WRAP}>
+            <Tabs>
+                <Tab label="Respond" key={'responseForms'} >
+                    <ResponseForms
+                        node={this.props.node} />
+                </Tab>
+                {['Affirming', 'Negating'].map((label) => {
+                    return <Tab label={label} key={label} >
+                        <div style={{padding: 10}}>
+                            { /** this._getResponsePaths((label === 'Affirming')) */ }
+                        </div>
+                    </Tab>                
+                })}
+                { /** this._getReplyTab() */ }
+            </Tabs>
+        </Paper>;
     },
     _togleResponsePaths: function(){
         this.setState({responsesVisible: !this.state.responsesVisible});
     },
     render: function(){
+console.log('node', this.props.node.toJS())
+return <div onClick={this.handleNodeClick}>
+    <div onClick={this._togleResponsePaths}>
+        {this.props.node.get('statement')}
+        {this._getResponseTabs()}
+    </div>
+</div>;
+return null;
         return <div onClick={this.handleNodeClick}>
             <div onClick={this._togleResponsePaths}>
                 {this.props.node.get('statement')}
@@ -103,28 +147,40 @@ var Path = module.exports = BaseComponent.createClass({
                 let isConclusion = nodes.size === (index + 1);
 
                 return <Node
-                    key={index}
                     node={el}
+                    key={index}
                     user={self.props.user}
                     controllers={self.props.controllers}
-                    link={link}
-                    isConclusion={isConclusion}
-                    location={location.push(index)}
-                    responsesAffirm={el.get('responsesAffirm')}
-                    responsesNegate={el.get('responsesNegate')}
                 />
+
+                // return <Node
+                //     node={el}
+                //     key={index}
+                //     node={el}
+                //     user={self.props.user}
+                //     controllers={self.props.controllers}
+                //     link={link}
+                //     isConclusion={isConclusion}
+                //     location={location.push(index)}
+                //     responsesAffirm={el.get('responsesAffirm')}
+                //     responsesNegate={el.get('responsesNegate')}
+                // />
             }
         });
     },
     render: function() {
-        return <div style={STYLE_PATH_WRAP}>
+        return <div>
             <div>{this.props.path.get('title')}</div>
             {this.getNodes()}
-        </div>
+        </div>;
+        // return <div style={STYLE_PATH_WRAP}>
+        //     <div>{this.props.path.get('title')}</div>
+        //     {this.getNodes()}
+        // </div>
     }
 });
 
-const STYLE_PATH_WRAP = {'marginLeft': '5%'};
+const STYLE_PATH_WRAP = {'marginLeft': '1%', 'marginRight': '1%'};
 const STYLE = { margin: 20,
                 width: 800,
                 float: 'left'   };
