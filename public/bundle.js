@@ -32142,7 +32142,7 @@
 	    },
 	    render: function render() {
 
-	        console.log('this.props', this.props);
+	        // console.log('this.props', this.props)
 
 	        var self = this;
 	        return _react2.default.createElement(
@@ -41262,6 +41262,10 @@
 
 	var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
+	var _TextField = __webpack_require__(371);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
 	var _config = __webpack_require__(6);
 
 	var _config2 = _interopRequireDefault(_config);
@@ -41275,18 +41279,32 @@
 	var RESPONSE_FORM_STYLE = { padding: "1%" };
 
 	var ResponseForm = _baseComponent2.default.createClass({
+	    handleChange: function handleChange(e) {
+	        this.props.controllers.path.setResponseText({
+	            node: this.props.node,
+	            isAffirming: this.props.isAffirming,
+	            value: e.target.value
+	        });
+	    },
 	    render: function render() {
-	        return _react2.default.createElement('div', null);
+	        var value = this.props.isAffirming ? this.props.node.getIn(['responses', 'affirm', 'argument']) : this.props.node.getIn(['responses', 'negate', 'argument']);
+
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_TextField2.default, {
+	                name: 'nodeResponseForm',
+	                multiLine: true,
+	                onChange: this.handleChange,
+	                value: value,
+	                fullWidth: true
+	            })
+	        );
 	    }
 	});
 
 	var ResponseForms = _baseComponent2.default.createClass({
 	    render: function render() {
-	        var affirmLocation = this.props.location.push('responses').push('affirm');
-	        var negateLocation = this.props.location.push('responses').push('negate');
-
-	        // console.log('location', this.props.node.toJS());
-
 	        return _react2.default.createElement(
 	            'div',
 	            { style: RESPONSE_FORM_STYLE },
@@ -41300,15 +41318,18 @@
 	                        _Tabs.Tab,
 	                        { label: 'Support', key: 'support' },
 	                        _react2.default.createElement(ResponseForm, {
-	                            location: affirmLocation
-
+	                            controllers: this.props.controllers,
+	                            node: this.props.node,
+	                            isAffirming: true
 	                        })
 	                    ),
 	                    _react2.default.createElement(
 	                        _Tabs.Tab,
 	                        { label: 'Refute', key: 'refute' },
 	                        _react2.default.createElement(ResponseForm, {
-	                            location: negateLocation
+	                            controllers: this.props.controllers,
+	                            node: this.props.node,
+	                            isAffirming: false
 	                        })
 	                    )
 	                )
@@ -41319,7 +41340,8 @@
 
 	var Node = _baseComponent2.default.createClass({
 	    handleNodeClick: function handleNodeClick(e) {
-	        var d = { item: this.props.node, location: this.props.location };
+	        var d = { item: this.props.node,
+	            location: this.props.node.get('location') };
 	        // this should be renamed, maybe?
 	        this.props.controllers.path.setDetailItem(d);
 	    },
@@ -41356,6 +41378,7 @@
 	                    _Tabs.Tab,
 	                    { label: 'Respond', key: 'responseForms' },
 	                    _react2.default.createElement(ResponseForms, {
+	                        controllers: this.props.controllers,
 	                        node: this.props.node })
 	                ),
 	                ['Affirming', 'Negating'].map(function (label) {
@@ -41369,10 +41392,13 @@
 	        );
 	    },
 	    _togleResponsePaths: function _togleResponsePaths() {
-	        this.setState({ responsesVisible: !this.state.responsesVisible });
+	        // asdf
+	        this.setState({ responsesVisible: true });
+	        // this.setState({responsesVisible: !this.state.responsesVisible});
 	    },
 	    render: function render() {
-	        console.log('node', this.props.node.toJS());
+	        // return null;
+	        // console.log('node', this.props.node.toJS())
 	        return _react2.default.createElement(
 	            'div',
 	            { onClick: this.handleNodeClick },
@@ -41418,6 +41444,7 @@
 
 	    return nodes.map(function (el, index) {
 
+	        // ASDF - this should have been moved to controller
 	        if (el.get('type') === 'node') {
 	            var next = nodes.get(index + 1);
 	            var link = next ? next : null;
@@ -55706,6 +55733,7 @@
 	        for (var i = 0; i < path.path.length; i++) {
 	            var next = nodes[i + 1] ? nodes[i + 1] : null;
 	            var link = next ? next : null;
+	            var nodeLocation = location.push('path').push(i);
 	            if (link) {
 	                link.location = location.push(i + 1);
 	                nodes[i]['link'] = link;
@@ -55713,7 +55741,7 @@
 	                nodes[i]['link'] = null;
 	            }
 	            nodes[i]['isConclusion'] = nodes.size === i + 1;
-	            nodes[i]['location'] = location.push(i);
+	            nodes[i]['location'] = nodeLocation;
 
 	            var item = path.path[i];
 	            // check if second to last item and hide it and remaining element
@@ -55723,14 +55751,24 @@
 	            } else {
 	                item.hidden = isNegatingResponse;
 	            }
-	            // item.responsesAffirm = {argument: ''}
-	            item.responses = { negate: '', affirm: '' };
+	            item.responses = {
+	                negate: { argument: '' },
+	                affirm: { argument: '' }
+	            };
 	        }
 	        path.isNegatingResponse = isNegatingResponse;
 	        if (location) {
 	            path.location = location;
 	        }
 	        return path;
+	    };
+
+	    /**
+	     * Updates argument text
+	     */
+	    this.setResponseText = function (options) {
+	        var location = options.node.get('location').push('responses').push(options.isAffirming ? 'affirm' : 'negate').push('argument');
+	        d.set(location, options.value);
 	    };
 
 	    /**
@@ -55757,7 +55795,7 @@
 
 	    /**
 	     * @param  {object}  options.item
-	     * @param {options.location} Immutable.map location within the stor of the path
+	     * @param  {Immutable.map} options.location location within the stor of the path
 	     * @param  {boolean}  options.charge
 	     */
 	    this.loadResponsePaths = function (options) {
@@ -55767,7 +55805,6 @@
 	        var id = options.item.get('id');
 	        var url = siteUrl + '/api/link/response/' + type + '/' + direction + '/' + id;
 
-	        // var location = null;
 	        var location = options.location.push('responsesAffirm');
 	        if (!options.charge) {
 	            location = options.location.push('responsesNegate');

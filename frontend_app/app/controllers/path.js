@@ -105,6 +105,7 @@ export default function Path(options){
         for( var i = 0; i < path.path.length; i++ ){
             let next = nodes[i + 1] ? nodes[i + 1] : null;
             let link = next ? next : null;
+            const nodeLocation = location.push('path').push(i);
             if( link ){
                 link.location = location.push(i + 1);
                 nodes[i]['link'] = link;
@@ -112,7 +113,7 @@ export default function Path(options){
                 nodes[i]['link'] = null;
             }
             nodes[i]['isConclusion'] = nodes.size === (i + 1);
-            nodes[i]['location'] = location.push(i);
+            nodes[i]['location'] = nodeLocation;
 
             var item = path.path[i];
             // check if second to last item and hide it and remaining element
@@ -124,12 +125,25 @@ export default function Path(options){
             } else {
                 item.hidden = isNegatingResponse;
             }
-            // item.responsesAffirm = {argument: ''}
-            item.responses = {negate: '', affirm: ''};
+            item.responses = {
+                negate: {argument: ''},
+                affirm: {argument: ''},
+            };
         }
         path.isNegatingResponse = isNegatingResponse;
         if( location ){ path.location = location; }
         return path;
+    }
+
+    /**
+     * Updates argument text
+     */
+    this.setResponseText = function(options){
+        const location = options.node.get('location')
+                            .push('responses')
+                            .push(options.isAffirming ? 'affirm' : 'negate')
+                            .push('argument');
+        d.set(location, options.value);
     }
 
     /**
@@ -156,7 +170,7 @@ export default function Path(options){
 
     /**
      * @param  {object}  options.item
-     * @param {options.location} Immutable.map location within the stor of the path
+     * @param  {Immutable.map} options.location location within the stor of the path
      * @param  {boolean}  options.charge
      */
     this.loadResponsePaths = function(options){
@@ -166,7 +180,6 @@ export default function Path(options){
         var id = options.item.get('id');
         var url = siteUrl + '/api/link/response/' + type + '/' + direction + '/' + id;
 
-        // var location = null;
         var location = options.location.push('responsesAffirm');
         if( !options.charge ){
             location = options.location.push('responsesNegate');            

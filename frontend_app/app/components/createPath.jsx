@@ -79,7 +79,7 @@ module.exports = BaseComponent.createClass({
     },
 	render: function() {
 
-console.log('this.props', this.props)
+// console.log('this.props', this.props)
 
         var self = this;
         return <div>

@@ -11,41 +11,53 @@ import helpers from '../lib/helpers';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 import config from '../config';
 
 const RESPONSE_FORM_STYLE = {padding: "1%"};
 
 var ResponseForm = BaseComponent.createClass({
+    handleChange: function(e){
+        this.props.controllers.path.setResponseText({
+            node: this.props.node,
+            isAffirming: this.props.isAffirming,
+            value: e.target.value
+        });
+    },
     render: function(){
-        return <div>
+        const value = this.props.isAffirming ?
+                      this.props.node.getIn(['responses', 'affirm', 'argument']) :
+                      this.props.node.getIn(['responses', 'negate', 'argument']);
 
+        return <div>
+            <TextField
+                name="nodeResponseForm"
+                multiLine={true}
+                onChange={this.handleChange}
+                value={value}
+                fullWidth={true}
+            />
         </div>;
     }
 });
 
 var ResponseForms = BaseComponent.createClass({
     render: function(){
-        const affirmLocation = this.props.location
-                                         .push('responses')
-                                         .push('affirm');
-        const negateLocation = this.props.location
-                                         .push('responses')
-                                         .push('negate');
-
-// console.log('location', this.props.node.toJS());
-
         return <div style={RESPONSE_FORM_STYLE}>
             <Paper >
                 <Tabs>
                     <Tab label="Support" key="support" >
                         <ResponseForm
-                            location={affirmLocation}
-
+                            controllers={this.props.controllers}
+                            node={this.props.node}
+                            isAffirming={true}
                         />
                     </Tab>
                     <Tab label="Refute" key="refute" >
                         <ResponseForm
-                            location={negateLocation}
+                            controllers={this.props.controllers}
+                            node={this.props.node}
+                            isAffirming={false}
                         />
                     </Tab>
                 </Tabs>
@@ -56,7 +68,8 @@ var ResponseForms = BaseComponent.createClass({
 
 var Node = BaseComponent.createClass({
     handleNodeClick: function(e){
-        var d = {item: this.props.node, location: this.props.location};
+        var d = {item: this.props.node,
+                 location: this.props.node.get('location')};
         // this should be renamed, maybe?
         this.props.controllers.path.setDetailItem(d);
     },
@@ -86,6 +99,7 @@ var Node = BaseComponent.createClass({
             <Tabs>
                 <Tab label="Respond" key={'responseForms'} >
                     <ResponseForms
+                        controllers={this.props.controllers}
                         node={this.props.node} />
                 </Tab>
                 {['Affirming', 'Negating'].map((label) => {
@@ -100,10 +114,13 @@ var Node = BaseComponent.createClass({
         </Paper>;
     },
     _togleResponsePaths: function(){
-        this.setState({responsesVisible: !this.state.responsesVisible});
+        // asdf
+        this.setState({responsesVisible: true});
+        // this.setState({responsesVisible: !this.state.responsesVisible});
     },
     render: function(){
-console.log('node', this.props.node.toJS())
+// return null;
+// console.log('node', this.props.node.toJS())
 return <div onClick={this.handleNodeClick}>
     <div onClick={this._togleResponsePaths}>
         {this.props.node.get('statement')}
@@ -137,6 +154,7 @@ var Path = module.exports = BaseComponent.createClass({
 
         return nodes.map(function(el, index){
 
+            // ASDF - this should have been moved to controller
             if( el.get('type') === 'node' ){
                 let next = nodes.get(index + 1);
                 let link = next ? next : null;
